@@ -69,8 +69,9 @@ extension UserViewController {
     
     func addMoney(section:Int){
         let alert = UIAlertController(title: "Add Money", message: nil, preferredStyle: .alert)
-        alert.addTextField { (testField) in
-            testField.placeholder = "Enter Money"
+        alert.addTextField { (textField) in
+            textField.placeholder = "Enter Money"
+            textField.keyboardType = .numberPad
         }
         
         let okAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
