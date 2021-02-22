@@ -6,6 +6,7 @@
 //
 
 import UIKit
+//import CoreData
 
 struct UserData {
     var isOpen:Bool = false
@@ -33,6 +34,7 @@ class UserViewController: UIViewController {
     func bind(){
         userTableView.delegate = self
         userTableView.dataSource = self
+        userViewModel.setList()
     }
     
 }

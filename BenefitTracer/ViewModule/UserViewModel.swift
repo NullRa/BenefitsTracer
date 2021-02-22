@@ -12,10 +12,17 @@ enum UserTableViewEventType {
 class UserViewModel {
     let userCellId = "UserCell"
     let moneyCellId = "MoneyCell"
-    var list:[UserData] = [UserData(userName: "Add User")]
+    var list:[UserData]!
+    let userRespository = UserRespository()
+    
+    func setList(){
+        list = userRespository.queryUserCoreData()
+        list.append(UserData(userName: "Add User"))
+    }
     
     func addNewUser(userName:String){
         list.insert(UserData(userName: userName), at: self.list.count-1)
+        userRespository.insertUserCoreData(name: userName)
     }
     
     func addNewMoney(userIndex:Int,money:String){
@@ -73,6 +80,8 @@ class UserViewModel {
     }
     
     func removeUser(userIndex:Int) {
+        let name = list[userIndex].userName
         list.remove(at: userIndex)
+        userRespository.deleteUserCoreData(name: name)
     }
 }
