@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Money-->
+        <!--Money View Controller-->
         <scene sceneID="Fz0-Zx-xzE">
             <objects>
                 <viewController id="Exh-U6-jqw" customClass="MoneyViewController" customModule="BenefitTracer" customModuleProvider="target" sceneMemberID="viewController">
@@ -18,11 +18,11 @@
                         <viewLayoutGuide key="safeArea" id="Fqf-xZ-Jgf"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Money" id="2RK-np-1q5"/>
+                    <navigationItem key="navigationItem" id="vKI-LY-VpR"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xl6-mR-sKx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="862" y="-1224"/>
+            <point key="canvasLocation" x="1771.0144927536232" y="-1224.1071428571429"/>
         </scene>
         <!--Benefits-->
         <scene sceneID="ISp-7A-k4z">
@@ -113,7 +113,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="2C8-kq-8nc" kind="relationship" relationship="viewControllers" id="kDG-uF-IbX"/>
-                        <segue destination="Exh-U6-jqw" kind="relationship" relationship="viewControllers" id="NO7-lI-Agl"/>
+                        <segue destination="z6O-wv-8ah" kind="relationship" relationship="viewControllers" id="NO7-lI-Agl"/>
                         <segue destination="jel-1k-Njy" kind="relationship" relationship="viewControllers" id="K4p-Hm-Mkg"/>
                         <segue destination="VKN-Tv-eQX" kind="relationship" relationship="viewControllers" id="vQs-5M-buu"/>
                     </connections>
@@ -140,6 +140,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jsN-jz-Sss" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="884.05797101449286" y="88.392857142857139"/>
+        </scene>
+        <!--Money-->
+        <scene sceneID="wML-sJ-tdU">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="z6O-wv-8ah" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Money" id="2RK-np-1q5"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="vq1-0C-VeR">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Exh-U6-jqw" kind="relationship" relationship="rootViewController" id="R9M-BL-iWL"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZDc-BM-eyI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="860.86956521739137" y="-1224.1071428571429"/>
         </scene>
     </scenes>
     <resources>

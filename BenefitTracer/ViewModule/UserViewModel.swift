@@ -94,4 +94,16 @@ class UserViewModel {
         list.remove(at: userIndex)
         userRespository.deleteUserCoreData(name: name)
     }
+
+    func getTotalMoney() -> Int {
+        var totalMoney: Int = 0
+        list.forEach { (userData) in
+            userData.money.forEach { (moneyData) in
+                if let moneyPrice = Int(moneyData.moneyString)  {
+                    totalMoney = totalMoney + moneyPrice
+                }
+            }
+        }
+        return totalMoney
+    }
 }
