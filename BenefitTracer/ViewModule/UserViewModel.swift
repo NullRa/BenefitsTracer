@@ -9,6 +9,7 @@ import Foundation
 enum UserTableViewEventType {
     case addMoney, addUser, toggle
 }
+
 class UserViewModel {
     let userCellId = "UserCell"
     let moneyCellId = "MoneyCell"

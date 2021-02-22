@@ -114,7 +114,21 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource{
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: userViewModel.moneyCellId, for: indexPath)
-            cell.textLabel?.text = userViewModel.getMoney(userIndex: indexPath.section, moneyIndex: indexPath.row-1).moneyString
+            let moneyData = userViewModel.getMoney(userIndex: indexPath.section, moneyIndex: indexPath.row-1)
+            if moneyData.moneyString != "Add Money" {
+                cell.textLabel?.text = "Price: " + moneyData.moneyString
+            } else {
+                cell.textLabel?.text = moneyData.moneyString
+            }
+
+            if let date = moneyData.date {
+                let dateFormatter: DateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
+                let dateFormatString: String = dateFormatter.string(from: date)
+                cell.detailTextLabel?.text = "Add Time: " + dateFormatString
+            } else {
+                cell.detailTextLabel?.text = ""
+            }
             return cell
         }
     }
