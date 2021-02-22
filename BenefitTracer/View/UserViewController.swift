@@ -7,10 +7,13 @@
 
 import UIKit
 //import CoreData
-
+struct MoneyData {
+    var moneyString: String
+    var date: Date?
+}
 struct UserData {
     var isOpen:Bool = false
-    var money:[String] = ["Add Money"]
+    var money = [MoneyData]()
     var userName:String
 }
 
@@ -109,7 +112,7 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource{
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: userViewModel.moneyCellId, for: indexPath)
-            cell.textLabel?.text = userViewModel.getMoney(userIndex: indexPath.section, moneyIndex: indexPath.row-1)
+            cell.textLabel?.text = userViewModel.getMoney(userIndex: indexPath.section, moneyIndex: indexPath.row-1).moneyString
             return cell
         }
     }
@@ -148,7 +151,7 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource{
                 }
             } else {
                 let money = userViewModel.getMoney(userIndex: section, moneyIndex: row-1)
-                if money == "Add Money" {
+                if money.moneyString == "Add Money" {
                     print("不能刪 Add Money")
                     alertMessage(title: "＝ ＝", message: "就跟你說不能點")
                 } else {

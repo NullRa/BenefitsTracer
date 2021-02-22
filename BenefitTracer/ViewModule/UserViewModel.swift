@@ -26,7 +26,11 @@ class UserViewModel {
     }
     
     func addNewMoney(userIndex:Int,money:String){
-        list[userIndex].money.insert(money, at: list[userIndex].money.count-1)
+        let date = Date()
+        list[userIndex].money.insert(MoneyData(moneyString: money, date: date), at: list[userIndex].money.count-1)
+        let username = list[userIndex].userName
+        let moneyPrice = Int(money)!
+        userRespository.insertMoneyCoreData(userName: username, money: moneyPrice, date: date)
     }
     
     func getSections() -> Int{
@@ -45,7 +49,7 @@ class UserViewModel {
         return list[userIndex].userName
     }
     
-    func getMoney(userIndex:Int,moneyIndex:Int) -> String{
+    func getMoney(userIndex:Int,moneyIndex:Int) -> MoneyData{
         return list[userIndex].money[moneyIndex]
     }
     
@@ -55,7 +59,7 @@ class UserViewModel {
                 list[userIndex].isOpen.toggle()
                 return .toggle
             }
-            if list[userIndex].money[moneyIndex] == "Add Money" {
+            if list[userIndex].money[moneyIndex].moneyString == "Add Money" {
                 return .addMoney
             } else {
                 list[userIndex].isOpen.toggle()
@@ -76,7 +80,13 @@ class UserViewModel {
     }
     
     func removeMoney(userIndex:Int,moneyIndex:Int) {
+        guard let moneyDate = list[userIndex].money[moneyIndex].date else {
+            assertionFailure("ERROR")
+            return
+        }
+        let name = list[userIndex].userName
         list[userIndex].money.remove(at: moneyIndex)
+        userRespository.deleteMoneyCoreData(userName: name, date: moneyDate)
     }
     
     func removeUser(userIndex:Int) {

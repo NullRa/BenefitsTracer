@@ -22,9 +22,10 @@ class UserRespository {
     func queryUserCoreData() -> [UserData]{
         var userDatas = [UserData]()
         do {
-            let all = try viewContext.fetch(UserCoreData.fetchRequest())
-            for data in all as! [UserCoreData] {
-                userDatas.append(UserData(userName: data.name!))
+            let allUserCoreData = try viewContext.fetch(UserCoreData.fetchRequest())
+            for userCoreData in allUserCoreData as! [UserCoreData] {
+                let moneyDatas = queryMoneyCoreData(userName: userCoreData.name!)
+                userDatas.append(UserData(money: moneyDatas, userName: userCoreData.name!))
             }
             return userDatas
         } catch {
@@ -38,11 +39,67 @@ class UserRespository {
             for data in all as! [UserCoreData] {
                 if data.name == name {
                     viewContext.delete(data)
+                    app.saveContext()
                 }
             }
-            app.saveContext()
         }catch{
             print(error)
+        }
+    }
+    func insertMoneyCoreData(userName:String,money:Int,date:Date){
+        do {
+            let allUser = try viewContext.fetch(UserCoreData.fetchRequest())
+            for user in allUser as! [UserCoreData] {
+                if user.name == userName {
+                    let moneyData = NSEntityDescription.insertNewObject(forEntityName: "MoneyCoreData", into: viewContext) as! MoneyCoreData
+                    moneyData.price = Int32(money)
+                    moneyData.date = date
+                    user.addToOwn(moneyData)
+                }
+            }
+        } catch {
+            print(error)
+        }
+    }
+    func deleteMoneyCoreData(userName:String,date:Date){
+        do{
+            let allUser = try viewContext.fetch(UserCoreData.fetchRequest())
+            for user in allUser as! [UserCoreData] {
+                if user.name == userName {
+                    let allMoney = try viewContext.fetch(MoneyCoreData.fetchRequest())
+                    for moneyData in allMoney as! [MoneyCoreData] {
+                        if moneyData.date == date {
+                            viewContext.delete(moneyData)
+                            app.saveContext()
+                        }
+                    }
+                }
+            }
+        }catch{
+            print(error)
+        }
+    }
+
+    func queryMoneyCoreData(userName:String) -> [MoneyData]{
+        var moneyDatas = [MoneyData]()
+        
+        let fetchRequest: NSFetchRequest<UserCoreData> = UserCoreData.fetchRequest()
+        let predicate = NSPredicate(format: "name = '\(userName)'")
+        fetchRequest.predicate = predicate
+        do {
+            let allUserCoreData = try viewContext.fetch(fetchRequest)
+            for userCoreData in allUserCoreData {
+                if userCoreData.own != nil {
+                    for moneyCoreData in userCoreData.own as! Set<MoneyCoreData> {
+                        moneyDatas.append(MoneyData(moneyString: "\(moneyCoreData.price)", date: moneyCoreData.date))
+                    }
+                }
+            }
+            moneyDatas.append(MoneyData(moneyString: "Add Money", date: nil))
+            return moneyDatas
+        } catch {
+            print(error)
+            return moneyDatas
         }
     }
 }
