@@ -32,6 +32,7 @@ class UserViewController: UIViewController {
     
     func initUI(){
         self.title = "User"
+        userTableView.tableFooterView = UIView()
     }
     
     func bind(){
