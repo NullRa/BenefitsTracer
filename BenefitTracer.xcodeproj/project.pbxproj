@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18EBF73025E3675100FC988E /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EBF72F25E3675100FC988E /* UserViewModel.swift */; };
 		698E433A25E105190029C10A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698E433925E105190029C10A /* AppDelegate.swift */; };
 		698E433C25E105190029C10A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698E433B25E105190029C10A /* SceneDelegate.swift */; };
 		698E433E25E105190029C10A /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698E433D25E105190029C10A /* UserViewController.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		18EBF72F25E3675100FC988E /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		698E433625E105190029C10A /* BenefitTracer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BenefitTracer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		698E433925E105190029C10A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		698E433B25E105190029C10A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -43,6 +45,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		18EBF72B25E3661000FC988E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				698E433D25E105190029C10A /* UserViewController.swift */,
+				698E434F25E24A160029C10A /* MoneyViewController.swift */,
+				698E435225E24A290029C10A /* BenefitsViewController.swift */,
+				698E435525E24A540029C10A /* FormatViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		18EBF72E25E3671E00FC988E /* ViewModule */ = {
+			isa = PBXGroup;
+			children = (
+				18EBF72F25E3675100FC988E /* UserViewModel.swift */,
+			);
+			path = ViewModule;
+			sourceTree = "<group>";
+		};
 		698E432D25E105190029C10A = {
 			isa = PBXGroup;
 			children = (
@@ -62,12 +83,10 @@
 		698E433825E105190029C10A /* BenefitTracer */ = {
 			isa = PBXGroup;
 			children = (
+				18EBF72E25E3671E00FC988E /* ViewModule */,
+				18EBF72B25E3661000FC988E /* View */,
 				698E433925E105190029C10A /* AppDelegate.swift */,
 				698E433B25E105190029C10A /* SceneDelegate.swift */,
-				698E433D25E105190029C10A /* UserViewController.swift */,
-				698E434F25E24A160029C10A /* MoneyViewController.swift */,
-				698E435225E24A290029C10A /* BenefitsViewController.swift */,
-				698E435525E24A540029C10A /* FormatViewController.swift */,
 				698E433F25E105190029C10A /* Main.storyboard */,
 				698E434225E1051B0029C10A /* Assets.xcassets */,
 				698E434425E1051B0029C10A /* LaunchScreen.storyboard */,
@@ -151,6 +170,7 @@
 				698E433A25E105190029C10A /* AppDelegate.swift in Sources */,
 				698E433C25E105190029C10A /* SceneDelegate.swift in Sources */,
 				698E435025E24A160029C10A /* MoneyViewController.swift in Sources */,
+				18EBF73025E3675100FC988E /* UserViewModel.swift in Sources */,
 				698E435625E24A540029C10A /* FormatViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
