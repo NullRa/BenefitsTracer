@@ -61,8 +61,8 @@ extension UserViewController {
         let cancelAction = UIAlertAction(title: "Cancel", style: .default) { (_) in
             self.dismiss(animated: true, completion: nil)
         }
-        alert.addAction(okAction)
         alert.addAction(cancelAction)
+        alert.addAction(okAction)
         self.present(alert, animated: true, completion: nil)
     }
     
@@ -83,8 +83,8 @@ extension UserViewController {
         let cancelAction = UIAlertAction(title: "Cancel", style: .default) { (_) in
             self.dismiss(animated: true, completion: nil)
         }
-        alert.addAction(okAction)
         alert.addAction(cancelAction)
+        alert.addAction(okAction)
         self.present(alert, animated: true, completion: nil)
     }
     

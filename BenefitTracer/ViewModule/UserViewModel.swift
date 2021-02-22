@@ -21,7 +21,7 @@ class UserViewModel {
     }
     
     func addNewUser(userName:String){
-        list.insert(UserData(userName: userName), at: self.list.count-1)
+        list.insert(UserData(money: [MoneyData(moneyString: "Add Money", date: nil)], userName: userName), at: self.list.count-1)
         userRespository.insertUserCoreData(name: userName)
     }
     
