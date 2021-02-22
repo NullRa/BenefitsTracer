@@ -7,11 +7,16 @@
 
 import UIKit
 
+struct UserName {
+    var userName:String
+    var isExpand:Bool=false
+}
+
 class UserViewController: UIViewController {
 
     let userCellId = "UserCell"
 
-    var list = ["Add user"]
+    var list:[UserName] = [UserName(userName: "Add User")]
 
     @IBOutlet weak var userTableView: UITableView!
 
@@ -40,7 +45,7 @@ class UserViewController: UIViewController {
         let okAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
             let userNameTextField = (alert.textFields?.first)! as UITextField
             let userName = userNameTextField.text!
-            self.list.insert(userName, at: self.list.count-1)
+            self.list.insert(UserName(userName: userName), at: self.list.count-1)
             self.userTableView.reloadData()
 
             self.dismiss(animated: true, completion: nil)
@@ -62,7 +67,7 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = userTableView.dequeueReusableCell(withIdentifier: userCellId)!
         if let myLabel = cell.textLabel {
-            myLabel.text = "\(list[indexPath.row])"
+            myLabel.text = "\(list[indexPath.row].userName)"
         }
 
         return cell
@@ -71,6 +76,14 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == (list.count-1) {
             addUser()
+        } else {
+            list[indexPath.row].isExpand.toggle()
+            userTableView.reloadData()
         }
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let isExpand = list[indexPath.row].isExpand
+        return isExpand ? 200:44
     }
 }
