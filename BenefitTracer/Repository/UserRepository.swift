@@ -55,6 +55,7 @@ class UserRespository {
                     moneyData.price = Int32(money)
                     moneyData.date = date
                     user.addToOwn(moneyData)
+                    app.saveContext()
                 }
             }
         } catch {
