@@ -44,6 +44,10 @@ class UserViewModel {
     
     func selectEvent(userIndex:Int,moneyIndex:Int) -> UserTableViewEventType {
         if list[userIndex].isOpen {
+            if moneyIndex == -1 {//點username收起時
+                list[userIndex].isOpen.toggle()
+                return .toggle
+            }
             if list[userIndex].money[moneyIndex] == "Add Money" {
                 return .addMoney
             } else {
@@ -58,5 +62,17 @@ class UserViewModel {
                 return .toggle
             }
         }
+    }
+    
+    func moneyIsNotEmpty(userIndex:Int) -> Bool {
+        return list[userIndex].money.count > 1
+    }
+    
+    func removeMoney(userIndex:Int,moneyIndex:Int) {
+        list[userIndex].money.remove(at: moneyIndex)
+    }
+    
+    func removeUser(userIndex:Int) {
+        list.remove(at: userIndex)
     }
 }

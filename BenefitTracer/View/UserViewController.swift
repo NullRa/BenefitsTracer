@@ -84,6 +84,13 @@ extension UserViewController {
         alert.addAction(cancelAction)
         self.present(alert, animated: true, completion: nil)
     }
+    
+    func alertMessage(title:String,message:String?=nil){
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Confirm", style: .default, handler: nil)
+        alert.addAction(okAction)
+        self.present(alert, animated: true, completion: nil)
+    }
 }
 
 //MARK:- UITableViewDelegate, UITableViewDataSource
@@ -118,6 +125,37 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource{
         case .toggle:
             let indexes = IndexSet(integer: section)
             tableView.reloadSections(indexes, with: .automatic)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let section = indexPath.section
+        let row = indexPath.row
+        if editingStyle == .delete {
+            if row == 0{
+                let user = userViewModel.getUserName(userIndex: section)
+                if user == "Add User" {
+                    print("不能刪 Add User")
+                    alertMessage(title: "別亂點", message: "＝ ＝")
+                } else {
+                    if userViewModel.moneyIsNotEmpty(userIndex: section) {
+                        print("使用者還有錢不能刪除")
+                        alertMessage(title: "錢不要囉", message: "-.-")
+                    } else {
+                        userViewModel.removeUser(userIndex:section)
+                        tableView.reloadData()
+                    }
+                }
+            } else {
+                let money = userViewModel.getMoney(userIndex: section, moneyIndex: row-1)
+                if money == "Add Money" {
+                    print("不能刪 Add Money")
+                    alertMessage(title: "＝ ＝", message: "就跟你說不能點")
+                } else {
+                    userViewModel.removeMoney(userIndex: section, moneyIndex: row-1)
+                    tableView.reloadData()
+                }
+            }
         }
     }
 }
