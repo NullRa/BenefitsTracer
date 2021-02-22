@@ -17,8 +17,6 @@ class UserViewController: UIViewController {
     
     let userViewModel = UserViewModel()
     
-    //    var list:[UserData] = [UserData(userName: "Add User")]
-    
     @IBOutlet weak var userTableView: UITableView!
     
     override func viewDidLoad() {
