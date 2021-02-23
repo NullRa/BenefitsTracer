@@ -57,7 +57,14 @@ class MoneyViewController: UIViewController {
             let nameTextField = (alert.textFields?.first)! as UITextField
             let name = nameTextField.text!
             let priceTextField = alert.textFields![1] as UITextField
-            let price = Int(priceTextField.text!)!
+            guard let price = Int(priceTextField.text!) else {
+                self.alertMessage(title: "Price Format Error!")
+                return
+            }
+            if name == "" {
+                self.alertMessage(title: "Name is empty.")
+                return
+            }
             if price > self.itemList[0].itemPrice {
                 self.alertMessage(title: "Money is not enough!")
                 return
@@ -90,5 +97,17 @@ extension MoneyViewController: UITableViewDelegate, UITableViewDataSource {
         cell.textLabel?.text = itemList[indexPath.row].itemName
         cell.detailTextLabel?.text = "$: \(itemList[indexPath.row].itemPrice)"
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            if indexPath.row == 0 {
+                alertMessage(title: "It can't delete.")
+                return
+            }
+            let deleteItem = itemList.remove(at: indexPath.row)
+            itemList[0].itemPrice = itemList[0].itemPrice + deleteItem.itemPrice
+            tableView.reloadData()
+        }
     }
 }
