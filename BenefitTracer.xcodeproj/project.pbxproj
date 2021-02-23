@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18451CAA25E4E990007EC440 /* MoneyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18451CA925E4E990007EC440 /* MoneyViewModel.swift */; };
 		1856AD8B25E3926900266CC9 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1856AD8925E3926900266CC9 /* CoreDataModel.xcdatamodeld */; };
 		185BF2CB25E39A0E007A1F68 /* UserCoreData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185BF2C725E39A0E007A1F68 /* UserCoreData+CoreDataClass.swift */; };
 		185BF2CC25E39A0E007A1F68 /* UserCoreData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185BF2C825E39A0E007A1F68 /* UserCoreData+CoreDataProperties.swift */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		18451CA925E4E990007EC440 /* MoneyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyViewModel.swift; sourceTree = "<group>"; };
 		1856AD8A25E3926900266CC9 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
 		185BF2C725E39A0E007A1F68 /* UserCoreData+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserCoreData+CoreDataClass.swift"; sourceTree = "<group>"; };
 		185BF2C825E39A0E007A1F68 /* UserCoreData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserCoreData+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				18EBF72F25E3675100FC988E /* UserViewModel.swift */,
+				18451CA925E4E990007EC440 /* MoneyViewModel.swift */,
 			);
 			path = ViewModule;
 			sourceTree = "<group>";
@@ -210,6 +213,7 @@
 				18EBF73025E3675100FC988E /* UserViewModel.swift in Sources */,
 				1856AD8B25E3926900266CC9 /* CoreDataModel.xcdatamodeld in Sources */,
 				185BF2CB25E39A0E007A1F68 /* UserCoreData+CoreDataClass.swift in Sources */,
+				18451CAA25E4E990007EC440 /* MoneyViewModel.swift in Sources */,
 				185BF2E425E3A0CE007A1F68 /* UserRepository.swift in Sources */,
 				698E435625E24A540029C10A /* FormatViewController.swift in Sources */,
 			);

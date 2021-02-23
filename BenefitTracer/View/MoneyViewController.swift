@@ -11,8 +11,7 @@ struct ItemData {
     var itemPrice:Int
 }
 class MoneyViewController: UIViewController {
-    let itemCellId = "itemCell"
-    var itemList: [ItemData] = []
+    let moneyViewModel = MoneyViewModel()
     
     @IBOutlet weak var addItemButton: UIButton!
     @IBOutlet weak var moneyTableView: UITableView!
@@ -23,7 +22,8 @@ class MoneyViewController: UIViewController {
            let first = navVC.viewControllers[0] as? UserViewController{
             let totalMoney = first.userViewModel.getTotalMoney()
             self.title = "Total Money: \(totalMoney)"
-            itemList.append(ItemData(itemName: "Richart", itemPrice: totalMoney))
+            //FIXME初始化金額..
+            moneyViewModel.addTotal(name: "Richart", price: totalMoney)
         }
     }
     
@@ -65,13 +65,12 @@ class MoneyViewController: UIViewController {
                 self.alertMessage(title: "Name is empty.")
                 return
             }
-            if price > self.itemList[0].itemPrice {
-                self.alertMessage(title: "Money is not enough!")
-                return
+            
+            if let errorMsg = self.moneyViewModel.addItemResult(name: name, price: price) {
+                self.alertMessage(title: errorMsg)
+            } else {
+                self.moneyTableView.reloadData()
             }
-            self.itemList[0].itemPrice = self.itemList[0].itemPrice - price
-            self.itemList.append(ItemData(itemName: name, itemPrice: price))
-            self.moneyTableView.reloadData()
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
         alert.addAction(okAction)
@@ -89,23 +88,22 @@ class MoneyViewController: UIViewController {
 
 extension MoneyViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return itemList.count
+        return moneyViewModel.getListCount()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = moneyTableView.dequeueReusableCell(withIdentifier: itemCellId, for: indexPath)
-        cell.textLabel?.text = itemList[indexPath.row].itemName
-        cell.detailTextLabel?.text = "$: \(itemList[indexPath.row].itemPrice)"
+        let cell = moneyTableView.dequeueReusableCell(withIdentifier: moneyViewModel.itemCellId, for: indexPath)
+        cell.textLabel?.text = moneyViewModel.getItemName(itemID: indexPath.row)
+        cell.detailTextLabel?.text = "$: \(moneyViewModel.getItemPrice(itemID: indexPath.row))"
         return cell
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .normal, title: "DELETE") { (action, view, completionHandler) in
             if indexPath.row == 0 {
-                self.alertMessage(title: "It can't delete.")
+                self.alertMessage(title: "It couldn't delete.")
             } else {
-                let deleteItem = self.itemList.remove(at: indexPath.row)
-                self.itemList[0].itemPrice = self.itemList[0].itemPrice + deleteItem.itemPrice
+                self.moneyViewModel.removeItem(itemID: indexPath.row)
                 tableView.reloadData()
             }
             completionHandler(true)
@@ -115,10 +113,10 @@ extension MoneyViewController: UITableViewDelegate, UITableViewDataSource {
         let editAction = UIContextualAction(style: .normal, title: "EDIT") { (action, view, completionHandler) in
             let alert = UIAlertController(title: "Edit Item", message: nil, preferredStyle: .alert)
             alert.addTextField { (nameTextField) in
-                nameTextField.text = self.itemList[indexPath.row].itemName
+                nameTextField.text = self.moneyViewModel.getItemName(itemID: indexPath.row)
             }
             alert.addTextField { (priceTextField) in
-                priceTextField.text = "\(self.itemList[indexPath.row].itemPrice)"
+                priceTextField.text = "\(self.moneyViewModel.getItemPrice(itemID: indexPath.row))"
                 priceTextField.keyboardType = .numberPad
             }
             let okAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
@@ -135,23 +133,17 @@ extension MoneyViewController: UITableViewDelegate, UITableViewDataSource {
                     completionHandler(true)
                     return
                 }
-                if price > (self.itemList[0].itemPrice + self.itemList[indexPath.row].itemPrice) {
-                    self.alertMessage(title: "Money is not enough!")
-                    completionHandler(true)
-                    return
-                }
                 if indexPath.row == 0 {
                     self.alertMessage(title: "Can't edit orginal item.")
                     completionHandler(true)
                     return
                 }
-                let orginalMoney = self.itemList[indexPath.row].itemPrice
-                if orginalMoney > price {
-                    self.itemList[0].itemPrice = self.itemList[0].itemPrice + (self.itemList[indexPath.row].itemPrice - price)
-                } else {
-                    self.itemList[0].itemPrice = self.itemList[0].itemPrice - (price - self.itemList[indexPath.row].itemPrice)
+                
+                if let errorMsg = self.moneyViewModel.editItemResult(itemID: indexPath.row, newName: name, newPrice: price) {
+                    self.alertMessage(title: errorMsg)
+                    completionHandler(true)
+                    return
                 }
-                self.itemList[indexPath.row].itemPrice = price
                 self.moneyTableView.reloadData()
             }
             let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
@@ -175,19 +167,17 @@ extension MoneyViewController: UITableViewDelegate, UITableViewDataSource {
                     completionHandler(true)
                     return
                 }
-                
-                if price > self.itemList[0].itemPrice {
-                    self.alertMessage(title: "Money is not enough!")
-                    completionHandler(true)
-                    return
-                }
                 if indexPath.row == 0 {
                     self.alertMessage(title: "Can't add orginal item.")
                     completionHandler(true)
                     return
                 }
-                self.itemList[0].itemPrice = self.itemList[0].itemPrice - price
-                self.itemList[indexPath.row].itemPrice = self.itemList[indexPath.row].itemPrice + price
+                
+                if let errorMsg = self.moneyViewModel.addExtraItemPriceResult(itemID: indexPath.row, extraPrice: price) {
+                    self.alertMessage(title: errorMsg)
+                    completionHandler(true)
+                    return
+                }
                 self.moneyTableView.reloadData()
             }
             let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
