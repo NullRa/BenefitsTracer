@@ -6,64 +6,77 @@
 //
 
 import UIKit
-
+struct ItemData {
+    let itemName:String
+    var itemPrice:Int
+}
 class MoneyViewController: UIViewController {
+    let itemCellId = "itemCell"
+    var itemList: [ItemData] = []
+    
+    @IBOutlet weak var addItemButton: UIButton!
     @IBOutlet weak var moneyTableView: UITableView!
-    @IBOutlet weak var circularLabel: UILabel!
-    @IBOutlet weak var circularView: UIView!
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if let navVC = self.tabBarController?.viewControllers?[0] as? UINavigationController,
            let first = navVC.viewControllers[0] as? UserViewController{
-            self.title = "Total Money: \(first.userViewModel.getTotalMoney())"
+            let totalPrice = first.userViewModel.getTotalMoney()
+            self.title = "Total Money: \(totalPrice)"
+            itemList.append(ItemData(itemName: "Richart", itemPrice: totalPrice))
         }
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         initUI()
         bind()
-        // Do any additional setup after loading the view.
-        addCircular()
     }
 
     func initUI(){
-        circularLabel.text = "Circular Progress Ring"
+        moneyTableView.tableFooterView = UIView()
     }
 
     func bind(){
-
-    }
-
-    func addCircular(){
-        //底層的圓環
-        let circularPath = UIBezierPath(ovalIn: CGRect(x: 110, y: 20, width: 200, height: 200))
-        let circularLayer = CAShapeLayer()
-        circularLayer.path = circularPath.cgPath
-        circularLayer.strokeColor = UIColor.gray.cgColor
-        circularLayer.fillColor = UIColor.clear.cgColor
-        circularLayer.lineWidth = 25
-
-        let percentageCircularPath = UIBezierPath(arcCenter: CGPoint(x: 210, y: 120), radius: 100, startAngle: CGFloat.pi/180*270, endAngle: CGFloat.pi/180*360, clockwise: true)
-        let percentageCircularLayer = CAShapeLayer()
-        percentageCircularLayer.path = percentageCircularPath.cgPath
-        percentageCircularLayer.strokeColor = UIColor.blue.cgColor
-        percentageCircularLayer.fillColor = UIColor.clear.cgColor
-        percentageCircularLayer.lineWidth = 25
-
-        self.circularView.layer.addSublayer(circularLayer)
-        self.circularView.layer.addSublayer(percentageCircularLayer)
+        moneyTableView.delegate = self
+        moneyTableView.dataSource = self
+        addItemButton.setTitle("Add Item", for: .normal)
+        addItemButton.addTarget(self, action: #selector(addItemEvent), for: .touchUpInside)
     }
     
+    @objc func addItemEvent(){
+        let alert = UIAlertController(title: "Add Item", message: nil, preferredStyle: .alert)
+        alert.addTextField { (nameTextField) in
+            nameTextField.placeholder = "Enter Item Name"
+        }
+        alert.addTextField { (priceTextField) in
+            priceTextField.placeholder = "Enter Item Price"
+            priceTextField.keyboardType = .numberPad
+        }
+        let okAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
+            let nameTextField = (alert.textFields?.first)! as UITextField
+            let name = nameTextField.text!
+            let priceTextField = alert.textFields![1] as UITextField
+            let price = priceTextField.text!
+            self.itemList.append(ItemData(itemName: name, itemPrice: Int(price)!))
+            self.moneyTableView.reloadData()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+        alert.addAction(okAction)
+        alert.addAction(cancelAction)
+        self.present(alert, animated: true, completion: nil)
+    }
+}
 
-    /*
-     // MARK: - Navigation
-
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
-
+extension MoneyViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return itemList.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = moneyTableView.dequeueReusableCell(withIdentifier: itemCellId, for: indexPath)
+        cell.textLabel?.text = itemList[indexPath.row].itemName
+        cell.detailTextLabel?.text = "$: \(itemList[indexPath.row].itemPrice)"
+        return cell
+    }
 }
