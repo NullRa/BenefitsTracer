@@ -47,8 +47,8 @@ class UserViewController: UIViewController {
 extension UserViewController {
     func addUser(){
         let alert = UIAlertController(title: "Add User", message: nil, preferredStyle: .alert)
-        alert.addTextField { (testField) in
-            testField.placeholder = "Enter User"
+        alert.addTextField { (textField) in
+            textField.placeholder = "Enter User"
         }
         
         let okAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
@@ -62,8 +62,8 @@ extension UserViewController {
         let cancelAction = UIAlertAction(title: "Cancel", style: .default) { (_) in
             self.dismiss(animated: true, completion: nil)
         }
-        alert.addAction(cancelAction)
         alert.addAction(okAction)
+        alert.addAction(cancelAction)
         self.present(alert, animated: true, completion: nil)
     }
     
@@ -85,8 +85,8 @@ extension UserViewController {
         let cancelAction = UIAlertAction(title: "Cancel", style: .default) { (_) in
             self.dismiss(animated: true, completion: nil)
         }
-        alert.addAction(cancelAction)
         alert.addAction(okAction)
+        alert.addAction(cancelAction)
         self.present(alert, animated: true, completion: nil)
     }
     
