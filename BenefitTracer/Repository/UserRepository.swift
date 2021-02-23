@@ -103,5 +103,54 @@ class UserRespository {
             return moneyDatas
         }
     }
+    
+    func insertItemCoreData(name:String,price:Int){
+        let newCoreDataItem = NSEntityDescription.insertNewObject(forEntityName: "ItemCoreData", into: viewContext) as! ItemCoreData
+        newCoreDataItem.itemName = name
+        newCoreDataItem.itemPrice = Int32(price)
+        app.saveContext()
+    }
+
+    func queryItemCoreData() -> [String:Int] {
+        var itemDataDict = [String:Int]()
+        do {
+            let allItemCoreData = try viewContext.fetch(ItemCoreData.fetchRequest())
+            for itemCoreData in allItemCoreData as! [ItemCoreData] {
+                let name = itemCoreData.itemName!
+                let price = itemCoreData.itemPrice
+                itemDataDict.updateValue(Int(price), forKey: name)
+            }
+            return itemDataDict
+        } catch {
+            print(error)
+            return itemDataDict
+        }
+    }
+
+    func deleteItemCoreData(name:String){
+        do {
+            let allItemCoreData = try viewContext.fetch(ItemCoreData.fetchRequest())
+            for data in allItemCoreData as! [ItemCoreData] {
+                if data.itemName == name {
+                    viewContext.delete(data)
+                    app.saveContext()
+                }
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
+    func deleteAllItemCoreData(){
+        do {
+            let allItemCoreData = try viewContext.fetch(ItemCoreData.fetchRequest())
+            for data in allItemCoreData as! [ItemCoreData] {
+                viewContext.delete(data)
+            }
+            app.saveContext()
+        } catch {
+            print(error)
+        }
+    }
 }
 

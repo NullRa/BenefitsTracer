@@ -7,7 +7,7 @@
 
 import UIKit
 struct ItemData {
-    let itemName:String
+    var itemName:String
     var itemPrice:Int
 }
 class MoneyViewController: UIViewController {
@@ -22,8 +22,10 @@ class MoneyViewController: UIViewController {
            let first = navVC.viewControllers[0] as? UserViewController{
             let totalMoney = first.userViewModel.getTotalMoney()
             self.title = "Total Money: \(totalMoney)"
-            //FIXME初始化金額..
-            moneyViewModel.addTotal(name: "Richart", price: totalMoney)
+            if totalMoney != moneyViewModel.getTotlePrice() {
+                moneyViewModel.addBankPrice(newPrice: totalMoney, oldPrice: moneyViewModel.getTotlePrice())
+                moneyTableView.reloadData()
+            }
         }
     }
     
@@ -42,6 +44,7 @@ class MoneyViewController: UIViewController {
         moneyTableView.dataSource = self
         addItemButton.setTitle("Add Item", for: .normal)
         addItemButton.addTarget(self, action: #selector(addItemEvent), for: .touchUpInside)
+        moneyViewModel.setList()
     }
     
     @objc func addItemEvent(){

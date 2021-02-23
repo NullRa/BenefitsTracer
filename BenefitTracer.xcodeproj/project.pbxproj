@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		18451CAA25E4E990007EC440 /* MoneyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18451CA925E4E990007EC440 /* MoneyViewModel.swift */; };
+		18451CAE25E4F86B007EC440 /* ItemCoreData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18451CAC25E4F86B007EC440 /* ItemCoreData+CoreDataClass.swift */; };
+		18451CB325E4F8B3007EC440 /* ItemCoreData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18451CB225E4F8B3007EC440 /* ItemCoreData+CoreDataProperties.swift */; };
 		1856AD8B25E3926900266CC9 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1856AD8925E3926900266CC9 /* CoreDataModel.xcdatamodeld */; };
 		185BF2CB25E39A0E007A1F68 /* UserCoreData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185BF2C725E39A0E007A1F68 /* UserCoreData+CoreDataClass.swift */; };
 		185BF2CC25E39A0E007A1F68 /* UserCoreData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185BF2C825E39A0E007A1F68 /* UserCoreData+CoreDataProperties.swift */; };
@@ -28,6 +30,8 @@
 
 /* Begin PBXFileReference section */
 		18451CA925E4E990007EC440 /* MoneyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyViewModel.swift; sourceTree = "<group>"; };
+		18451CAC25E4F86B007EC440 /* ItemCoreData+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemCoreData+CoreDataClass.swift"; sourceTree = "<group>"; };
+		18451CB225E4F8B3007EC440 /* ItemCoreData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemCoreData+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		1856AD8A25E3926900266CC9 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
 		185BF2C725E39A0E007A1F68 /* UserCoreData+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserCoreData+CoreDataClass.swift"; sourceTree = "<group>"; };
 		185BF2C825E39A0E007A1F68 /* UserCoreData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserCoreData+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -67,6 +71,8 @@
 				185BF2C825E39A0E007A1F68 /* UserCoreData+CoreDataProperties.swift */,
 				185BF2C925E39A0E007A1F68 /* MoneyCoreData+CoreDataClass.swift */,
 				185BF2CA25E39A0E007A1F68 /* MoneyCoreData+CoreDataProperties.swift */,
+				18451CAC25E4F86B007EC440 /* ItemCoreData+CoreDataClass.swift */,
+				18451CB225E4F8B3007EC440 /* ItemCoreData+CoreDataProperties.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -204,6 +210,7 @@
 			files = (
 				698E433E25E105190029C10A /* UserViewController.swift in Sources */,
 				698E435325E24A290029C10A /* BenefitsViewController.swift in Sources */,
+				18451CAE25E4F86B007EC440 /* ItemCoreData+CoreDataClass.swift in Sources */,
 				698E433A25E105190029C10A /* AppDelegate.swift in Sources */,
 				185BF2CE25E39A0E007A1F68 /* MoneyCoreData+CoreDataProperties.swift in Sources */,
 				698E433C25E105190029C10A /* SceneDelegate.swift in Sources */,
@@ -212,6 +219,7 @@
 				698E435025E24A160029C10A /* MoneyViewController.swift in Sources */,
 				18EBF73025E3675100FC988E /* UserViewModel.swift in Sources */,
 				1856AD8B25E3926900266CC9 /* CoreDataModel.xcdatamodeld in Sources */,
+				18451CB325E4F8B3007EC440 /* ItemCoreData+CoreDataProperties.swift in Sources */,
 				185BF2CB25E39A0E007A1F68 /* UserCoreData+CoreDataClass.swift in Sources */,
 				18451CAA25E4E990007EC440 /* MoneyViewModel.swift in Sources */,
 				185BF2E425E3A0CE007A1F68 /* UserRepository.swift in Sources */,

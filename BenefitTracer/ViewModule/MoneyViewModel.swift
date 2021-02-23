@@ -10,9 +10,32 @@ import Foundation
 class MoneyViewModel {
     let itemCellId = "itemCell"
     var itemList: [ItemData] = []
+    let userRespository = UserRespository()
     
+    func setList(){
+        let itemDict = userRespository.queryItemCoreData()
+        for (name,price) in itemDict {
+            let itemData = ItemData(itemName: name, itemPrice: price)
+            itemList.append(itemData)
+        }
+    }
+    
+    func getTotlePrice() -> Int {
+        var totalPrice = 0
+        itemList.forEach { (itemData) in
+            totalPrice = totalPrice + itemData.itemPrice
+        }
+        return totalPrice
+    }
+    func updateCoreData(){
+        userRespository.deleteAllItemCoreData()
+        itemList.forEach { (itemData) in
+            userRespository.insertItemCoreData(name: itemData.itemName, price: itemData.itemPrice)
+        }
+    }
     func addTotal(name:String, price:Int){
         itemList.append(ItemData(itemName: name, itemPrice: price))
+        updateCoreData()
     }
     
     //新增失敗回傳錯誤訊息
@@ -36,8 +59,9 @@ class MoneyViewModel {
         return itemList[itemID].itemPrice
     }
     func removeItem(itemID:Int){
-        let deleteItem = self.itemList.remove(at: itemID)
-        self.itemList[0].itemPrice = self.itemList[0].itemPrice + deleteItem.itemPrice
+        let deleteItem = itemList.remove(at: itemID)
+        itemList[0].itemPrice = itemList[0].itemPrice + deleteItem.itemPrice
+        updateCoreData()
     }
     //編輯失敗回傳錯誤訊息
     func editItemResult(itemID:Int,newName:String,newPrice:Int) -> String? {
@@ -51,7 +75,8 @@ class MoneyViewModel {
             itemList[0].itemPrice = itemList[0].itemPrice - (newPrice - oldPrice)
         }
         itemList[itemID].itemPrice = newPrice
-        
+        itemList[itemID].itemName = newName
+        updateCoreData()
         return nil
     }
     //新增額外金額失敗回傳錯誤訊息
@@ -61,6 +86,19 @@ class MoneyViewModel {
         }
         itemList[0].itemPrice = itemList[0].itemPrice - extraPrice
         itemList[itemID].itemPrice = itemList[itemID].itemPrice + extraPrice
+        updateCoreData()
         return nil
+    }
+    //新增本金
+    func addBankPrice(newPrice: Int, oldPrice:Int){
+        if itemList.count == 0 {
+            addTotal(name: "Bank", price: newPrice - oldPrice)
+            return
+        }
+        if newPrice > oldPrice {
+            itemList[0].itemPrice = itemList[0].itemPrice + (newPrice - oldPrice)
+        } else {
+            itemList[0].itemPrice = itemList[0].itemPrice - (oldPrice - newPrice)
+        }
     }
 }
