@@ -104,21 +104,26 @@ class UserRespository {
         }
     }
     
-    func insertItemCoreData(name:String,price:Int){
+    func insertItemCoreData(name:String,price:Int,id:Int){
         let newCoreDataItem = NSEntityDescription.insertNewObject(forEntityName: "ItemCoreData", into: viewContext) as! ItemCoreData
         newCoreDataItem.itemName = name
         newCoreDataItem.itemPrice = Int32(price)
+        newCoreDataItem.itemID = Int32(id)
         app.saveContext()
     }
 
-    func queryItemCoreData() -> [String:Int] {
-        var itemDataDict = [String:Int]()
+    func queryItemCoreData() -> [(String,Int)] {
+        let fetchRequest: NSFetchRequest<ItemCoreData> = ItemCoreData.fetchRequest()
+        let sort = NSSortDescriptor(key: "itemID", ascending: true)
+        fetchRequest.sortDescriptors = [sort]
+        var itemDataDict = [(String,Int)]()
         do {
-            let allItemCoreData = try viewContext.fetch(ItemCoreData.fetchRequest())
-            for itemCoreData in allItemCoreData as! [ItemCoreData] {
+            let allItemCoreData = try viewContext.fetch(fetchRequest)
+            for itemCoreData in allItemCoreData {
+                print(itemCoreData.itemID)
                 let name = itemCoreData.itemName!
                 let price = itemCoreData.itemPrice
-                itemDataDict.updateValue(Int(price), forKey: name)
+                itemDataDict.append((name,Int(price)))
             }
             return itemDataDict
         } catch {

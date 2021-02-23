@@ -29,8 +29,8 @@ class MoneyViewModel {
     }
     func updateCoreData(){
         userRespository.deleteAllItemCoreData()
-        itemList.forEach { (itemData) in
-            userRespository.insertItemCoreData(name: itemData.itemName, price: itemData.itemPrice)
+        for i in 0 ..< itemList.count {
+            userRespository.insertItemCoreData(name: itemList[i].itemName, price: itemList[i].itemPrice, id: i)
         }
     }
     func addTotal(name:String, price:Int){
