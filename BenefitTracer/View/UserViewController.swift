@@ -54,6 +54,10 @@ extension UserViewController {
         let okAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
             let userNameTextField = (alert.textFields?.first)! as UITextField
             let userName = userNameTextField.text!
+            if userName == "" {
+                self.alertMessage(title: "Name is empty.")
+                return
+            }
             self.userViewModel.addNewUser(userName:userName)
             self.userTableView.reloadData()
             
@@ -77,6 +81,10 @@ extension UserViewController {
         let okAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
             let moneyTextField = (alert.textFields?.first)! as UITextField
             let money = moneyTextField.text!
+            guard let _ = Int(money) else {
+                self.alertMessage(title: "Price Format Error!")
+                return
+            }
             self.userViewModel.addNewMoney(userIndex: section, money: money)
             self.userTableView.reloadData()
             
@@ -154,11 +162,9 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource{
             if row == 0{
                 let user = userViewModel.getUserName(userIndex: section)
                 if user == "Add User" {
-                    print("不能刪 Add User")
                     alertMessage(title: "別亂點", message: "＝ ＝")
                 } else {
                     if userViewModel.moneyIsNotEmpty(userIndex: section) {
-                        print("使用者還有錢不能刪除")
                         alertMessage(title: "錢不要囉", message: "-.-")
                     } else {
                         userViewModel.removeUser(userIndex:section)
@@ -168,7 +174,6 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource{
             } else {
                 let money = userViewModel.getMoney(userIndex: section, moneyIndex: row-1)
                 if money.moneyString == "Add Money" {
-                    print("不能刪 Add Money")
                     alertMessage(title: "＝ ＝", message: "就跟你說不能點")
                 } else {
                     userViewModel.removeMoney(userIndex: section, moneyIndex: row-1)
