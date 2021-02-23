@@ -13,10 +13,10 @@ struct ItemData {
 class MoneyViewController: UIViewController {
     let itemCellId = "itemCell"
     var itemList: [ItemData] = []
-
+    
     @IBOutlet weak var addItemButton: UIButton!
     @IBOutlet weak var moneyTableView: UITableView!
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if let navVC = self.tabBarController?.viewControllers?[0] as? UINavigationController,
@@ -32,11 +32,11 @@ class MoneyViewController: UIViewController {
         initUI()
         bind()
     }
-
+    
     func initUI(){
         moneyTableView.tableFooterView = UIView()
     }
-
+    
     func bind(){
         moneyTableView.delegate = self
         moneyTableView.dataSource = self
@@ -99,15 +99,107 @@ extension MoneyViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .normal, title: "DELETE") { (action, view, completionHandler) in
             if indexPath.row == 0 {
-                alertMessage(title: "It can't delete.")
-                return
+                self.alertMessage(title: "It can't delete.")
+            } else {
+                let deleteItem = self.itemList.remove(at: indexPath.row)
+                self.itemList[0].itemPrice = self.itemList[0].itemPrice + deleteItem.itemPrice
+                tableView.reloadData()
             }
-            let deleteItem = itemList.remove(at: indexPath.row)
-            itemList[0].itemPrice = itemList[0].itemPrice + deleteItem.itemPrice
-            tableView.reloadData()
+            completionHandler(true)
         }
+        deleteAction.backgroundColor = .darkGray
+        
+        let editAction = UIContextualAction(style: .normal, title: "EDIT") { (action, view, completionHandler) in
+            let alert = UIAlertController(title: "Edit Item", message: nil, preferredStyle: .alert)
+            alert.addTextField { (nameTextField) in
+                nameTextField.text = self.itemList[indexPath.row].itemName
+            }
+            alert.addTextField { (priceTextField) in
+                priceTextField.text = "\(self.itemList[indexPath.row].itemPrice)"
+                priceTextField.keyboardType = .numberPad
+            }
+            let okAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
+                let nameTextField = (alert.textFields?.first)! as UITextField
+                let name = nameTextField.text!
+                let priceTextField = alert.textFields![1] as UITextField
+                guard let price = Int(priceTextField.text!) else {
+                    self.alertMessage(title: "Price Format Error!")
+                    completionHandler(true)
+                    return
+                }
+                if name == "" {
+                    self.alertMessage(title: "Name is empty.")
+                    completionHandler(true)
+                    return
+                }
+                if price > (self.itemList[0].itemPrice + self.itemList[indexPath.row].itemPrice) {
+                    self.alertMessage(title: "Money is not enough!")
+                    completionHandler(true)
+                    return
+                }
+                if indexPath.row == 0 {
+                    self.alertMessage(title: "Can't edit orginal item.")
+                    completionHandler(true)
+                    return
+                }
+                let orginalMoney = self.itemList[indexPath.row].itemPrice
+                if orginalMoney > price {
+                    self.itemList[0].itemPrice = self.itemList[0].itemPrice + (self.itemList[indexPath.row].itemPrice - price)
+                } else {
+                    self.itemList[0].itemPrice = self.itemList[0].itemPrice - (price - self.itemList[indexPath.row].itemPrice)
+                }
+                self.itemList[indexPath.row].itemPrice = price
+                self.moneyTableView.reloadData()
+            }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+            alert.addAction(okAction)
+            alert.addAction(cancelAction)
+            self.present(alert, animated: true, completion: nil)
+            completionHandler(true)
+        }
+        editAction.backgroundColor = .gray
+        
+        let addAction = UIContextualAction(style: .normal, title: "ADD") { (action, view, completionHandler) in
+            let alert = UIAlertController(title: "Add Item", message: nil, preferredStyle: .alert)
+            alert.addTextField { (priceTextField) in
+                priceTextField.placeholder = "Enter Extra Money"
+                priceTextField.keyboardType = .numberPad
+            }
+            let okAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
+                let priceTextField = (alert.textFields?.first)! as UITextField
+                guard let price = Int(priceTextField.text!) else {
+                    self.alertMessage(title: "Price Format Error!")
+                    completionHandler(true)
+                    return
+                }
+                
+                if price > self.itemList[0].itemPrice {
+                    self.alertMessage(title: "Money is not enough!")
+                    completionHandler(true)
+                    return
+                }
+                if indexPath.row == 0 {
+                    self.alertMessage(title: "Can't add orginal item.")
+                    completionHandler(true)
+                    return
+                }
+                self.itemList[0].itemPrice = self.itemList[0].itemPrice - price
+                self.itemList[indexPath.row].itemPrice = self.itemList[indexPath.row].itemPrice + price
+                self.moneyTableView.reloadData()
+            }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+            alert.addAction(okAction)
+            alert.addAction(cancelAction)
+            self.present(alert, animated: true, completion: nil)
+            completionHandler(true)
+        }
+        addAction.backgroundColor = .lightGray
+        
+        let prevention = UISwipeActionsConfiguration(actions: [deleteAction, editAction, addAction])
+        prevention.performsFirstActionWithFullSwipe = false
+        return prevention
     }
 }
