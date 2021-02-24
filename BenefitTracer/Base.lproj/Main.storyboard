@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1E7-qF-pDe">
-                                <rect key="frame" x="0.0" y="88" width="414" height="681"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="637"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="itemCell" textLabel="AYD-Rt-JvH" detailTextLabel="8dD-Xf-Dle" style="IBUITableViewCellStyleValue1" id="C81-Ly-Kvy">
@@ -49,27 +49,40 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gb9-Kq-PUX">
                                 <rect key="frame" x="0.0" y="769" width="414" height="44"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="plN-WL-EW8"/>
+                                    <constraint firstAttribute="height" constant="44" id="87q-3Z-dHK"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hqo-Ob-WVE">
+                                <rect key="frame" x="0.0" y="725" width="414" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="dOT-eV-4QA"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Fqf-xZ-Jgf"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Fqf-xZ-Jgf" firstAttribute="trailing" secondItem="gb9-Kq-PUX" secondAttribute="trailing" id="6ej-pJ-mXo"/>
-                            <constraint firstItem="1E7-qF-pDe" firstAttribute="top" secondItem="Fqf-xZ-Jgf" secondAttribute="top" id="Fjt-1O-kza"/>
-                            <constraint firstItem="1E7-qF-pDe" firstAttribute="leading" secondItem="Fqf-xZ-Jgf" secondAttribute="leading" id="MI1-Pl-00q"/>
-                            <constraint firstItem="gb9-Kq-PUX" firstAttribute="top" secondItem="1E7-qF-pDe" secondAttribute="bottom" id="NHc-P5-6an"/>
-                            <constraint firstItem="Fqf-xZ-Jgf" firstAttribute="bottom" secondItem="gb9-Kq-PUX" secondAttribute="bottom" id="V3g-Ov-Tm3"/>
-                            <constraint firstItem="1E7-qF-pDe" firstAttribute="trailing" secondItem="Fqf-xZ-Jgf" secondAttribute="trailing" id="Ysc-VP-0kn"/>
-                            <constraint firstItem="gb9-Kq-PUX" firstAttribute="leading" secondItem="Fqf-xZ-Jgf" secondAttribute="leading" id="sni-op-s1r"/>
+                            <constraint firstItem="1E7-qF-pDe" firstAttribute="leading" secondItem="Fqf-xZ-Jgf" secondAttribute="leading" id="2iG-Ca-Ieu"/>
+                            <constraint firstItem="gb9-Kq-PUX" firstAttribute="top" secondItem="Hqo-Ob-WVE" secondAttribute="bottom" id="8On-bm-9fi"/>
+                            <constraint firstItem="gb9-Kq-PUX" firstAttribute="leading" secondItem="Fqf-xZ-Jgf" secondAttribute="leading" id="LSI-wY-1AK"/>
+                            <constraint firstItem="gb9-Kq-PUX" firstAttribute="trailing" secondItem="Fqf-xZ-Jgf" secondAttribute="trailing" id="SgW-zV-Ipl"/>
+                            <constraint firstItem="1E7-qF-pDe" firstAttribute="top" secondItem="Fqf-xZ-Jgf" secondAttribute="top" id="Wp4-sf-sqr"/>
+                            <constraint firstItem="Hqo-Ob-WVE" firstAttribute="leading" secondItem="Fqf-xZ-Jgf" secondAttribute="leading" id="Ygu-48-kNw"/>
+                            <constraint firstItem="gb9-Kq-PUX" firstAttribute="bottom" secondItem="Fqf-xZ-Jgf" secondAttribute="bottom" id="cqb-5n-btO"/>
+                            <constraint firstItem="Hqo-Ob-WVE" firstAttribute="top" secondItem="1E7-qF-pDe" secondAttribute="bottom" id="pU9-FL-B51"/>
+                            <constraint firstItem="1E7-qF-pDe" firstAttribute="trailing" secondItem="Fqf-xZ-Jgf" secondAttribute="trailing" id="qwH-se-ZEb"/>
+                            <constraint firstItem="Fqf-xZ-Jgf" firstAttribute="trailing" secondItem="Hqo-Ob-WVE" secondAttribute="trailing" id="vPt-LX-ynN"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="vKI-LY-VpR"/>
                     <connections>
                         <outlet property="addItemButton" destination="gb9-Kq-PUX" id="zMG-zv-ij3"/>
                         <outlet property="moneyTableView" destination="1E7-qF-pDe" id="7EM-IH-qM1"/>
+                        <outlet property="totalMoneyLabel" destination="Hqo-Ob-WVE" id="6d7-8D-zrn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xl6-mR-sKx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

@@ -13,6 +13,7 @@ struct ItemData {
 class MoneyViewController: UIViewController {
     let moneyViewModel = MoneyViewModel()
     
+    @IBOutlet weak var totalMoneyLabel: UILabel!
     @IBOutlet weak var addItemButton: UIButton!
     @IBOutlet weak var moneyTableView: UITableView!
     
@@ -21,7 +22,8 @@ class MoneyViewController: UIViewController {
         if let navVC = self.tabBarController?.viewControllers?[0] as? UINavigationController,
            let first = navVC.viewControllers[0] as? UserViewController{
             let totalMoney = first.userViewModel.getTotalMoney()
-            self.title = "Total Money: \(totalMoney)"
+            self.totalMoneyLabel.text = "Total Money: \(totalMoney)"
+            self.title = "Money"
             if totalMoney != moneyViewModel.getTotlePrice() {
                 moneyViewModel.addBankPrice(newPrice: totalMoney, oldPrice: moneyViewModel.getTotlePrice())
                 moneyTableView.reloadData()
