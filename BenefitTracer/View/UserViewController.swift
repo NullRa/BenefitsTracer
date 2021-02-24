@@ -166,26 +166,29 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource{
             tableView.reloadSections(indexes, with: .automatic)
         }
     }
-    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        let row = indexPath.row
+        if row != 0 {
+            if userViewModel.getMoney(userIndex: indexPath.section, moneyIndex: row - 1).moneyString == "Add Money" {
+                return false
+            }
+        }
+        return true
+    }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         let section = indexPath.section
         let row = indexPath.row
         if editingStyle == .delete {
             if row == 0{
                 if userViewModel.moneyIsNotEmpty(userIndex: section) {
-                    alertMessage(title: "錢不要囉", message: "-.-")
+                    alertMessage(title: "This account is not empty.", message: "Can't Delete")
                 } else {
                     userViewModel.removeUser(userIndex:section)
                     tableView.reloadData()
                 }
             } else {
-                let money = userViewModel.getMoney(userIndex: section, moneyIndex: row-1)
-                if money.moneyString == "Add Money" {
-                    alertMessage(title: "＝ ＝", message: "就跟你說不能點")
-                } else {
-                    userViewModel.removeMoney(userIndex: section, moneyIndex: row-1)
-                    tableView.reloadData()
-                }
+                userViewModel.removeMoney(userIndex: section, moneyIndex: row-1)
+                tableView.reloadData()
             }
         }
     }
