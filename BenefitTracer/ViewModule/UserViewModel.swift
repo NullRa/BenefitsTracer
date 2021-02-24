@@ -13,11 +13,19 @@ enum UserTableViewEventType {
 class UserViewModel {
     let userCellId = "UserCell"
     let moneyCellId = "MoneyCell"
-    var list:[UserData]!
+    var list = [UserData]()
     let userRespository = UserRespository()
     
     func setList(){
-        list = userRespository.queryUserCoreData()
+        let userNameList = userRespository.queryUserCoreData()
+        userNameList.forEach { (userName) in
+            let userMoneyDatas = userRespository.queryMoneyCoreData(userName: userName)
+            var moneyDatas = [MoneyData]()
+            userMoneyDatas.forEach { (moneyString, addMoneyDate) in
+                moneyDatas.append(MoneyData(moneyString: moneyString, date: addMoneyDate))
+            }
+            list.append(UserData(isOpen: false, money: moneyDatas, userName: userName))
+        }
     }
     
     func addNewUser(userName:String){
@@ -56,16 +64,25 @@ class UserViewModel {
     func getUserTotalMoney(userIndex:Int) -> Int {
         return list[userIndex].getUserTotalMoney()
     }
-    
+
     func selectEvent(userIndex:Int,moneyIndex:Int) -> UserTableViewEventType {
-        if list[userIndex].isOpen && list[userIndex].money[moneyIndex].moneyString == "Add Money" {
-            return .addMoney
+        if list[userIndex].isOpen {
+            if moneyIndex == -1 {//點username收起時
+                list[userIndex].isOpen.toggle()
+                return .toggle
+            }
+            if list[userIndex].money[moneyIndex].moneyString == "Add Money" {
+                return .addMoney
+            } else {
+                list[userIndex].isOpen.toggle()
+                return .toggle
+            }
         } else {
             list[userIndex].isOpen.toggle()
             return .toggle
         }
     }
-    
+
     func moneyIsNotEmpty(userIndex:Int) -> Bool {
         return list[userIndex].money.count > 1
     }

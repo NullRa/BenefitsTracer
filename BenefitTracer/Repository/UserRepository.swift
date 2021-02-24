@@ -19,18 +19,17 @@ class UserRespository {
         app.saveContext()
     }
     
-    func queryUserCoreData() -> [UserData]{
-        var userDatas = [UserData]()
+    func queryUserCoreData() -> [String]{
+        var userNameList = [String]()
         do {
             let allUserCoreData = try viewContext.fetch(UserCoreData.fetchRequest())
             for userCoreData in allUserCoreData as! [UserCoreData] {
-                let moneyDatas = queryMoneyCoreData(userName: userCoreData.name!)
-                userDatas.append(UserData(money: moneyDatas, userName: userCoreData.name!))
+                userNameList.append(userCoreData.name!)
             }
-            return userDatas
+            return userNameList
         } catch {
             print(error)
-            return userDatas
+            return userNameList
         }
     }
     func deleteUserCoreData(name:String){
@@ -81,8 +80,8 @@ class UserRespository {
         }
     }
 
-    func queryMoneyCoreData(userName:String) -> [MoneyData]{
-        var moneyDatas = [MoneyData]()
+    func queryMoneyCoreData(userName:String) -> [(String,Date?)]{
+        var moneyDatas = [(String,Date?)]()
         
         let fetchRequest: NSFetchRequest<UserCoreData> = UserCoreData.fetchRequest()
         let predicate = NSPredicate(format: "name = '\(userName)'")
@@ -92,11 +91,11 @@ class UserRespository {
             for userCoreData in allUserCoreData {
                 if userCoreData.own != nil {
                     for moneyCoreData in userCoreData.own as! Set<MoneyCoreData> {
-                        moneyDatas.append(MoneyData(moneyString: "\(moneyCoreData.price)", date: moneyCoreData.date))
+                        moneyDatas.append(("\(moneyCoreData.price)",moneyCoreData.date))
                     }
                 }
             }
-            moneyDatas.append(MoneyData(moneyString: "Add Money", date: nil))
+            moneyDatas.append(("Add Money",nil))
             return moneyDatas
         } catch {
             print(error)
