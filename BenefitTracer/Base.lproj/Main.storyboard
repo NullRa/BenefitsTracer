@@ -113,8 +113,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G4G-fa-VhJ">
+                                <rect key="frame" x="0.0" y="769" width="414" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="hos-kI-JJq"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                            </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="WVd-Nf-P4x">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="813"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="681"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="UserCell" textLabel="CIB-pA-bb5" detailTextLabel="Awc-sf-yY4" style="IBUITableViewCellStyleValue1" id="y9S-30-Xat">
@@ -172,14 +179,18 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="WVd-Nf-P4x" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="0b8-mV-y1c"/>
-                            <constraint firstItem="WVd-Nf-P4x" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="27j-cv-XGr"/>
-                            <constraint firstItem="WVd-Nf-P4x" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="S1o-E6-iWs"/>
-                            <constraint firstItem="WVd-Nf-P4x" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="lB7-WW-J9k"/>
+                            <constraint firstItem="G4G-fa-VhJ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="2iO-Q4-HDz"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="G4G-fa-VhJ" secondAttribute="trailing" id="3vX-Re-fT0"/>
+                            <constraint firstItem="WVd-Nf-P4x" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="CLy-vL-N4X"/>
+                            <constraint firstItem="G4G-fa-VhJ" firstAttribute="top" secondItem="WVd-Nf-P4x" secondAttribute="bottom" id="Vc3-Ok-ctb"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="G4G-fa-VhJ" secondAttribute="bottom" id="gxy-LN-UbO"/>
+                            <constraint firstItem="WVd-Nf-P4x" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="hdF-ee-dfA"/>
+                            <constraint firstItem="WVd-Nf-P4x" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="zq6-Ne-cn4"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="pVo-cX-ktj"/>
                     <connections>
+                        <outlet property="addUserButton" destination="G4G-fa-VhJ" id="axX-MQ-QoF"/>
                         <outlet property="userTableView" destination="WVd-Nf-P4x" id="eeb-Cb-AfK"/>
                     </connections>
                 </viewController>

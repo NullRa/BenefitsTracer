@@ -7,7 +7,7 @@
 
 import Foundation
 enum UserTableViewEventType {
-    case addMoney, addUser, toggle
+    case addMoney, toggle
 }
 
 class UserViewModel {
@@ -18,11 +18,10 @@ class UserViewModel {
     
     func setList(){
         list = userRespository.queryUserCoreData()
-        list.append(UserData(userName: "Add User"))
     }
     
     func addNewUser(userName:String){
-        list.insert(UserData(money: [MoneyData(moneyString: "Add Money", date: nil)], userName: userName), at: self.list.count-1)
+        list.append(UserData(money: [MoneyData(moneyString: "Add Money", date: nil)], userName: userName))
         userRespository.insertUserCoreData(name: userName)
     }
     
@@ -59,24 +58,11 @@ class UserViewModel {
     }
     
     func selectEvent(userIndex:Int,moneyIndex:Int) -> UserTableViewEventType {
-        if list[userIndex].isOpen {
-            if moneyIndex == -1 {//點username收起時
-                list[userIndex].isOpen.toggle()
-                return .toggle
-            }
-            if list[userIndex].money[moneyIndex].moneyString == "Add Money" {
-                return .addMoney
-            } else {
-                list[userIndex].isOpen.toggle()
-                return .toggle
-            }
+        if list[userIndex].isOpen && list[userIndex].money[moneyIndex].moneyString == "Add Money" {
+            return .addMoney
         } else {
-            if list[userIndex].userName == "Add User" {
-                return .addUser
-            } else {
-                list[userIndex].isOpen.toggle()
-                return .toggle
-            }
+            list[userIndex].isOpen.toggle()
+            return .toggle
         }
     }
     

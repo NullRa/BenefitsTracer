@@ -32,7 +32,8 @@ class UserViewController: UIViewController {
     let userViewModel = UserViewModel()
     
     @IBOutlet weak var userTableView: UITableView!
-    
+    @IBOutlet weak var addUserButton: UIButton!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -43,19 +44,21 @@ class UserViewController: UIViewController {
     func initUI(){
         self.title = "User"
         userTableView.tableFooterView = UIView()
+        addUserButton.setTitle("Add User", for: .normal)
     }
     
     func bind(){
         userTableView.delegate = self
         userTableView.dataSource = self
         userViewModel.setList()
+        addUserButton.addTarget(self, action: #selector(addUser), for: .touchUpInside)
     }
     
 }
 
 //MARK: Function
 extension UserViewController {
-    func addUser(){
+    @objc func addUser(){
         let alert = UIAlertController(title: "Add User", message: nil, preferredStyle: .alert)
         alert.addTextField { (textField) in
             textField.placeholder = "Enter User"
@@ -156,8 +159,6 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource{
         let section = indexPath.section
         let row = indexPath.row - 1
         switch userViewModel.selectEvent(userIndex: section, moneyIndex: row) {
-        case .addUser:
-            addUser()
         case .addMoney:
             addMoney(section: section)
         case .toggle:
@@ -171,16 +172,11 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource{
         let row = indexPath.row
         if editingStyle == .delete {
             if row == 0{
-                let user = userViewModel.getUserName(userIndex: section)
-                if user == "Add User" {
-                    alertMessage(title: "別亂點", message: "＝ ＝")
+                if userViewModel.moneyIsNotEmpty(userIndex: section) {
+                    alertMessage(title: "錢不要囉", message: "-.-")
                 } else {
-                    if userViewModel.moneyIsNotEmpty(userIndex: section) {
-                        alertMessage(title: "錢不要囉", message: "-.-")
-                    } else {
-                        userViewModel.removeUser(userIndex:section)
-                        tableView.reloadData()
-                    }
+                    userViewModel.removeUser(userIndex:section)
+                    tableView.reloadData()
                 }
             } else {
                 let money = userViewModel.getMoney(userIndex: section, moneyIndex: row-1)
