@@ -15,6 +15,16 @@ struct UserData {
     var isOpen:Bool = false
     var money = [MoneyData]()
     var userName:String
+
+    func getUserTotalMoney() -> Int {
+        var totalMoney = 0
+        money.forEach { (moneyData) in
+            if moneyData.moneyString != "Add Money" {
+                totalMoney = totalMoney + Int(moneyData.moneyString)!
+            }
+        }
+        return totalMoney
+    }
 }
 
 class UserViewController: UIViewController {
@@ -119,6 +129,7 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource{
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: userViewModel.userCellId, for: indexPath)
             cell.textLabel?.text = userViewModel.getUserName(userIndex:indexPath.section)
+            cell.detailTextLabel?.text = "\(userViewModel.getUserTotalMoney(userIndex: indexPath.section))"
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: userViewModel.moneyCellId, for: indexPath)

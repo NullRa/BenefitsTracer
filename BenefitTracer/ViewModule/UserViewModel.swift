@@ -53,6 +53,10 @@ class UserViewModel {
     func getMoney(userIndex:Int,moneyIndex:Int) -> MoneyData{
         return list[userIndex].money[moneyIndex]
     }
+
+    func getUserTotalMoney(userIndex:Int) -> Int {
+        return list[userIndex].getUserTotalMoney()
+    }
     
     func selectEvent(userIndex:Int,moneyIndex:Int) -> UserTableViewEventType {
         if list[userIndex].isOpen {
