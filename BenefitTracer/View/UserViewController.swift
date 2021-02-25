@@ -34,6 +34,11 @@ class UserViewController: UIViewController {
     @IBOutlet weak var userTableView: UITableView!
     @IBOutlet weak var addUserButton: UIButton!
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        userViewModel.setList()
+        userTableView.reloadData()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.

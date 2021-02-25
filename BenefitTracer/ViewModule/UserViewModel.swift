@@ -17,6 +17,7 @@ class UserViewModel {
     let userRespository = UserRespository()
     
     func setList(){
+        list.removeAll()
         let userNameList = userRespository.queryUserCoreData()
         userNameList.forEach { (userName) in
             let userMoneyDatas = userRespository.queryMoneyCoreData(userName: userName)

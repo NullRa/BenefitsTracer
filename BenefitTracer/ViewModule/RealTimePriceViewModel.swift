@@ -13,10 +13,14 @@ class RealTimePriceViewModel {
     var orginalTotalMoney: Int!
     
     func setList(){
+        itemList.removeAll()
         let itemDict = userRespository.queryItemCoreData()
         for (name,price) in itemDict {
             itemList.append(ItemDataWithBenefits(itemData: ItemData(itemName: name, itemPrice: price), benefits: 0))
         }
+    }
+    
+    func setOrginalTotalMoney(){
         orginalTotalMoney = getTotlePrice()
     }
     
@@ -29,12 +33,24 @@ class RealTimePriceViewModel {
     }
     
     func editAccountEvent(newMoney:Int,itemIndex:Int){
+        if itemList[itemIndex].itemData.itemPrice == 0 {
+            itemList[itemIndex].benefits = 100
+            itemList[itemIndex].itemData.itemPrice = newMoney
+            updateItemCoreData()
+            return
+        }
         itemList[itemIndex].benefits = (newMoney - itemList[itemIndex].itemData.itemPrice)*100/itemList[itemIndex].itemData.itemPrice
         itemList[itemIndex].itemData.itemPrice = newMoney
         updateItemCoreData()
     }
     
     func addBenefitsEvent(benefits:Int,itemIndex:Int){
+        if itemList[itemIndex].itemData.itemPrice == 0 {
+            itemList[itemIndex].benefits = 100
+            itemList[itemIndex].itemData.itemPrice = itemList[itemIndex].itemData.itemPrice + benefits
+            updateItemCoreData()
+            return
+        }
         itemList[itemIndex].benefits = benefits*100/itemList[itemIndex].itemData.itemPrice
         itemList[itemIndex].itemData.itemPrice = itemList[itemIndex].itemData.itemPrice + benefits
         updateItemCoreData()

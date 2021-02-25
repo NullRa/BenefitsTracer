@@ -24,6 +24,12 @@ class RealTimePriceViewController: UIViewController {
     @IBOutlet weak var totalMoneyLabel: UILabel!
     @IBOutlet weak var realTimePriceTableView: UITableView!
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        realTimePriceViewModel.setList()
+        realTimePriceTableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()        
         bind()
@@ -40,6 +46,7 @@ class RealTimePriceViewController: UIViewController {
         realTimePriceTableView.delegate = self
         realTimePriceTableView.dataSource = self
         realTimePriceViewModel.setList()
+        realTimePriceViewModel.setOrginalTotalMoney()
     }
 }
 

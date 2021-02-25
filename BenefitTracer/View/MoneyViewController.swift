@@ -21,6 +21,7 @@ class MoneyViewController: UIViewController {
         super.viewWillAppear(animated)
         if let navVC = self.tabBarController?.viewControllers?[0] as? UINavigationController,
            let first = navVC.viewControllers[0] as? UserViewController{
+            first.userViewModel.setList()
             let totalMoney = first.userViewModel.getTotalMoney()
             self.totalMoneyLabel.text = "Total Money: \(totalMoney)"
             self.title = "Money"
