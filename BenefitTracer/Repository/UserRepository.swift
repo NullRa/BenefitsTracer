@@ -79,7 +79,7 @@ class UserRespository {
             print(error)
         }
     }
-
+    
     func queryMoneyCoreData(userName:String) -> [(String,Date?)]{
         var moneyDatas = [(String,Date?)]()
         
@@ -103,6 +103,23 @@ class UserRespository {
         }
     }
     
+    func deleteAllMoneyCoreData(userName:String) {
+        do{
+            let allUser = try viewContext.fetch(UserCoreData.fetchRequest())
+            for user in allUser as! [UserCoreData] {
+                if user.name == userName {
+                    let allMoney = try viewContext.fetch(MoneyCoreData.fetchRequest())
+                    for moneyData in allMoney as! [MoneyCoreData] {
+                        viewContext.delete(moneyData)
+                    }
+                    app.saveContext()
+                }
+            }
+        }catch{
+            print(error)
+        }
+    }
+    
     func insertItemCoreData(name:String,price:Int,id:Int){
         let newCoreDataItem = NSEntityDescription.insertNewObject(forEntityName: "ItemCoreData", into: viewContext) as! ItemCoreData
         newCoreDataItem.itemName = name
@@ -110,7 +127,7 @@ class UserRespository {
         newCoreDataItem.itemID = Int32(id)
         app.saveContext()
     }
-
+    
     func queryItemCoreData() -> [(String,Int)] {
         let fetchRequest: NSFetchRequest<ItemCoreData> = ItemCoreData.fetchRequest()
         let sort = NSSortDescriptor(key: "itemID", ascending: true)
@@ -129,7 +146,7 @@ class UserRespository {
             return itemDataDict
         }
     }
-
+    
     func deleteItemCoreData(name:String){
         do {
             let allItemCoreData = try viewContext.fetch(ItemCoreData.fetchRequest())

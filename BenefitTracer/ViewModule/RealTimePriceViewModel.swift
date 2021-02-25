@@ -31,16 +31,54 @@ class RealTimePriceViewModel {
     func editAccountEvent(newMoney:Int,itemIndex:Int){
         itemList[itemIndex].benefits = (newMoney - itemList[itemIndex].itemData.itemPrice)*100/itemList[itemIndex].itemData.itemPrice
         itemList[itemIndex].itemData.itemPrice = newMoney
+        updateItemCoreData()
     }
     
     func addBenefitsEvent(benefits:Int,itemIndex:Int){
         itemList[itemIndex].benefits = benefits*100/itemList[itemIndex].itemData.itemPrice
         itemList[itemIndex].itemData.itemPrice = itemList[itemIndex].itemData.itemPrice + benefits
+        updateItemCoreData()
+    }
+    
+    func updateItemCoreData(){
+        userRespository.deleteAllItemCoreData()
+        for i in 0 ..< itemList.count {
+            userRespository.insertItemCoreData(name: itemList[i].itemData.itemName, price: itemList[i].itemData.itemPrice, id: i)
+        }
+    }
+    
+    func updateMoneyCoreData(benefitsPresent:Int){
+        var userList = [UserData]()
+        let userNameList = userRespository.queryUserCoreData()
+        userNameList.forEach { (userName) in
+            let userMoneyDatas = userRespository.queryMoneyCoreData(userName: userName)
+            var moneyDatas = [MoneyData]()
+            userMoneyDatas.forEach { (moneyString, addMoneyDate) in
+                moneyDatas.append(MoneyData(moneyString: moneyString, date: addMoneyDate))
+            }
+            userList.append(UserData(isOpen: false, money: moneyDatas, userName: userName))
+        }
+        
+        for i in 0 ..< userList.count {
+            let userData = userList[i]
+            userRespository.deleteAllMoneyCoreData(userName: userData.userName)
+            for j in 0 ..< userData.money.count {
+                let date = userData.money[j].date
+                if userData.money[j].moneyString != "Add Money" {
+                    let money = Int(userData.money[j].moneyString)!
+                    let newMoney = money + money*benefitsPresent/100
+                    userRespository.insertMoneyCoreData(userName: userData.userName, money: newMoney, date: date!)
+                }
+            }
+        }
+        
+        
     }
     
     func getTotalBenefitsString() -> String {
         let newTotalMoney = getTotlePrice()
         let totalBenefitsPresent = (newTotalMoney-orginalTotalMoney)*100/orginalTotalMoney
+        updateMoneyCoreData(benefitsPresent: totalBenefitsPresent)
         return totalBenefitsPresent >= 0 ? "+\(totalBenefitsPresent)%" : "\(totalBenefitsPresent)%"
     }
     
