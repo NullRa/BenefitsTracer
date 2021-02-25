@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1814EDAB25E7A07900ED19AB /* RealTimePriceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1814EDAA25E7A07900ED19AB /* RealTimePriceViewModel.swift */; };
 		18451CAA25E4E990007EC440 /* MoneyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18451CA925E4E990007EC440 /* MoneyViewModel.swift */; };
 		18451CAE25E4F86B007EC440 /* ItemCoreData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18451CAC25E4F86B007EC440 /* ItemCoreData+CoreDataClass.swift */; };
 		1856AD8B25E3926900266CC9 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1856AD8925E3926900266CC9 /* CoreDataModel.xcdatamodeld */; };
@@ -29,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1814EDAA25E7A07900ED19AB /* RealTimePriceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealTimePriceViewModel.swift; sourceTree = "<group>"; };
 		18451CA925E4E990007EC440 /* MoneyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyViewModel.swift; sourceTree = "<group>"; };
 		18451CAC25E4F86B007EC440 /* ItemCoreData+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemCoreData+CoreDataClass.swift"; sourceTree = "<group>"; };
 		1856AD8A25E3926900266CC9 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 			children = (
 				18EBF72F25E3675100FC988E /* UserViewModel.swift */,
 				18451CA925E4E990007EC440 /* MoneyViewModel.swift */,
+				1814EDAA25E7A07900ED19AB /* RealTimePriceViewModel.swift */,
 			);
 			path = ViewModule;
 			sourceTree = "<group>";
@@ -210,6 +213,7 @@
 			files = (
 				698E433E25E105190029C10A /* UserViewController.swift in Sources */,
 				698E435325E24A290029C10A /* RealTimePriceViewController.swift in Sources */,
+				1814EDAB25E7A07900ED19AB /* RealTimePriceViewModel.swift in Sources */,
 				18451CAE25E4F86B007EC440 /* ItemCoreData+CoreDataClass.swift in Sources */,
 				698E433A25E105190029C10A /* AppDelegate.swift in Sources */,
 				185BF2CE25E39A0E007A1F68 /* MoneyCoreData+CoreDataProperties.swift in Sources */,

@@ -19,10 +19,7 @@ struct ItemDataWithBenefits {
     }
 }
 class RealTimePriceViewController: UIViewController {
-    let realTimePriceCellCellId = "realTimePriceCell"
-    var itemList: [ItemDataWithBenefits] = []
-    let userRespository = UserRespository()
-    var orginalTotalMoney: Int!
+    let realTimePriceViewModel = RealTimePriceViewModel()
     
     @IBOutlet weak var totalMoneyLabel: UILabel!
     @IBOutlet weak var realTimePriceTableView: UITableView!
@@ -35,65 +32,36 @@ class RealTimePriceViewController: UIViewController {
     
     func initUI(){
         realTimePriceTableView.tableFooterView = UIView()
-        totalMoneyLabel.text = "Total Money: \(getTotlePrice()) (+0%)"
+        totalMoneyLabel.text = "Total Money: \(realTimePriceViewModel.orginalTotalMoney!) (+0%)"
         self.title = "Real Time Price"
     }
     
     func bind(){
         realTimePriceTableView.delegate = self
         realTimePriceTableView.dataSource = self
-        setList()
-        orginalTotalMoney = getTotlePrice()
+        realTimePriceViewModel.setList()
     }
 }
 
 extension RealTimePriceViewController {
-    func setList(){
-        let itemDict = userRespository.queryItemCoreData()
-        for (name,price) in itemDict {
-            itemList.append(ItemDataWithBenefits(itemData: ItemData(itemName: name, itemPrice: price), benefits: 0))
-        }
-    }
     
-    func getTotlePrice() -> Int {
-        var totalPrice = 0
-        itemList.forEach { (item) in
-            totalPrice = totalPrice + item.itemData.itemPrice
-        }
-        return totalPrice
-    }
-    
-    func editAccountEvent(newMoney:Int,itemIndex:Int){
-        itemList[itemIndex].benefits = (newMoney - itemList[itemIndex].itemData.itemPrice)*100/itemList[itemIndex].itemData.itemPrice
-        itemList[itemIndex].itemData.itemPrice = newMoney
-        realTimePriceTableView.reloadData()
-        setTotalPrice()
-    }
-    
-    func addBenefitsEvent(benefits:Int,itemIndex:Int){
-        itemList[itemIndex].benefits = benefits*100/itemList[itemIndex].itemData.itemPrice
-        itemList[itemIndex].itemData.itemPrice = itemList[itemIndex].itemData.itemPrice + benefits
-        realTimePriceTableView.reloadData()
-        setTotalPrice()
-    }
-    
-    func setTotalPrice() {
-        let newTotalMoney = getTotlePrice()
-        let totalBenefitsPresent = (newTotalMoney-orginalTotalMoney)*100/orginalTotalMoney
-        let totalBenefitsPresentString = totalBenefitsPresent >= 0 ? "+\(totalBenefitsPresent)%" : "\(totalBenefitsPresent)%"
+    func setTotalPriceLabel() {
+        let newTotalMoney = realTimePriceViewModel.getTotlePrice()
+        let totalBenefitsPresentString = realTimePriceViewModel.getTotalBenefitsString()
         totalMoneyLabel.text = "Total Money: \(newTotalMoney) (\(totalBenefitsPresentString))"
     }
 }
 
 extension RealTimePriceViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return itemList.count
+        return realTimePriceViewModel.getListCount()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: realTimePriceCellCellId, for: indexPath)
-        cell.textLabel?.text = itemList[indexPath.row].itemData.itemName
-        cell.detailTextLabel?.text = "\(itemList[indexPath.row].itemData.itemPrice) (\(itemList[indexPath.row].benefitsString))"
+        let cell = tableView.dequeueReusableCell(withIdentifier: realTimePriceViewModel.cellId, for: indexPath)
+        let item = realTimePriceViewModel.getListItem(itemIndex: indexPath.row)
+        cell.textLabel?.text = item.0
+        cell.detailTextLabel?.text = "\(item.1) (\(item.2))"
         return cell
     }
     
@@ -107,7 +75,9 @@ extension RealTimePriceViewController: UITableViewDelegate, UITableViewDataSourc
             let okAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
                 let textField = (alert.textFields?.first)! as UITextField
                 let newMoney = Int(textField.text!)!
-                self.editAccountEvent(newMoney: newMoney, itemIndex: indexPath.row)
+                self.realTimePriceViewModel.editAccountEvent(newMoney: newMoney, itemIndex: indexPath.row)
+                tableView.reloadData()
+                self.setTotalPriceLabel()
             }
             let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
             alert.addAction(okAction)
@@ -125,7 +95,9 @@ extension RealTimePriceViewController: UITableViewDelegate, UITableViewDataSourc
             let okAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
                 let textField = (alert.textFields?.first)! as UITextField
                 let addBenefits = Int(textField.text!)!
-                self.addBenefitsEvent(benefits: addBenefits, itemIndex: indexPath.row)
+                self.realTimePriceViewModel.addBenefitsEvent(benefits: addBenefits, itemIndex: indexPath.row)
+                tableView.reloadData()
+                self.setTotalPriceLabel()
                 
             }
             let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
