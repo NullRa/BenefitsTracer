@@ -89,21 +89,75 @@
             </objects>
             <point key="canvasLocation" x="1771.0144927536232" y="-1224.1071428571429"/>
         </scene>
-        <!--Benefits-->
+        <!--Real Time Price View Controller-->
         <scene sceneID="ISp-7A-k4z">
             <objects>
-                <viewController id="jel-1k-Njy" customClass="BenefitsViewController" customModule="BenefitTracer" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="jel-1k-Njy" customClass="RealTimePriceViewController" customModule="BenefitTracer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="FWe-7z-uAC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="8cL-ua-wG2">
+                                <rect key="frame" x="0.0" y="88" width="414" height="681"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="realTimePriceCell" textLabel="TID-pa-yM0" detailTextLabel="tc2-pw-kmS" style="IBUITableViewCellStyleValue1" id="kyq-lr-ue0">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="kyq-lr-ue0" id="rd3-Yd-eaK">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TID-pa-yM0">
+                                                    <rect key="frame" x="20" y="12" width="33" height="20.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tc2-pw-kmS">
+                                                    <rect key="frame" x="350" y="12" width="44" height="20.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="axd-Oy-NWC">
+                                <rect key="frame" x="0.0" y="769" width="414" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="jno-Oe-Ldf"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="On2-id-BuX"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="axd-Oy-NWC" firstAttribute="top" secondItem="8cL-ua-wG2" secondAttribute="bottom" id="6L4-tP-ZNh"/>
+                            <constraint firstItem="On2-id-BuX" firstAttribute="bottom" secondItem="axd-Oy-NWC" secondAttribute="bottom" id="LIQ-CO-V0s"/>
+                            <constraint firstItem="On2-id-BuX" firstAttribute="trailing" secondItem="axd-Oy-NWC" secondAttribute="trailing" id="fSO-XW-rTf"/>
+                            <constraint firstItem="8cL-ua-wG2" firstAttribute="top" secondItem="On2-id-BuX" secondAttribute="top" id="gwo-s8-hTD"/>
+                            <constraint firstItem="axd-Oy-NWC" firstAttribute="leading" secondItem="On2-id-BuX" secondAttribute="leading" id="ikm-06-pYd"/>
+                            <constraint firstItem="8cL-ua-wG2" firstAttribute="leading" secondItem="On2-id-BuX" secondAttribute="leading" id="uWz-hO-0W6"/>
+                            <constraint firstItem="On2-id-BuX" firstAttribute="trailing" secondItem="8cL-ua-wG2" secondAttribute="trailing" id="vE7-To-gmB"/>
+                        </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Benefits" id="MjW-MI-OBg"/>
+                    <navigationItem key="navigationItem" id="ftu-rz-wP3"/>
+                    <connections>
+                        <outlet property="realTimePriceTableView" destination="8cL-ua-wG2" id="Jpb-vI-psN"/>
+                        <outlet property="totalMoneyLabel" destination="axd-Oy-NWC" id="urG-81-imz"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lDw-3D-yqx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="859" y="-567"/>
+            <point key="canvasLocation" x="1768.1159420289857" y="-567.1875"/>
         </scene>
         <!--User View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -227,7 +281,7 @@
                     <connections>
                         <segue destination="2C8-kq-8nc" kind="relationship" relationship="viewControllers" id="kDG-uF-IbX"/>
                         <segue destination="z6O-wv-8ah" kind="relationship" relationship="viewControllers" id="NO7-lI-Agl"/>
-                        <segue destination="jel-1k-Njy" kind="relationship" relationship="viewControllers" id="K4p-Hm-Mkg"/>
+                        <segue destination="zHp-gO-xGa" kind="relationship" relationship="viewControllers" id="K4p-Hm-Mkg"/>
                         <segue destination="VKN-Tv-eQX" kind="relationship" relationship="viewControllers" id="vQs-5M-buu"/>
                     </connections>
                 </tabBarController>
@@ -272,6 +326,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZDc-BM-eyI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="860.86956521739137" y="-1224.1071428571429"/>
+        </scene>
+        <!--Real Time Price-->
+        <scene sceneID="Xwv-g7-V1W">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="zHp-gO-xGa" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Real Time Price" id="MjW-MI-OBg"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="tbT-Wo-IGw">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="jel-1k-Njy" kind="relationship" relationship="rootViewController" id="HRb-rA-SF1"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8NG-8c-HjQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="857.97101449275374" y="-567.1875"/>
         </scene>
     </scenes>
     <resources>

@@ -24,7 +24,7 @@
 		698E434325E1051B0029C10A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 698E434225E1051B0029C10A /* Assets.xcassets */; };
 		698E434625E1051B0029C10A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 698E434425E1051B0029C10A /* LaunchScreen.storyboard */; };
 		698E435025E24A160029C10A /* MoneyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698E434F25E24A160029C10A /* MoneyViewController.swift */; };
-		698E435325E24A290029C10A /* BenefitsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698E435225E24A290029C10A /* BenefitsViewController.swift */; };
+		698E435325E24A290029C10A /* RealTimePriceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698E435225E24A290029C10A /* RealTimePriceViewController.swift */; };
 		698E435625E24A540029C10A /* FormatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698E435525E24A540029C10A /* FormatViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -48,7 +48,7 @@
 		698E434525E1051B0029C10A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		698E434725E1051B0029C10A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		698E434F25E24A160029C10A /* MoneyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyViewController.swift; sourceTree = "<group>"; };
-		698E435225E24A290029C10A /* BenefitsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenefitsViewController.swift; sourceTree = "<group>"; };
+		698E435225E24A290029C10A /* RealTimePriceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealTimePriceViewController.swift; sourceTree = "<group>"; };
 		698E435525E24A540029C10A /* FormatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -90,7 +90,7 @@
 			children = (
 				698E433D25E105190029C10A /* UserViewController.swift */,
 				698E434F25E24A160029C10A /* MoneyViewController.swift */,
-				698E435225E24A290029C10A /* BenefitsViewController.swift */,
+				698E435225E24A290029C10A /* RealTimePriceViewController.swift */,
 				698E435525E24A540029C10A /* FormatViewController.swift */,
 			);
 			path = View;
@@ -209,7 +209,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				698E433E25E105190029C10A /* UserViewController.swift in Sources */,
-				698E435325E24A290029C10A /* BenefitsViewController.swift in Sources */,
+				698E435325E24A290029C10A /* RealTimePriceViewController.swift in Sources */,
 				18451CAE25E4F86B007EC440 /* ItemCoreData+CoreDataClass.swift in Sources */,
 				698E433A25E105190029C10A /* AppDelegate.swift in Sources */,
 				185BF2CE25E39A0E007A1F68 /* MoneyCoreData+CoreDataProperties.swift in Sources */,
