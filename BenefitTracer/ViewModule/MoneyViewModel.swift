@@ -10,10 +10,10 @@ import Foundation
 class MoneyViewModel {
     let itemCellId = "itemCell"
     var itemList: [ItemData] = []
-    let userRespository = UserRespository()
+    let respository = Respository()
     
     func setList(){
-        let itemDict = userRespository.queryItemCoreData()
+        let itemDict = respository.queryItemCoreData()
         for (name,price) in itemDict {
             let itemData = ItemData(itemName: name, itemPrice: price)
             itemList.append(itemData)
@@ -28,9 +28,9 @@ class MoneyViewModel {
         return totalPrice
     }
     func updateCoreData(){
-        userRespository.deleteAllItemCoreData()
+        respository.deleteAllItemCoreData()
         for i in 0 ..< itemList.count {
-            userRespository.insertItemCoreData(name: itemList[i].itemName, price: itemList[i].itemPrice, id: i)
+            respository.insertItemCoreData(name: itemList[i].itemName, price: itemList[i].itemPrice, id: i)
         }
     }
     func addTotal(name:String, price:Int){

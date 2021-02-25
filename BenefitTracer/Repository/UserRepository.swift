@@ -9,7 +9,7 @@ import Foundation
 import CoreData
 import UIKit
 
-class UserRespository {
+class Respository {
     let app = UIApplication.shared.delegate as! AppDelegate
     var viewContext: NSManagedObjectContext! = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     

@@ -9,12 +9,12 @@ import Foundation
 class RealTimePriceViewModel {
     let cellId = "realTimePriceCell"
     var itemList: [ItemDataWithBenefits] = []
-    let userRespository = UserRespository()
+    let respository = Respository()
     var orginalTotalMoney: Int!
     
     func setList(){
         itemList.removeAll()
-        let itemDict = userRespository.queryItemCoreData()
+        let itemDict = respository.queryItemCoreData()
         for (name,price) in itemDict {
             itemList.append(ItemDataWithBenefits(itemData: ItemData(itemName: name, itemPrice: price), benefits: 0))
         }
@@ -57,17 +57,17 @@ class RealTimePriceViewModel {
     }
     
     func updateItemCoreData(){
-        userRespository.deleteAllItemCoreData()
+        respository.deleteAllItemCoreData()
         for i in 0 ..< itemList.count {
-            userRespository.insertItemCoreData(name: itemList[i].itemData.itemName, price: itemList[i].itemData.itemPrice, id: i)
+            respository.insertItemCoreData(name: itemList[i].itemData.itemName, price: itemList[i].itemData.itemPrice, id: i)
         }
     }
     
     func updateMoneyCoreData(benefitsPresent:Int){
         var userList = [UserData]()
-        let userNameList = userRespository.queryUserCoreData()
+        let userNameList = respository.queryUserCoreData()
         userNameList.forEach { (userName) in
-            let userMoneyDatas = userRespository.queryMoneyCoreData(userName: userName)
+            let userMoneyDatas = respository.queryMoneyCoreData(userName: userName)
             var moneyDatas = [MoneyData]()
             userMoneyDatas.forEach { (moneyString, addMoneyDate) in
                 moneyDatas.append(MoneyData(moneyString: moneyString, date: addMoneyDate))
@@ -77,13 +77,13 @@ class RealTimePriceViewModel {
         
         for i in 0 ..< userList.count {
             let userData = userList[i]
-            userRespository.deleteAllMoneyCoreData(userName: userData.userName)
+            respository.deleteAllMoneyCoreData(userName: userData.userName)
             for j in 0 ..< userData.money.count {
                 let date = userData.money[j].date
                 if userData.money[j].moneyString != "Add Money" {
                     let money = Int(userData.money[j].moneyString)!
                     let newMoney = money + money*benefitsPresent/100
-                    userRespository.insertMoneyCoreData(userName: userData.userName, money: newMoney, date: date!)
+                    respository.insertMoneyCoreData(userName: userData.userName, money: newMoney, date: date!)
                 }
             }
         }

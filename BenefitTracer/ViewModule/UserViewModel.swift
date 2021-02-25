@@ -14,13 +14,13 @@ class UserViewModel {
     let userCellId = "UserCell"
     let moneyCellId = "MoneyCell"
     var list = [UserData]()
-    let userRespository = UserRespository()
+    let respository = Respository()
     
     func setList(){
         list.removeAll()
-        let userNameList = userRespository.queryUserCoreData()
+        let userNameList = respository.queryUserCoreData()
         userNameList.forEach { (userName) in
-            let userMoneyDatas = userRespository.queryMoneyCoreData(userName: userName)
+            let userMoneyDatas = respository.queryMoneyCoreData(userName: userName)
             var moneyDatas = [MoneyData]()
             userMoneyDatas.forEach { (moneyString, addMoneyDate) in
                 moneyDatas.append(MoneyData(moneyString: moneyString, date: addMoneyDate))
@@ -31,7 +31,7 @@ class UserViewModel {
     
     func addNewUser(userName:String){
         list.append(UserData(money: [MoneyData(moneyString: "Add Money", date: nil)], userName: userName))
-        userRespository.insertUserCoreData(name: userName)
+        respository.insertUserCoreData(name: userName)
     }
     
     func addNewMoney(userIndex:Int,money:String){
@@ -39,7 +39,7 @@ class UserViewModel {
         list[userIndex].money.insert(MoneyData(moneyString: money, date: date), at: list[userIndex].money.count-1)
         let username = list[userIndex].userName
         let moneyPrice = Int(money)!
-        userRespository.insertMoneyCoreData(userName: username, money: moneyPrice, date: date)
+        respository.insertMoneyCoreData(userName: username, money: moneyPrice, date: date)
     }
     
     func getSections() -> Int{
@@ -95,13 +95,13 @@ class UserViewModel {
         }
         let name = list[userIndex].userName
         list[userIndex].money.remove(at: moneyIndex)
-        userRespository.deleteMoneyCoreData(userName: name, date: moneyDate)
+        respository.deleteMoneyCoreData(userName: name, date: moneyDate)
     }
     
     func removeUser(userIndex:Int) {
         let name = list[userIndex].userName
         list.remove(at: userIndex)
-        userRespository.deleteUserCoreData(name: name)
+        respository.deleteUserCoreData(name: name)
     }
 
     func getTotalMoney() -> Int {
