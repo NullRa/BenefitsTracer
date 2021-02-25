@@ -100,5 +100,6 @@ class MoneyViewModel {
         } else {
             itemList[0].itemPrice = itemList[0].itemPrice - (oldPrice - newPrice)
         }
+        updateCoreData()
     }
 }

@@ -119,7 +119,6 @@ class UserRespository {
         do {
             let allItemCoreData = try viewContext.fetch(fetchRequest)
             for itemCoreData in allItemCoreData {
-                print(itemCoreData.itemID)
                 let name = itemCoreData.itemName!
                 let price = itemCoreData.itemPrice
                 itemDataDict.append((name,Int(price)))
