@@ -27,6 +27,7 @@
 		698E435025E24A160029C10A /* MoneyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698E434F25E24A160029C10A /* MoneyViewController.swift */; };
 		698E435325E24A290029C10A /* RealTimePriceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698E435225E24A290029C10A /* RealTimePriceViewController.swift */; };
 		698E435625E24A540029C10A /* FormatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698E435525E24A540029C10A /* FormatViewController.swift */; };
+		69A211F325E7FD7F005EC4B0 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A211F225E7FD7F005EC4B0 /* DataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		698E434F25E24A160029C10A /* MoneyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyViewController.swift; sourceTree = "<group>"; };
 		698E435225E24A290029C10A /* RealTimePriceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealTimePriceViewController.swift; sourceTree = "<group>"; };
 		698E435525E24A540029C10A /* FormatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatViewController.swift; sourceTree = "<group>"; };
+		69A211F225E7FD7F005EC4B0 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				185BF2E325E3A0CE007A1F68 /* UserRepository.swift */,
+				69A211F225E7FD7F005EC4B0 /* DataManager.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -218,6 +221,7 @@
 				698E433A25E105190029C10A /* AppDelegate.swift in Sources */,
 				185BF2CE25E39A0E007A1F68 /* MoneyCoreData+CoreDataProperties.swift in Sources */,
 				698E433C25E105190029C10A /* SceneDelegate.swift in Sources */,
+				69A211F325E7FD7F005EC4B0 /* DataManager.swift in Sources */,
 				185BF2CD25E39A0E007A1F68 /* MoneyCoreData+CoreDataClass.swift in Sources */,
 				185BF2CC25E39A0E007A1F68 /* UserCoreData+CoreDataProperties.swift in Sources */,
 				698E435025E24A160029C10A /* MoneyViewController.swift in Sources */,

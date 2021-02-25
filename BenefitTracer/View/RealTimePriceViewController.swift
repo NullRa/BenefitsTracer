@@ -7,17 +7,7 @@
 
 import UIKit
 
-struct ItemDataWithBenefits {
-    var itemData: ItemData
-    var benefits: Int
-    var benefitsString:String {
-        if benefits >= 0 {
-            return "+\(benefits)%"
-        } else {
-            return "\(benefits)%"
-        }
-    }
-}
+
 class RealTimePriceViewController: UIViewController {
     let realTimePriceViewModel = RealTimePriceViewModel()
     

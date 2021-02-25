@@ -13,106 +13,71 @@ enum UserTableViewEventType {
 class UserViewModel {
     let userCellId = "UserCell"
     let moneyCellId = "MoneyCell"
-    var list = [UserData]()
-    let respository = Respository()
-    
-    func setList(){
-        list.removeAll()
-        let userNameList = respository.queryUserCoreData()
-        userNameList.forEach { (userName) in
-            let userMoneyDatas = respository.queryMoneyCoreData(userName: userName)
-            var moneyDatas = [MoneyData]()
-            userMoneyDatas.forEach { (moneyString, addMoneyDate) in
-                moneyDatas.append(MoneyData(moneyString: moneyString, date: addMoneyDate))
-            }
-            list.append(UserData(isOpen: false, money: moneyDatas, userName: userName))
-        }
-    }
+    let dataManager = DataManager.shared
     
     func addNewUser(userName:String){
-        list.append(UserData(money: [MoneyData(moneyString: "Add Money", date: nil)], userName: userName))
-        respository.insertUserCoreData(name: userName)
+        dataManager.addNewUser(userName: userName)
     }
     
     func addNewMoney(userIndex:Int,money:String){
-        let date = Date()
-        list[userIndex].money.insert(MoneyData(moneyString: money, date: date), at: list[userIndex].money.count-1)
-        let username = list[userIndex].userName
-        let moneyPrice = Int(money)!
-        respository.insertMoneyCoreData(userName: username, money: moneyPrice, date: date)
+        dataManager.addNewMoney(userIndex:userIndex,money:money)
     }
     
     func getSections() -> Int{
-        return list.count
+        return dataManager.userDataList.count
     }
     
     func getRows(userIndex:Int) -> Int {
-        if list[userIndex].isOpen {
-            return list[userIndex].money.count + 1
+        if dataManager.userDataList[userIndex].isOpen {
+            return dataManager.userDataList[userIndex].money.count + 1
         } else {
             return 1
         }
     }
     
     func getUserName(userIndex:Int) -> String{
-        return list[userIndex].userName
+        return dataManager.userDataList[userIndex].userName
     }
     
     func getMoney(userIndex:Int,moneyIndex:Int) -> MoneyData{
-        return list[userIndex].money[moneyIndex]
+        return dataManager.userDataList[userIndex].money[moneyIndex]
     }
 
     func getUserTotalMoney(userIndex:Int) -> Int {
-        return list[userIndex].getUserTotalMoney()
+        return dataManager.userDataList[userIndex].getUserTotalMoney()
     }
 
     func selectEvent(userIndex:Int,moneyIndex:Int) -> UserTableViewEventType {
-        if list[userIndex].isOpen {
+        if dataManager.userDataList[userIndex].isOpen {
             if moneyIndex == -1 {//點username收起時
-                list[userIndex].isOpen.toggle()
+                dataManager.userDataList[userIndex].isOpen.toggle()
                 return .toggle
             }
-            if list[userIndex].money[moneyIndex].moneyString == "Add Money" {
+            if dataManager.userDataList[userIndex].money[moneyIndex].moneyString == "Add Money" {
                 return .addMoney
             } else {
-                list[userIndex].isOpen.toggle()
+                dataManager.userDataList[userIndex].isOpen.toggle()
                 return .toggle
             }
         } else {
-            list[userIndex].isOpen.toggle()
+            dataManager.userDataList[userIndex].isOpen.toggle()
             return .toggle
         }
     }
 
     func moneyIsNotEmpty(userIndex:Int) -> Bool {
-        return list[userIndex].money.count > 1
+        return dataManager.userDataList[userIndex].money.count > 1
     }
     
     func removeMoney(userIndex:Int,moneyIndex:Int) {
-        guard let moneyDate = list[userIndex].money[moneyIndex].date else {
-            assertionFailure("ERROR")
-            return
-        }
-        let name = list[userIndex].userName
-        list[userIndex].money.remove(at: moneyIndex)
-        respository.deleteMoneyCoreData(userName: name, date: moneyDate)
+        dataManager.removeMoney(userIndex: userIndex, moneyIndex: moneyIndex)
     }
     
     func removeUser(userIndex:Int) {
-        let name = list[userIndex].userName
-        list.remove(at: userIndex)
-        respository.deleteUserCoreData(name: name)
+        dataManager.removeUser(userIndex:userIndex)
     }
 
     func getTotalMoney() -> Int {
-        var totalMoney: Int = 0
-        list.forEach { (userData) in
-            userData.money.forEach { (moneyData) in
-                if let moneyPrice = Int(moneyData.moneyString)  {
-                    totalMoney = totalMoney + moneyPrice
-                }
-            }
-        }
-        return totalMoney
+        return dataManager.getTotalMoney()
     }
 }

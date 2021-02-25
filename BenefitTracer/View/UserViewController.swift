@@ -6,26 +6,6 @@
 //
 
 import UIKit
-//import CoreData
-struct MoneyData {
-    var moneyString: String
-    var date: Date?
-}
-struct UserData {
-    var isOpen:Bool = false
-    var money = [MoneyData]()
-    var userName:String
-
-    func getUserTotalMoney() -> Int {
-        var totalMoney = 0
-        money.forEach { (moneyData) in
-            if moneyData.moneyString != "Add Money" {
-                totalMoney = totalMoney + Int(moneyData.moneyString)!
-            }
-        }
-        return totalMoney
-    }
-}
 
 class UserViewController: UIViewController {
     
@@ -36,7 +16,6 @@ class UserViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        userViewModel.setList()
         userTableView.reloadData()
     }
     override func viewDidLoad() {
@@ -55,7 +34,6 @@ class UserViewController: UIViewController {
     func bind(){
         userTableView.delegate = self
         userTableView.dataSource = self
-        userViewModel.setList()
         addUserButton.addTarget(self, action: #selector(addUser), for: .touchUpInside)
     }
     
