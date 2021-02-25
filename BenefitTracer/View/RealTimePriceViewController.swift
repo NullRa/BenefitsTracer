@@ -17,13 +17,15 @@ class RealTimePriceViewController: UIViewController {
     @IBOutlet weak var realTimePriceTableView: UITableView!
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-        initUI()
+        super.viewDidLoad()        
         bind()
+        initUI()
     }
     
     func initUI(){
-        totalMoneyLabel.text = "test"
+        realTimePriceTableView.tableFooterView = UIView()
+        totalMoneyLabel.text = "Total Money: \(getTotlePrice())"
+        self.title = "Real Time Price"
     }
     
     func bind(){
@@ -40,6 +42,14 @@ extension RealTimePriceViewController {
             let itemData = ItemData(itemName: name, itemPrice: price)
             itemList.append(itemData)
         }
+    }
+    
+    func getTotlePrice() -> Int {
+        var totalPrice = 0
+        itemList.forEach { (itemData) in
+            totalPrice = totalPrice + itemData.itemPrice
+        }
+        return totalPrice
     }
 }
 
