@@ -22,6 +22,7 @@ class RealTimePriceViewController: UIViewController {
     let realTimePriceCellCellId = "realTimePriceCell"
     var itemList: [ItemDataWithBenefits] = []
     let userRespository = UserRespository()
+    var orginalTotalMoney: Int!
     
     @IBOutlet weak var totalMoneyLabel: UILabel!
     @IBOutlet weak var realTimePriceTableView: UITableView!
@@ -42,6 +43,7 @@ class RealTimePriceViewController: UIViewController {
         realTimePriceTableView.delegate = self
         realTimePriceTableView.dataSource = self
         setList()
+        orginalTotalMoney = getTotlePrice()
     }
 }
 
@@ -59,6 +61,27 @@ extension RealTimePriceViewController {
             totalPrice = totalPrice + item.itemData.itemPrice
         }
         return totalPrice
+    }
+    
+    func editAccountEvent(newMoney:Int,itemIndex:Int){
+        itemList[itemIndex].benefits = (newMoney - itemList[itemIndex].itemData.itemPrice)*100/itemList[itemIndex].itemData.itemPrice
+        itemList[itemIndex].itemData.itemPrice = newMoney
+        realTimePriceTableView.reloadData()
+        setTotalPrice()
+    }
+    
+    func addBenefitsEvent(benefits:Int,itemIndex:Int){
+        itemList[itemIndex].benefits = benefits*100/itemList[itemIndex].itemData.itemPrice
+        itemList[itemIndex].itemData.itemPrice = itemList[itemIndex].itemData.itemPrice + benefits
+        realTimePriceTableView.reloadData()
+        setTotalPrice()
+    }
+    
+    func setTotalPrice() {
+        let newTotalMoney = getTotlePrice()
+        let totalBenefitsPresent = (newTotalMoney-orginalTotalMoney)*100/orginalTotalMoney
+        let totalBenefitsPresentString = totalBenefitsPresent >= 0 ? "+\(totalBenefitsPresent)%" : "\(totalBenefitsPresent)%"
+        totalMoneyLabel.text = "Total Money: \(newTotalMoney) (\(totalBenefitsPresentString))"
     }
 }
 
@@ -115,16 +138,5 @@ extension RealTimePriceViewController: UITableViewDelegate, UITableViewDataSourc
         let prevention = UISwipeActionsConfiguration(actions: [editAction, addAction])
         prevention.performsFirstActionWithFullSwipe = false
         return prevention
-    }
-    
-    func editAccountEvent(newMoney:Int,itemIndex:Int){
-        itemList[itemIndex].benefits = (newMoney - itemList[itemIndex].itemData.itemPrice)*100/itemList[itemIndex].itemData.itemPrice
-        itemList[itemIndex].itemData.itemPrice = newMoney
-        realTimePriceTableView.reloadData()
-    }
-    func addBenefitsEvent(benefits:Int,itemIndex:Int){
-        itemList[itemIndex].benefits = benefits*100/itemList[itemIndex].itemData.itemPrice
-        itemList[itemIndex].itemData.itemPrice = itemList[itemIndex].itemData.itemPrice + benefits
-        realTimePriceTableView.reloadData()
     }
 }
