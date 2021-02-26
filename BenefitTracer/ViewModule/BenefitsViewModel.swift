@@ -6,7 +6,7 @@
 //
 
 import Foundation
-class RealTimePriceViewModel {
+class BenefitsViewModel {
     let cellId = "realTimePriceCell"
     var itemList: [ItemDataWithBenefits] = []
     let respository = Respository()

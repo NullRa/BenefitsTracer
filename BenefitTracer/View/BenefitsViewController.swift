@@ -8,15 +8,15 @@
 import UIKit
 
 
-class RealTimePriceViewController: UIViewController {
-    let realTimePriceViewModel = RealTimePriceViewModel()
+class BenefitsViewController: UIViewController {
+    let benefitsViewModel = BenefitsViewModel()
     
     @IBOutlet weak var totalMoneyLabel: UILabel!
     @IBOutlet weak var realTimePriceTableView: UITableView!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        realTimePriceViewModel.setList()
+        benefitsViewModel.setList()
         realTimePriceTableView.reloadData()
     }
     
@@ -28,35 +28,35 @@ class RealTimePriceViewController: UIViewController {
     
     func initUI(){
         realTimePriceTableView.tableFooterView = UIView()
-        totalMoneyLabel.text = "Total Money: \(realTimePriceViewModel.orginalTotalMoney!) (+0%)"
-        self.title = "Real Time Price"
+        totalMoneyLabel.text = "Total Money: \(benefitsViewModel.orginalTotalMoney!) (+0%)"
+        self.title = "Benefits"
     }
     
     func bind(){
         realTimePriceTableView.delegate = self
         realTimePriceTableView.dataSource = self
-        realTimePriceViewModel.setList()
-        realTimePriceViewModel.setOrginalTotalMoney()
+        benefitsViewModel.setList()
+        benefitsViewModel.setOrginalTotalMoney()
     }
 }
 
-extension RealTimePriceViewController {
+extension BenefitsViewController {
     
     func setTotalPriceLabel() {
-        let newTotalMoney = realTimePriceViewModel.getTotlePrice()
-        let totalBenefitsPresentString = realTimePriceViewModel.getTotalBenefitsString()
+        let newTotalMoney = benefitsViewModel.getTotlePrice()
+        let totalBenefitsPresentString = benefitsViewModel.getTotalBenefitsString()
         totalMoneyLabel.text = "Total Money: \(newTotalMoney) (\(totalBenefitsPresentString))"
     }
 }
 
-extension RealTimePriceViewController: UITableViewDelegate, UITableViewDataSource {
+extension BenefitsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return realTimePriceViewModel.getListCount()
+        return benefitsViewModel.getListCount()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: realTimePriceViewModel.cellId, for: indexPath)
-        let item = realTimePriceViewModel.getListItem(itemIndex: indexPath.row)
+        let cell = tableView.dequeueReusableCell(withIdentifier: benefitsViewModel.cellId, for: indexPath)
+        let item = benefitsViewModel.getListItem(itemIndex: indexPath.row)
         cell.textLabel?.text = item.0
         cell.detailTextLabel?.text = "\(item.1) (\(item.2))"
         return cell
@@ -72,7 +72,7 @@ extension RealTimePriceViewController: UITableViewDelegate, UITableViewDataSourc
             let okAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
                 let textField = (alert.textFields?.first)! as UITextField
                 let newMoney = Int(textField.text!)!
-                self.realTimePriceViewModel.editAccountEvent(newMoney: newMoney, itemIndex: indexPath.row)
+                self.benefitsViewModel.editAccountEvent(newMoney: newMoney, itemIndex: indexPath.row)
                 tableView.reloadData()
                 self.setTotalPriceLabel()
             }
@@ -92,7 +92,7 @@ extension RealTimePriceViewController: UITableViewDelegate, UITableViewDataSourc
             let okAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
                 let textField = (alert.textFields?.first)! as UITextField
                 let addBenefits = Int(textField.text!)!
-                self.realTimePriceViewModel.addBenefitsEvent(benefits: addBenefits, itemIndex: indexPath.row)
+                self.benefitsViewModel.addBenefitsEvent(benefits: addBenefits, itemIndex: indexPath.row)
                 tableView.reloadData()
                 self.setTotalPriceLabel()
                 

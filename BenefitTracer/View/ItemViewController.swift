@@ -28,7 +28,7 @@ class ItemViewController: UIViewController {
     }
     
     func initUI(){
-        self.title = "Money"
+        self.title = "Item"
         moneyTableView.tableFooterView = UIView()
     }
     
