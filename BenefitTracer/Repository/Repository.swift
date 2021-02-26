@@ -124,10 +124,11 @@ class Respository {
         let newCoreDataItem = NSEntityDescription.insertNewObject(forEntityName: "ItemCoreData", into: viewContext) as! ItemCoreData
         newCoreDataItem.itemName = name
         newCoreDataItem.itemPrice = Int32(price)
+        newCoreDataItem.itemBenefits = 0
         app.saveContext()
     }
     
-    func updateItemCoreData(name:String,newMoney:Int,newName:String?=nil) {
+    func updateItemCoreData(name:String,newMoney:Int,newName:String?=nil,benefits:Int) {
         do {
             let allItemCoreData = try viewContext.fetch(ItemCoreData.fetchRequest())
             for itemCoreData in allItemCoreData as! [ItemCoreData] {
@@ -144,14 +145,15 @@ class Respository {
         }
     }
     
-    func queryItemCoreData() -> [(String,Int)] {
-        var itemDatas = [(String,Int)]()
+    func queryItemCoreData() -> [(String,Int,Int)] {
+        var itemDatas = [(String,Int,Int)]()
         do {
             let allItemCoreData = try viewContext.fetch(ItemCoreData.fetchRequest())
             for itemCoreData in allItemCoreData as! [ItemCoreData] {
                 let name = itemCoreData.itemName!
                 let price = itemCoreData.itemPrice
-                itemDatas.append((name,Int(price)))
+                let benefits = itemCoreData.itemBenefits
+                itemDatas.append((name,Int(price),Int(benefits)))
             }
             return itemDatas
         } catch {

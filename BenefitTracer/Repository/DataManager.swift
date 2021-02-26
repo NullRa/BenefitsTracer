@@ -38,18 +38,11 @@ struct ItemData {
             return "\(benefits)%"
         }
     }
-}
-struct ItemDataWithBenefits {
-    var itemData: ItemData
-    var benefits: Int
-    var benefitsString:String {
-        if benefits >= 0 {
-            return "+\(benefits)%"
-        } else {
-            return "\(benefits)%"
-        }
+    func getMoneyWithBenefits() -> Int{
+        return (money + money*benefits/100)
     }
 }
+
 class DataManager {
     static let shared = DataManager()
     let respository = Respository()
@@ -122,9 +115,9 @@ class DataManager {
     
     // MARK: - ItemView
     private func setItemViewModelList(){
-        let itemTwoWayData = respository.queryItemCoreData()
-        for (name,price) in itemTwoWayData {
-            let itemData = ItemData(name: name, money: price)
+        let itemThreeWayData = respository.queryItemCoreData()
+        for (name,price,benefits) in itemThreeWayData {
+            let itemData = ItemData(name: name, money: price, benefits: benefits)
             itemDataList.append(itemData)
         }
         if itemDataList.isEmpty {
@@ -146,13 +139,13 @@ class DataManager {
             itemDataList.append(ItemData(name: itemName, money: money))
             respository.insertItemCoreData(name: itemName, price: money)
         } else {
-            let unHandleMoney = itemDataList[0].money
+            let unHandleMoney = itemDataList[0].getMoneyWithBenefits()
             let newUnHandleMoney = unHandleMoney - money
             if money > unHandleMoney {
                 return false
             }
             itemDataList[0].money = newUnHandleMoney
-            respository.updateItemCoreData(name: itemDataList[0].name, newMoney: newUnHandleMoney)
+            respository.updateItemCoreData(name: itemDataList[0].name, newMoney: newUnHandleMoney, benefits: 0)
             itemDataList.append(ItemData(name: itemName, money: money))
             respository.insertItemCoreData(name: itemName, price: money)
         }
@@ -161,8 +154,8 @@ class DataManager {
     
     func removeItem(itemID:Int){
         let deleteItem = itemDataList.remove(at: itemID)
-        itemDataList[0].money = itemDataList[0].money + deleteItem.money
-        respository.updateItemCoreData(name: itemDataList[0].name, newMoney: itemDataList[0].money)
+        itemDataList[0].money = itemDataList[0].getMoneyWithBenefits() + deleteItem.getMoneyWithBenefits()
+        respository.updateItemCoreData(name: itemDataList[0].name, newMoney: itemDataList[0].money, benefits: 0)
         respository.deleteItemCoreData(name: deleteItem.name)
     }
     
@@ -171,19 +164,19 @@ class DataManager {
             //FIXME
             assertionFailure("ERROR ITEM0")
         }
-        let oldPrice = itemDataList[itemID].money
+        let oldPrice = itemDataList[itemID].getMoneyWithBenefits()
         let oldName = itemDataList[itemID].name
-        if newPrice > itemDataList[0].money + oldPrice {
+        if newPrice > itemDataList[0].getMoneyWithBenefits() + oldPrice {
             return false
         }
         if oldPrice > newPrice {
-            itemDataList[0].money = itemDataList[0].money + (oldPrice - newPrice)
+            itemDataList[0].money = itemDataList[0].getMoneyWithBenefits() + (oldPrice - newPrice)
         } else {
-            itemDataList[0].money = itemDataList[0].money - (newPrice - oldPrice)
+            itemDataList[0].money = itemDataList[0].getMoneyWithBenefits() - (newPrice - oldPrice)
         }
         itemDataList[itemID].money = newPrice
         itemDataList[itemID].name = newName
-        respository.updateItemCoreData(name: oldName, newMoney: newPrice, newName: newName)
+        respository.updateItemCoreData(name: oldName, newMoney: newPrice, newName: newName, benefits: 0)
         return true
     }
     
@@ -192,21 +185,39 @@ class DataManager {
             //FIXME
             assertionFailure("ERROR ITEM0")
         }
-        if extraPrice > itemDataList[0].money {
+        if extraPrice > itemDataList[0].getMoneyWithBenefits() {
             return false
         }
-        itemDataList[0].money = itemDataList[0].money - extraPrice
-        respository.updateItemCoreData(name: itemDataList[0].name, newMoney: itemDataList[0].money)
-        itemDataList[itemID].money = itemDataList[itemID].money + extraPrice
-        respository.updateItemCoreData(name: itemDataList[itemID].name, newMoney: itemDataList[itemID].money)
+        itemDataList[0].money = itemDataList[0].getMoneyWithBenefits() - extraPrice
+        respository.updateItemCoreData(name: itemDataList[0].name, newMoney: itemDataList[0].money, benefits: 0)
+        itemDataList[itemID].money = itemDataList[itemID].getMoneyWithBenefits() + extraPrice
+        respository.updateItemCoreData(name: itemDataList[itemID].name, newMoney: itemDataList[itemID].money, benefits: 0)
         return true
     }
     
     func editUnHandleMoney(extraPrice:Int){
-        itemDataList[0].money = itemDataList[0].money + extraPrice
-        respository.updateItemCoreData(name: itemDataList[0].name, newMoney: itemDataList[0].money)
+        itemDataList[0].money = itemDataList[0].getMoneyWithBenefits() + extraPrice
+        respository.updateItemCoreData(name: itemDataList[0].name, newMoney: itemDataList[0].money, benefits: 0)
     }
     
     // MARK: - BenefitsView
+    func getListItem(itemIndex: Int) -> (String,String,String){
+        //name,price,benefits
+        let name = itemDataList[itemIndex].name
+        let money = "\(itemDataList[itemIndex].money)"
+        let benefits = "\(itemDataList[itemIndex].benefits)"
+        return (name,money,benefits)
+    }
     
+    func getListItem2(itemIndex: Int) -> ItemData {
+        return itemDataList[itemIndex]
+    }
+    
+    func addBenefits(benefitsMoney:Int, itemIndex:Int){
+        //FIXME被除數等於零
+        itemDataList[itemIndex].benefits = benefitsMoney * 100 / itemDataList[itemIndex].money
+        itemDataList[itemIndex].money = itemDataList[itemIndex].money + benefitsMoney
+        respository.updateItemCoreData(name: itemDataList[itemIndex].name, newMoney: itemDataList[itemIndex].money, benefits: itemDataList[itemIndex].benefits)
+        
+    }
 }

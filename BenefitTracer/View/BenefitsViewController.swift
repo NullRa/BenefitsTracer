@@ -16,7 +16,6 @@ class BenefitsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        benefitsViewModel.setList()
         realTimePriceTableView.reloadData()
     }
     
@@ -28,24 +27,20 @@ class BenefitsViewController: UIViewController {
     
     func initUI(){
         realTimePriceTableView.tableFooterView = UIView()
-        totalMoneyLabel.text = "Total Money: \(benefitsViewModel.orginalTotalMoney!) (+0%)"
+        totalMoneyLabel.text = "Total Money: \(benefitsViewModel.getTotalMoney()) (+0%)"
         self.title = "Benefits"
     }
     
     func bind(){
         realTimePriceTableView.delegate = self
         realTimePriceTableView.dataSource = self
-        benefitsViewModel.setList()
-        benefitsViewModel.setOrginalTotalMoney()
     }
 }
 
 extension BenefitsViewController {
     
     func setTotalPriceLabel() {
-        let newTotalMoney = benefitsViewModel.getTotlePrice()
-        let totalBenefitsPresentString = benefitsViewModel.getTotalBenefitsString()
-        totalMoneyLabel.text = "Total Money: \(newTotalMoney) (\(totalBenefitsPresentString))"
+        totalMoneyLabel.text = benefitsViewModel.getTotalPriceString()
     }
 }
 
@@ -56,9 +51,9 @@ extension BenefitsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: benefitsViewModel.cellId, for: indexPath)
-        let item = benefitsViewModel.getListItem(itemIndex: indexPath.row)
-        cell.textLabel?.text = item.0
-        cell.detailTextLabel?.text = "\(item.1) (\(item.2))"
+        let (name,price,benefits) = benefitsViewModel.getListItemToThreeWay(itemIndex: indexPath.row)
+        cell.textLabel?.text = name
+        cell.detailTextLabel?.text = "\(price) (\(benefits))"
         return cell
     }
     
@@ -72,7 +67,9 @@ extension BenefitsViewController: UITableViewDelegate, UITableViewDataSource {
             let okAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
                 let textField = (alert.textFields?.first)! as UITextField
                 let newMoney = Int(textField.text!)!
-                self.benefitsViewModel.editAccountEvent(newMoney: newMoney, itemIndex: indexPath.row)
+                let oldMoney = self.benefitsViewModel.getListItem(itemIndex:indexPath.row).getMoneyWithBenefits()
+                let benefitsMoney = newMoney - oldMoney
+                self.benefitsViewModel.addBenefits(benefitsMoney: benefitsMoney, itemIndex: indexPath.row)
                 tableView.reloadData()
                 self.setTotalPriceLabel()
             }
@@ -92,7 +89,7 @@ extension BenefitsViewController: UITableViewDelegate, UITableViewDataSource {
             let okAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
                 let textField = (alert.textFields?.first)! as UITextField
                 let addBenefits = Int(textField.text!)!
-                self.benefitsViewModel.addBenefitsEvent(benefits: addBenefits, itemIndex: indexPath.row)
+                self.benefitsViewModel.addBenefits(benefitsMoney: addBenefits, itemIndex: indexPath.row)
                 tableView.reloadData()
                 self.setTotalPriceLabel()
                 
