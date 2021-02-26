@@ -120,30 +120,43 @@ class Respository {
         }
     }
     
-    func insertItemCoreData(name:String,price:Int,id:Int){
+    func insertItemCoreData(name:String,price:Int){
         let newCoreDataItem = NSEntityDescription.insertNewObject(forEntityName: "ItemCoreData", into: viewContext) as! ItemCoreData
         newCoreDataItem.itemName = name
         newCoreDataItem.itemPrice = Int32(price)
-        newCoreDataItem.itemID = Int32(id)
         app.saveContext()
     }
     
-    func queryItemCoreData() -> [(String,Int)] {
-        let fetchRequest: NSFetchRequest<ItemCoreData> = ItemCoreData.fetchRequest()
-        let sort = NSSortDescriptor(key: "itemID", ascending: true)
-        fetchRequest.sortDescriptors = [sort]
-        var itemDataDict = [(String,Int)]()
+    func updateItemCoreData(name:String,newMoney:Int,newName:String?=nil) {
         do {
-            let allItemCoreData = try viewContext.fetch(fetchRequest)
-            for itemCoreData in allItemCoreData {
-                let name = itemCoreData.itemName!
-                let price = itemCoreData.itemPrice
-                itemDataDict.append((name,Int(price)))
+            let allItemCoreData = try viewContext.fetch(ItemCoreData.fetchRequest())
+            for itemCoreData in allItemCoreData as! [ItemCoreData] {
+                if(itemCoreData.itemName! == name){
+                    itemCoreData.itemPrice = Int32(newMoney)
+                    if newName != nil {
+                        itemCoreData.itemName = newName
+                    }
+                    app.saveContext()
+                }
             }
-            return itemDataDict
         } catch {
             print(error)
-            return itemDataDict
+        }
+    }
+    
+    func queryItemCoreData() -> [(String,Int)] {
+        var itemDatas = [(String,Int)]()
+        do {
+            let allItemCoreData = try viewContext.fetch(ItemCoreData.fetchRequest())
+            for itemCoreData in allItemCoreData as! [ItemCoreData] {
+                let name = itemCoreData.itemName!
+                let price = itemCoreData.itemPrice
+                itemDatas.append((name,Int(price)))
+            }
+            return itemDatas
+        } catch {
+            print(error)
+            return itemDatas
         }
     }
     

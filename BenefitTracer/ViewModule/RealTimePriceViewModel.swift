@@ -59,7 +59,7 @@ class RealTimePriceViewModel {
     func updateItemCoreData(){
         respository.deleteAllItemCoreData()
         for i in 0 ..< itemList.count {
-            respository.insertItemCoreData(name: itemList[i].itemData.itemName, price: itemList[i].itemData.itemPrice, id: i)
+            respository.insertItemCoreData(name: itemList[i].itemData.itemName, price: itemList[i].itemData.itemPrice)
         }
     }
     

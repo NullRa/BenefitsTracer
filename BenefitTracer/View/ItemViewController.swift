@@ -3,12 +3,12 @@
 //  BenefitTracer
 //
 //  Created by Jay on 2021/2/21.
-//
+// 
 
 import UIKit
 
-class MoneyViewController: UIViewController {
-    let moneyViewModel = MoneyViewModel()
+class ItemViewController: UIViewController {
+    let itemViewModel = ItemViewModel()
     
     @IBOutlet weak var totalMoneyLabel: UILabel!
     @IBOutlet weak var addItemButton: UIButton!
@@ -16,17 +16,9 @@ class MoneyViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let navVC = self.tabBarController?.viewControllers?[0] as? UINavigationController,
-           let first = navVC.viewControllers[0] as? UserViewController{
-//            first.userViewModel.setList()
-            let totalMoney = first.userViewModel.getTotalMoney()
-            self.totalMoneyLabel.text = "Total Money: \(totalMoney)"
-            self.title = "Money"
-            if totalMoney != moneyViewModel.getTotlePrice() {
-                moneyViewModel.addBankPrice(newPrice: totalMoney, oldPrice: moneyViewModel.getTotlePrice())
-                moneyTableView.reloadData()
-            }
-        }
+        totalMoneyLabel.text = "Total Money: \(itemViewModel.getTotalMoney())"
+        itemViewModel.setList()
+        moneyTableView.reloadData()
     }
     
     override func viewDidLoad() {
@@ -36,6 +28,7 @@ class MoneyViewController: UIViewController {
     }
     
     func initUI(){
+        self.title = "Money"
         moneyTableView.tableFooterView = UIView()
     }
     
@@ -44,7 +37,6 @@ class MoneyViewController: UIViewController {
         moneyTableView.dataSource = self
         addItemButton.setTitle("Add Item", for: .normal)
         addItemButton.addTarget(self, action: #selector(addItemEvent), for: .touchUpInside)
-        moneyViewModel.setList()
     }
     
     @objc func addItemEvent(){
@@ -69,7 +61,7 @@ class MoneyViewController: UIViewController {
                 return
             }
             
-            if let errorMsg = self.moneyViewModel.addItemResult(name: name, price: price) {
+            if let errorMsg = self.itemViewModel.addItemResult(name: name, price: price) {
                 self.alertMessage(title: errorMsg)
             } else {
                 self.moneyTableView.reloadData()
@@ -89,15 +81,15 @@ class MoneyViewController: UIViewController {
     }
 }
 
-extension MoneyViewController: UITableViewDelegate, UITableViewDataSource {
+extension ItemViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return moneyViewModel.getListCount()
+        return itemViewModel.getListCount()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = moneyTableView.dequeueReusableCell(withIdentifier: moneyViewModel.itemCellId, for: indexPath)
-        cell.textLabel?.text = moneyViewModel.getItemName(itemID: indexPath.row)
-        cell.detailTextLabel?.text = "$: \(moneyViewModel.getItemPrice(itemID: indexPath.row))"
+        let cell = moneyTableView.dequeueReusableCell(withIdentifier: itemViewModel.itemCellId, for: indexPath)
+        cell.textLabel?.text = itemViewModel.getItemName(itemID: indexPath.row)
+        cell.detailTextLabel?.text = "$: \(itemViewModel.getItemPrice(itemID: indexPath.row))"
         return cell
     }
     
@@ -106,7 +98,7 @@ extension MoneyViewController: UITableViewDelegate, UITableViewDataSource {
             if indexPath.row == 0 {
                 self.alertMessage(title: "It couldn't delete.")
             } else {
-                self.moneyViewModel.removeItem(itemID: indexPath.row)
+                self.itemViewModel.removeItem(itemID: indexPath.row)
                 tableView.reloadData()
             }
             completionHandler(true)
@@ -116,10 +108,10 @@ extension MoneyViewController: UITableViewDelegate, UITableViewDataSource {
         let editAction = UIContextualAction(style: .normal, title: "EDIT") { (action, view, completionHandler) in
             let alert = UIAlertController(title: "Edit Item", message: nil, preferredStyle: .alert)
             alert.addTextField { (nameTextField) in
-                nameTextField.text = self.moneyViewModel.getItemName(itemID: indexPath.row)
+                nameTextField.text = self.itemViewModel.getItemName(itemID: indexPath.row)
             }
             alert.addTextField { (priceTextField) in
-                priceTextField.text = "\(self.moneyViewModel.getItemPrice(itemID: indexPath.row))"
+                priceTextField.text = "\(self.itemViewModel.getItemPrice(itemID: indexPath.row))"
                 priceTextField.keyboardType = .numberPad
             }
             let okAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
@@ -142,7 +134,7 @@ extension MoneyViewController: UITableViewDelegate, UITableViewDataSource {
                     return
                 }
                 
-                if let errorMsg = self.moneyViewModel.editItemResult(itemID: indexPath.row, newName: name, newPrice: price) {
+                if let errorMsg = self.itemViewModel.editItemResult(itemID: indexPath.row, newName: name, newPrice: price) {
                     self.alertMessage(title: errorMsg)
                     completionHandler(true)
                     return
@@ -176,7 +168,7 @@ extension MoneyViewController: UITableViewDelegate, UITableViewDataSource {
                     return
                 }
                 
-                if let errorMsg = self.moneyViewModel.addExtraItemPriceResult(itemID: indexPath.row, extraPrice: price) {
+                if let errorMsg = self.itemViewModel.addExtraItemPriceResult(itemID: indexPath.row, extraPrice: price) {
                     self.alertMessage(title: errorMsg)
                     completionHandler(true)
                     return

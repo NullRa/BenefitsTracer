@@ -170,8 +170,11 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource{
                     tableView.reloadData()
                 }
             } else {
-                userViewModel.removeMoney(userIndex: section, moneyIndex: row-1)
-                tableView.reloadData()
+                if let errorMsg = userViewModel.removeMoney(userIndex: section, moneyIndex: row-1) {
+                    alertMessage(title: errorMsg, message: "Can't Delete")
+                } else {
+                    tableView.reloadData()
+                }
             }
         }
     }

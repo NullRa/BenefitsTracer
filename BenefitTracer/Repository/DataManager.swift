@@ -46,13 +46,15 @@ class DataManager {
     static let shared = DataManager()
     let respository = Respository()
     var userDataList = [UserData]()
+    var itemDataList = [ItemData]()
 
     init() {
         setUserViewModelList()
+        setItemViewModelList()
     }
 
     // MARK: - UserView
-    func setUserViewModelList(){
+    private func setUserViewModelList(){
         let userNameList = respository.queryUserCoreData()
         userNameList.forEach { (userName) in
             let userMoneyDatas = respository.queryMoneyCoreData(userName: userName)
@@ -64,7 +66,7 @@ class DataManager {
         }
     }
 
-    func addNewUser(userName:String) {
+    func addUser(userName:String) {
         userDataList.append(UserData(money: [MoneyData(moneyString: "Add Money", date: nil)], userName: userName))
         respository.insertUserCoreData(name: userName)
     }
@@ -75,7 +77,7 @@ class DataManager {
         respository.deleteUserCoreData(name: name)
     }
 
-    func addNewMoney(userIndex:Int,money:String){
+    func addMoney(userIndex:Int,money:String){
         let date = Date()
         userDataList[userIndex].money.insert(MoneyData(moneyString: money, date: date), at: userDataList[userIndex].money.count-1)
         let username = userDataList[userIndex].userName
@@ -83,17 +85,22 @@ class DataManager {
         respository.insertMoneyCoreData(userName: username, money: moneyPrice, date: date)
     }
 
-    func removeMoney(userIndex:Int,moneyIndex:Int) {
+    func removeMoneyResult(userIndex:Int,moneyIndex:Int) -> Bool {
         guard let moneyDate = userDataList[userIndex].money[moneyIndex].date else {
             assertionFailure("ERROR")
-            return
+            return false
         }
         let name = userDataList[userIndex].userName
+        let money = Int(userDataList[userIndex].money[moneyIndex].moneyString)!
+        if money > itemDataList[0].itemPrice {
+            return false
+        }
         userDataList[userIndex].money.remove(at: moneyIndex)
         respository.deleteMoneyCoreData(userName: name, date: moneyDate)
+        return true
     }
 
-    func getTotalMoney() -> Int {
+    func getTotalMoneyByUserData() -> Int {
         var totalMoney: Int = 0
         userDataList.forEach { (userData) in
             userData.money.forEach { (moneyData) in
@@ -103,5 +110,92 @@ class DataManager {
             }
         }
         return totalMoney
+    }
+    
+    // MARK: - ItemView
+    private func setItemViewModelList(){
+        let itemTwoWayData = respository.queryItemCoreData()
+        for (name,price) in itemTwoWayData {
+            let itemData = ItemData(itemName: name, itemPrice: price)
+            itemDataList.append(itemData)
+        }
+        if itemDataList.isEmpty {
+            let totalMoney = getTotalMoneyByUserData()
+            let _ = addItemIsSuccessful(itemName: "UnHandle", money: totalMoney)
+        }
+    }
+    
+    func getTotalMoneyByItemData() -> Int {
+        var totalMoney: Int = 0
+        itemDataList.forEach { (itemData) in
+            totalMoney = totalMoney + itemData.itemPrice
+        }
+        return totalMoney
+    }
+    
+    func addItemIsSuccessful(itemName:String, money:Int) -> Bool {
+        if itemDataList.isEmpty {
+            itemDataList.append(ItemData(itemName: itemName, itemPrice: money))
+            respository.insertItemCoreData(name: itemName, price: money)
+        } else {
+            let unHandleMoney = itemDataList[0].itemPrice
+            let newUnHandleMoney = unHandleMoney - money
+            if money > unHandleMoney {
+                return false
+            }
+            itemDataList[0].itemPrice = newUnHandleMoney
+            respository.updateItemCoreData(name: itemDataList[0].itemName, newMoney: newUnHandleMoney)
+            itemDataList.append(ItemData(itemName: itemName, itemPrice: money))
+            respository.insertItemCoreData(name: itemName, price: money)
+        }
+        return true
+    }
+    
+    func removeItem(itemID:Int){
+        let deleteItem = itemDataList.remove(at: itemID)
+        itemDataList[0].itemPrice = itemDataList[0].itemPrice + deleteItem.itemPrice
+        respository.updateItemCoreData(name: itemDataList[0].itemName, newMoney: itemDataList[0].itemPrice)
+        respository.deleteItemCoreData(name: deleteItem.itemName)
+    }
+    
+    func editItemIsSuccessful(itemID:Int,newName:String,newPrice:Int) -> Bool {
+        if itemID == 0 {
+            //FIXME
+            assertionFailure("ERROR ITEM0")
+        }
+        let oldPrice = itemDataList[itemID].itemPrice
+        let oldName = itemDataList[itemID].itemName
+        if newPrice > itemDataList[0].itemPrice + oldPrice {
+            return false
+        }
+        if oldPrice > newPrice {
+            itemDataList[0].itemPrice = itemDataList[0].itemPrice + (oldPrice - newPrice)
+        } else {
+            itemDataList[0].itemPrice = itemDataList[0].itemPrice - (newPrice - oldPrice)
+        }
+        itemDataList[itemID].itemPrice = newPrice
+        itemDataList[itemID].itemName = newName
+        respository.updateItemCoreData(name: oldName, newMoney: newPrice, newName: newName)
+        return true
+    }
+    
+    func addExtraMoneyIsSuccessful(itemID:Int,extraPrice:Int) -> Bool {
+        if itemID == 0 {
+            //FIXME
+            assertionFailure("ERROR ITEM0")
+        }
+        if extraPrice > itemDataList[0].itemPrice {
+            return false
+        }
+        itemDataList[0].itemPrice = itemDataList[0].itemPrice - extraPrice
+        respository.updateItemCoreData(name: itemDataList[0].itemName, newMoney: itemDataList[0].itemPrice)
+        itemDataList[itemID].itemPrice = itemDataList[itemID].itemPrice + extraPrice
+        respository.updateItemCoreData(name: itemDataList[itemID].itemName, newMoney: itemDataList[itemID].itemPrice)
+        return true
+    }
+    
+    func editUnHandleMoney(extraPrice:Int){
+        itemDataList[0].itemPrice = itemDataList[0].itemPrice + extraPrice
+        respository.updateItemCoreData(name: itemDataList[0].itemName, newMoney: itemDataList[0].itemPrice)
     }
 }

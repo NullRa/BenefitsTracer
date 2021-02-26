@@ -16,11 +16,11 @@ class UserViewModel {
     let dataManager = DataManager.shared
     
     func addNewUser(userName:String){
-        dataManager.addNewUser(userName: userName)
+        dataManager.addUser(userName: userName)
     }
     
     func addNewMoney(userIndex:Int,money:String){
-        dataManager.addNewMoney(userIndex:userIndex,money:money)
+        dataManager.addMoney(userIndex:userIndex,money:money)
     }
     
     func getSections() -> Int{
@@ -69,8 +69,12 @@ class UserViewModel {
         return dataManager.userDataList[userIndex].money.count > 1
     }
     
-    func removeMoney(userIndex:Int,moneyIndex:Int) {
-        dataManager.removeMoney(userIndex: userIndex, moneyIndex: moneyIndex)
+    func removeMoney(userIndex:Int,moneyIndex:Int) -> String? {
+        if dataManager.removeMoneyResult(userIndex: userIndex, moneyIndex: moneyIndex) {
+            return nil
+        } else {
+            return "Bank money is not enough."
+        }
     }
     
     func removeUser(userIndex:Int) {
@@ -78,6 +82,6 @@ class UserViewModel {
     }
 
     func getTotalMoney() -> Int {
-        return dataManager.getTotalMoney()
+        return dataManager.getTotalMoneyByUserData()
     }
 }

@@ -2,7 +2,7 @@
 //  ItemCoreData+CoreDataProperties.swift
 //  BenefitTracer
 //
-//  Created by Apple on 2021/2/23.
+//  Created by Apple on 2021/2/26.
 //
 //
 
@@ -18,7 +18,6 @@ extension ItemCoreData {
 
     @NSManaged public var itemName: String?
     @NSManaged public var itemPrice: Int32
-    @NSManaged public var itemID: Int32
 
 }
 
