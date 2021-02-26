@@ -16,7 +16,7 @@ class BenefitsViewModel {
         itemList.removeAll()
         let itemDict = respository.queryItemCoreData()
         for (name,price) in itemDict {
-            itemList.append(ItemDataWithBenefits(itemData: ItemData(itemName: name, itemPrice: price), benefits: 0))
+            itemList.append(ItemDataWithBenefits(itemData: ItemData(name: name, money: price), benefits: 0))
         }
     }
     
@@ -27,39 +27,39 @@ class BenefitsViewModel {
     func getTotlePrice() -> Int {
         var totalPrice = 0
         itemList.forEach { (item) in
-            totalPrice = totalPrice + item.itemData.itemPrice
+            totalPrice = totalPrice + item.itemData.money
         }
         return totalPrice
     }
     
     func editAccountEvent(newMoney:Int,itemIndex:Int){
-        if itemList[itemIndex].itemData.itemPrice == 0 {
+        if itemList[itemIndex].itemData.money == 0 {
             itemList[itemIndex].benefits = 100
-            itemList[itemIndex].itemData.itemPrice = newMoney
+            itemList[itemIndex].itemData.money = newMoney
             updateItemCoreData()
             return
         }
-        itemList[itemIndex].benefits = (newMoney - itemList[itemIndex].itemData.itemPrice)*100/itemList[itemIndex].itemData.itemPrice
-        itemList[itemIndex].itemData.itemPrice = newMoney
+        itemList[itemIndex].benefits = (newMoney - itemList[itemIndex].itemData.money)*100/itemList[itemIndex].itemData.money
+        itemList[itemIndex].itemData.money = newMoney
         updateItemCoreData()
     }
     
     func addBenefitsEvent(benefits:Int,itemIndex:Int){
-        if itemList[itemIndex].itemData.itemPrice == 0 {
+        if itemList[itemIndex].itemData.money == 0 {
             itemList[itemIndex].benefits = 100
-            itemList[itemIndex].itemData.itemPrice = itemList[itemIndex].itemData.itemPrice + benefits
+            itemList[itemIndex].itemData.money = itemList[itemIndex].itemData.money + benefits
             updateItemCoreData()
             return
         }
-        itemList[itemIndex].benefits = benefits*100/itemList[itemIndex].itemData.itemPrice
-        itemList[itemIndex].itemData.itemPrice = itemList[itemIndex].itemData.itemPrice + benefits
+        itemList[itemIndex].benefits = benefits*100/itemList[itemIndex].itemData.money
+        itemList[itemIndex].itemData.money = itemList[itemIndex].itemData.money + benefits
         updateItemCoreData()
     }
     
     func updateItemCoreData(){
         respository.deleteAllItemCoreData()
         for i in 0 ..< itemList.count {
-            respository.insertItemCoreData(name: itemList[i].itemData.itemName, price: itemList[i].itemData.itemPrice)
+            respository.insertItemCoreData(name: itemList[i].itemData.name, price: itemList[i].itemData.money)
         }
     }
     
@@ -104,8 +104,8 @@ class BenefitsViewModel {
     
     func getListItem(itemIndex: Int) -> (String,String,String) {
         //name,price,benefits
-        let name = itemList[itemIndex].itemData.itemName
-        let price = "\(itemList[itemIndex].itemData.itemPrice)"
+        let name = itemList[itemIndex].itemData.name
+        let price = "\(itemList[itemIndex].itemData.money)"
         let benefits = itemList[itemIndex].benefitsString
         return (name,price,benefits)
     }
