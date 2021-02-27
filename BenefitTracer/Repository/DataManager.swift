@@ -107,11 +107,7 @@ class DataManager {
     func getTotalMoneyByUserData() -> Int {
         var totalMoney: Int = 0
         userDataList.forEach { (userData) in
-            userData.money.forEach { (moneyData) in
-                if let moneyPrice = Int(moneyData.moneyString)  {
-                    totalMoney = totalMoney + moneyPrice
-                }
-            }
+            totalMoney = totalMoney + userData.getUserTotalMoney()
         }
         return totalMoney
     }
@@ -136,7 +132,7 @@ class DataManager {
         }
         return totalMoney
     }
-    
+
     func addItemIsSuccessful(itemName:String, money:Int) -> Bool {
         if itemDataList.isEmpty {
             itemDataList.append(ItemData(name: itemName, money: money))
