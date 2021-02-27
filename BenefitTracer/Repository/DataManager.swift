@@ -212,7 +212,6 @@ class DataManager {
     func addBenefits(benefitsMoney:Int, itemIndex:Int){
         //FIXME被除數等於零
         itemDataList[itemIndex].benefits = benefitsMoney * 100 / itemDataList[itemIndex].money
-        itemDataList[itemIndex].money = itemDataList[itemIndex].money + benefitsMoney
         respository.updateItemCoreData(name: itemDataList[itemIndex].name, newMoney: itemDataList[itemIndex].money, benefits: itemDataList[itemIndex].benefits)
         
     }

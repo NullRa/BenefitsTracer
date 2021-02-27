@@ -150,6 +150,7 @@ class Respository {
             for itemCoreData in allItemCoreData as! [ItemCoreData] {
                 if(itemCoreData.itemName! == name){
                     itemCoreData.itemPrice = Int32(newMoney)
+                    itemCoreData.itemBenefits = Int32(benefits)
                     if newName != nil {
                         itemCoreData.itemName = newName
                     }
