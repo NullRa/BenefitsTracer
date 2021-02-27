@@ -17,7 +17,7 @@ extension MoneyCoreData {
     }
 
     @NSManaged public var date: Date?
-    @NSManaged public var price: Int32
+    @NSManaged public var price: Float
     @NSManaged public var benefits: Int32
     @NSManaged public var belongto: UserCoreData?
 

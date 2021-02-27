@@ -61,13 +61,13 @@ class Respository {
         deleteAllUserCoreData()
         deleteAllItemCoreData()
     }
-    func insertMoneyCoreData(userName:String,money:Int,date:Date){
+    func insertMoneyCoreData(userName:String,money:Float,date:Date){
         do {
             let allUser = try viewContext.fetch(UserCoreData.fetchRequest())
             for user in allUser as! [UserCoreData] {
                 if user.name == userName {
                     let moneyData = NSEntityDescription.insertNewObject(forEntityName: "MoneyCoreData", into: viewContext) as! MoneyCoreData
-                    moneyData.price = Int32(money)
+                    moneyData.price = money
                     moneyData.date = date
                     user.addToOwn(moneyData)
                     app.saveContext()
@@ -95,9 +95,28 @@ class Respository {
             print(error)
         }
     }
+
+    func updateMoneyCoreData(userName:String,benefits:Int) {
+        let fetchRequest: NSFetchRequest<UserCoreData> = UserCoreData.fetchRequest()
+        let predicate = NSPredicate(format: "name = '\(userName)'")
+        fetchRequest.predicate = predicate
+        do {
+            let allUserCoreData = try viewContext.fetch(fetchRequest)
+            for userCoreData in allUserCoreData {
+                if userCoreData.own != nil {
+                    for moneyCoreData in userCoreData.own as! Set<MoneyCoreData> {
+                        moneyCoreData.benefits = Int32(benefits)
+                    }
+                    app.saveContext()
+                }
+            }
+        } catch {
+            print(error)
+        }
+    }
     
-    func queryMoneyCoreData(userName:String) -> [(String,Date?)]{
-        var moneyDatas = [(String,Date?)]()
+    func queryMoneyCoreData(userName:String) -> [(Float,Date?,Int?)]{
+        var moneyDatas = [(Float,Date?,Int?)]()
         
         let fetchRequest: NSFetchRequest<UserCoreData> = UserCoreData.fetchRequest()
         let predicate = NSPredicate(format: "name = '\(userName)'")
@@ -107,11 +126,10 @@ class Respository {
             for userCoreData in allUserCoreData {
                 if userCoreData.own != nil {
                     for moneyCoreData in userCoreData.own as! Set<MoneyCoreData> {
-                        moneyDatas.append(("\(moneyCoreData.price)",moneyCoreData.date))
+                        moneyDatas.append((moneyCoreData.price,moneyCoreData.date,Int(moneyCoreData.benefits)))
                     }
                 }
             }
-            moneyDatas.append(("Add Money",nil))
             return moneyDatas
         } catch {
             print(error)

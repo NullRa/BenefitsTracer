@@ -76,8 +76,8 @@ extension UserViewController {
         
         let okAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
             let moneyTextField = (alert.textFields?.first)! as UITextField
-            let money = moneyTextField.text!
-            guard let _ = Int(money) else {
+            let moneyString = moneyTextField.text!
+            guard let money = Float(moneyString) else {
                 self.alertMessage(title: "Price Format Error!")
                 return
             }
@@ -120,11 +120,7 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource{
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: userViewModel.moneyCellId, for: indexPath)
             let moneyData = userViewModel.getMoney(userIndex: indexPath.section, moneyIndex: indexPath.row-1)
-            if moneyData.moneyString != "Add Money" {
-                cell.textLabel?.text = "Price: " + moneyData.moneyString
-            } else {
-                cell.textLabel?.text = moneyData.moneyString
-            }
+            cell.textLabel?.text = "Price: \(moneyData.moneyPrice)"
 
             if let date = moneyData.date {
                 let dateFormatter: DateFormatter = DateFormatter()
@@ -139,43 +135,40 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let section = indexPath.section
-        let row = indexPath.row - 1
-        switch userViewModel.selectEvent(userIndex: section, moneyIndex: row) {
-        case .addMoney:
-            addMoney(section: section)
-        case .toggle:
-            let indexes = IndexSet(integer: section)
-            tableView.reloadSections(indexes, with: .automatic)
-        }
+        let indexes = IndexSet(integer: indexPath.section)
+        tableView.reloadSections(indexes, with: .automatic)
     }
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        let row = indexPath.row
-        if row != 0 {
-            if userViewModel.getMoney(userIndex: indexPath.section, moneyIndex: row - 1).moneyString == "Add Money" {
-                return false
-            }
-        }
-        return true
-    }
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        let section = indexPath.section
-        let row = indexPath.row
-        if editingStyle == .delete {
+
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .normal, title: "DELETE") { (action, view, completionHandler) in
+            let section = indexPath.section
+            let row = indexPath.row
             if row == 0{
-                if userViewModel.moneyIsNotEmpty(userIndex: section) {
-                    alertMessage(title: "This account is not empty.", message: "Can't Delete")
+                if self.userViewModel.moneyIsNotEmpty(userIndex: section) {
+                    self.alertMessage(title: "This account is not empty.", message: "Can't Delete")
                 } else {
-                    userViewModel.removeUser(userIndex:section)
+                    self.userViewModel.removeUser(userIndex:section)
                     tableView.reloadData()
                 }
             } else {
-                if let errorMsg = userViewModel.removeMoney(userIndex: section, moneyIndex: row-1) {
-                    alertMessage(title: errorMsg, message: "Can't Delete")
+                if let errorMsg = self.userViewModel.removeMoney(userIndex: section, moneyIndex: row-1) {
+                    self.alertMessage(title: errorMsg, message: "Can't Delete")
                 } else {
                     tableView.reloadData()
                 }
             }
+            completionHandler(true)
         }
+        deleteAction.backgroundColor = .darkGray
+
+        let addAction = UIContextualAction(style: .normal, title: "ADD Money") { (action, view, conpletionHandler) in
+            self.addMoney(section: indexPath.section)
+            conpletionHandler(true)
+        }
+        addAction.backgroundColor = .gray
+
+        let prevention = UISwipeActionsConfiguration(actions: [deleteAction,addAction])
+        prevention.performsFirstActionWithFullSwipe = false
+        return prevention
     }
 }

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="19H524" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20D74" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="ItemCoreData" representedClassName="ItemCoreData" syncable="YES">
         <attribute name="itemBenefits" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="itemName" attributeType="String"/>
         <attribute name="itemPrice" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <entity name="MoneyCoreData" representedClassName="MoneyCoreData" syncable="YES">
+        <attribute name="benefits" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="price" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="price" optional="YES" attributeType="Float" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="belongto" maxCount="1" deletionRule="Nullify" destinationEntity="UserCoreData" inverseName="own" inverseEntity="UserCoreData"/>
     </entity>
     <entity name="UserCoreData" representedClassName="UserCoreData" syncable="YES">
@@ -15,8 +16,8 @@
         <relationship name="own" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MoneyCoreData" inverseName="belongto" inverseEntity="MoneyCoreData"/>
     </entity>
     <elements>
-        <element name="ItemCoreData" positionX="99" positionY="18" width="128" height="88"/>
-        <element name="MoneyCoreData" positionX="241.77734375" positionY="-14.30859375" width="128" height="88"/>
+        <element name="ItemCoreData" positionX="99" positionY="18" width="128" height="74"/>
+        <element name="MoneyCoreData" positionX="241.77734375" positionY="-14.30859375" width="128" height="89"/>
         <element name="UserCoreData" positionX="-45" positionY="0" width="128" height="73"/>
     </elements>
 </model>

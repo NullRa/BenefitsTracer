@@ -6,9 +6,6 @@
 //
 
 import Foundation
-enum UserTableViewEventType {
-    case addMoney, toggle
-}
 
 class UserViewModel {
     let userCellId = "UserCell"
@@ -19,7 +16,7 @@ class UserViewModel {
         dataManager.addUser(userName: userName)
     }
     
-    func addNewMoney(userIndex:Int,money:String){
+    func addNewMoney(userIndex:Int,money:Float){
         dataManager.addMoney(userIndex:userIndex,money:money)
     }
     
@@ -44,29 +41,11 @@ class UserViewModel {
     }
 
     func getUserTotalMoney(userIndex:Int) -> Int {
-        return dataManager.userDataList[userIndex].getUserTotalMoney()
-    }
-
-    func selectEvent(userIndex:Int,moneyIndex:Int) -> UserTableViewEventType {
-        if dataManager.userDataList[userIndex].isOpen {
-            if moneyIndex == -1 {//點username收起時
-                dataManager.userDataList[userIndex].isOpen.toggle()
-                return .toggle
-            }
-            if dataManager.userDataList[userIndex].money[moneyIndex].moneyString == "Add Money" {
-                return .addMoney
-            } else {
-                dataManager.userDataList[userIndex].isOpen.toggle()
-                return .toggle
-            }
-        } else {
-            dataManager.userDataList[userIndex].isOpen.toggle()
-            return .toggle
-        }
+        return dataManager.userDataList[userIndex].totalMoney
     }
 
     func moneyIsNotEmpty(userIndex:Int) -> Bool {
-        return dataManager.userDataList[userIndex].money.count > 1
+        return dataManager.userDataList[userIndex].money.count > 0
     }
     
     func removeMoney(userIndex:Int,moneyIndex:Int) -> String? {

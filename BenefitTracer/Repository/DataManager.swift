@@ -8,20 +8,20 @@
 import Foundation
 
 struct MoneyData {
-    var moneyString: String
+    var moneyPrice: Float
     var date: Date?
+    var benefits: Int?
 }
+//FIXME
 struct UserData {
     var isOpen:Bool = false
-    var money = [MoneyData]()
+    var money:[MoneyData] = []
     var userName:String
-
-    func getUserTotalMoney() -> Int {
+    var totalMoney: Int{
         var totalMoney = 0
-        money.forEach { (moneyData) in
-            if moneyData.moneyString != "Add Money" {
-                totalMoney = totalMoney + Int(moneyData.moneyString)!
-            }
+        money.forEach {
+            (moneyData) in
+            totalMoney = totalMoney + Int(moneyData.moneyPrice)
         }
         return totalMoney
     }
@@ -63,15 +63,15 @@ class DataManager {
         userNameList.forEach { (userName) in
             let userMoneyDatas = respository.queryMoneyCoreData(userName: userName)
             var moneyDatas = [MoneyData]()
-            userMoneyDatas.forEach { (moneyString, addMoneyDate) in
-                moneyDatas.append(MoneyData(moneyString: moneyString, date: addMoneyDate))
+            userMoneyDatas.forEach { (moneyString, addMoneyDate, benefits) in
+                moneyDatas.append(MoneyData(moneyPrice: moneyString, date: addMoneyDate, benefits: benefits))
             }
             userDataList.append(UserData(isOpen: false, money: moneyDatas, userName: userName))
         }
     }
 
     func addUser(userName:String) {
-        userDataList.append(UserData(money: [MoneyData(moneyString: "Add Money", date: nil)], userName: userName))
+        userDataList.append(UserData(money: [], userName: userName))
         respository.insertUserCoreData(name: userName)
     }
 
@@ -81,12 +81,13 @@ class DataManager {
         respository.deleteUserCoreData(name: name)
     }
 
-    func addMoney(userIndex:Int,money:String){
+    func addMoney(userIndex:Int,money:Float){
         let date = Date()
-        userDataList[userIndex].money.insert(MoneyData(moneyString: money, date: date), at: userDataList[userIndex].money.count-1)
+        userDataList[userIndex].money.append(MoneyData(moneyPrice: money, date: date, benefits: 0))
         let username = userDataList[userIndex].userName
-        let moneyPrice = Int(money)!
+        let moneyPrice = money
         respository.insertMoneyCoreData(userName: username, money: moneyPrice, date: date)
+        editUnHandleMoney(extraPrice: Int(money))
     }
 
     func removeMoneyResult(userIndex:Int,moneyIndex:Int) -> Bool {
@@ -95,8 +96,8 @@ class DataManager {
             return false
         }
         let name = userDataList[userIndex].userName
-        let money = Int(userDataList[userIndex].money[moneyIndex].moneyString)!
-        if money > itemDataList[0].money {
+        let money = userDataList[userIndex].money[moneyIndex].moneyPrice
+        if Int(money) > itemDataList[0].money {
             return false
         }
         userDataList[userIndex].money.remove(at: moneyIndex)
@@ -107,7 +108,7 @@ class DataManager {
     func getTotalMoneyByUserData() -> Int {
         var totalMoney: Int = 0
         userDataList.forEach { (userData) in
-            totalMoney = totalMoney + userData.getUserTotalMoney()
+            totalMoney = totalMoney + userData.totalMoney
         }
         return totalMoney
     }
@@ -209,6 +210,24 @@ class DataManager {
         //FIXME被除數等於零
         itemDataList[itemIndex].benefits = benefitsMoney * 100 / itemDataList[itemIndex].money
         respository.updateItemCoreData(name: itemDataList[itemIndex].name, newMoney: itemDataList[itemIndex].money, benefits: itemDataList[itemIndex].benefits)
+
+        //FIXME算出user每一筆user.money的benefits並紀錄
+        //money [benefits]
         
+    }
+
+    //FIXME
+    func getTotalBenefits() -> Int{
+        var itemBenefitsMoney = 0
+        var userOriginalMoney = 0
+        var benefitsPresent = 0
+        itemDataList.forEach { (itemData) in
+            itemBenefitsMoney = itemBenefitsMoney + itemData.getMoneyWithBenefits()
+        }
+        userDataList.forEach { (userData) in
+            userOriginalMoney = userOriginalMoney + userData.totalMoney
+        }
+        benefitsPresent = (itemBenefitsMoney - userOriginalMoney)*100/userOriginalMoney
+        return benefitsPresent
     }
 }
