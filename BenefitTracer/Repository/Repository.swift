@@ -45,6 +45,22 @@ class Respository {
             print(error)
         }
     }
+    func deleteAllUserCoreData(){
+        do{
+            let all = try viewContext.fetch(UserCoreData.fetchRequest())
+            for data in all as! [UserCoreData] {
+                deleteAllMoneyCoreData(userName: data.name!)
+                viewContext.delete(data)
+            }
+            app.saveContext()
+        }catch{
+            print(error)
+        }
+    }
+    func resetCoreData(){
+        deleteAllUserCoreData()
+        deleteAllItemCoreData()
+    }
     func insertMoneyCoreData(userName:String,money:Int,date:Date){
         do {
             let allUser = try viewContext.fetch(UserCoreData.fetchRequest())

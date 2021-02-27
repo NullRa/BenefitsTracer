@@ -53,6 +53,9 @@ class DataManager {
         setUserViewModelList()
         setItemViewModelList()
     }
+    func resetCoreData(){
+        respository.resetCoreData()
+    }
 
     // MARK: - UserView
     private func setUserViewModelList(){
