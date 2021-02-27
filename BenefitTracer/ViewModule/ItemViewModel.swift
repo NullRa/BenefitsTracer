@@ -35,7 +35,7 @@ class ItemViewModel {
         return dataManager.itemDataList[itemID].name
     }
     func getItemPrice(itemID:Int) -> Int {
-        return dataManager.itemDataList[itemID].money
+        return dataManager.itemDataList[itemID].getMoneyWithBenefits()
     }
     func removeItem(itemID:Int){
         dataManager.removeItem(itemID: itemID)
