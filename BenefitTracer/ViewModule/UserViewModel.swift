@@ -63,4 +63,8 @@ class UserViewModel {
     func getTotalMoney() -> Int {
         return dataManager.getTotalMoneyByUserData()
     }
+
+    func selectEvent(userIndex:Int,moneyIndex:Int) {
+        dataManager.userDataList[userIndex].isOpen.toggle()
+    }
 }

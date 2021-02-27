@@ -135,6 +135,7 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        userViewModel.selectEvent(userIndex: indexPath.section, moneyIndex: indexPath.row-1)
         let indexes = IndexSet(integer: indexPath.section)
         tableView.reloadSections(indexes, with: .automatic)
     }
@@ -167,7 +168,13 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource{
         }
         addAction.backgroundColor = .gray
 
-        let prevention = UISwipeActionsConfiguration(actions: [deleteAction,addAction])
+        var prevention: UISwipeActionsConfiguration!
+        if indexPath.row == 0 {
+            prevention = UISwipeActionsConfiguration(actions: [deleteAction,addAction])
+        } else {
+            prevention = UISwipeActionsConfiguration(actions: [deleteAction])
+        }
+
         prevention.performsFirstActionWithFullSwipe = false
         return prevention
     }
