@@ -204,15 +204,8 @@ class DataManager {
     }
     
     // MARK: - BenefitsView
-    func getListItem(itemIndex: Int) -> (String,String,String){
-        //name,price,benefits
-        let name = itemDataList[itemIndex].name
-        let money = "\(itemDataList[itemIndex].money)"
-        let benefits = "\(itemDataList[itemIndex].benefits)"
-        return (name,money,benefits)
-    }
     
-    func getListItem2(itemIndex: Int) -> ItemData {
+    func getListItem(itemIndex: Int) -> ItemData {
         return itemDataList[itemIndex]
     }
     

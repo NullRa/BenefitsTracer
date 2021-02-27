@@ -51,9 +51,9 @@ extension BenefitsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: benefitsViewModel.cellId, for: indexPath)
-        let (name,price,benefits) = benefitsViewModel.getListItemToThreeWay(itemIndex: indexPath.row)
-        cell.textLabel?.text = name
-        cell.detailTextLabel?.text = "\(price) (\(benefits))"
+        let item = benefitsViewModel.getListItem(itemIndex: indexPath.row)
+        cell.textLabel?.text = item.name
+        cell.detailTextLabel?.text = "\(item.getMoneyWithBenefits()) (\(item.benefits))"
         return cell
     }
     

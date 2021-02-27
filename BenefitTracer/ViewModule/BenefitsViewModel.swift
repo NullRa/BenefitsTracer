@@ -19,13 +19,8 @@ class BenefitsViewModel {
         return dataManager.itemDataList.count
     }
     
-    func getListItemToThreeWay(itemIndex: Int) -> (String,String,String) {
-        //name,price,benefits
-        return dataManager.getListItem(itemIndex:itemIndex)
-    }
-    
     func getListItem(itemIndex: Int) -> ItemData {
-        return dataManager.getListItem2(itemIndex:itemIndex)
+        return dataManager.getListItem(itemIndex:itemIndex)
     }
     
     func getTotalMoney() -> Int {
