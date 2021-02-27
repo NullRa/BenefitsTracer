@@ -2,7 +2,7 @@
 //  MoneyCoreData+CoreDataProperties.swift
 //  BenefitTracer
 //
-//  Created by Jay on 2021/2/27.
+//  Created by Jay on 2021/2/28.
 //
 //
 
@@ -17,9 +17,26 @@ extension MoneyCoreData {
     }
 
     @NSManaged public var date: Date?
-    @NSManaged public var price: Int32
-    @NSManaged public var benefits: Int32
+    @NSManaged public var price: Float
     @NSManaged public var belongto: UserCoreData?
+    @NSManaged public var own: NSSet?
+
+}
+
+// MARK: Generated accessors for own
+extension MoneyCoreData {
+
+    @objc(addOwnObject:)
+    @NSManaged public func addToOwn(_ value: BenefitsCoreData)
+
+    @objc(removeOwnObject:)
+    @NSManaged public func removeFromOwn(_ value: BenefitsCoreData)
+
+    @objc(addOwn:)
+    @NSManaged public func addToOwn(_ values: NSSet)
+
+    @objc(removeOwn:)
+    @NSManaged public func removeFromOwn(_ values: NSSet)
 
 }
 

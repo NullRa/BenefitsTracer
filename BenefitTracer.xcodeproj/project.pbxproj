@@ -27,7 +27,9 @@
 		698E435325E24A290029C10A /* BenefitsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698E435225E24A290029C10A /* BenefitsViewController.swift */; };
 		698E435625E24A540029C10A /* FormatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698E435525E24A540029C10A /* FormatViewController.swift */; };
 		69A211F325E7FD7F005EC4B0 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A211F225E7FD7F005EC4B0 /* DataManager.swift */; };
-		69A2120925EA1575005EC4B0 /* MoneyCoreData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A2120725EA1575005EC4B0 /* MoneyCoreData+CoreDataProperties.swift */; };
+		69A2124725EAB9E9005EC4B0 /* MoneyCoreData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A2124425EAB9E9005EC4B0 /* MoneyCoreData+CoreDataProperties.swift */; };
+		69A2124825EAB9E9005EC4B0 /* BenefitsCoreData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A2124525EAB9E9005EC4B0 /* BenefitsCoreData+CoreDataClass.swift */; };
+		69A2124925EAB9E9005EC4B0 /* BenefitsCoreData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A2124625EAB9E9005EC4B0 /* BenefitsCoreData+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,7 +55,9 @@
 		698E435225E24A290029C10A /* BenefitsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenefitsViewController.swift; sourceTree = "<group>"; };
 		698E435525E24A540029C10A /* FormatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatViewController.swift; sourceTree = "<group>"; };
 		69A211F225E7FD7F005EC4B0 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
-		69A2120725EA1575005EC4B0 /* MoneyCoreData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "MoneyCoreData+CoreDataProperties.swift"; path = "../../MoneyCoreData+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		69A2124425EAB9E9005EC4B0 /* MoneyCoreData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MoneyCoreData+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		69A2124525EAB9E9005EC4B0 /* BenefitsCoreData+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BenefitsCoreData+CoreDataClass.swift"; sourceTree = "<group>"; };
+		69A2124625EAB9E9005EC4B0 /* BenefitsCoreData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BenefitsCoreData+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,7 +78,9 @@
 				185BF2C725E39A0E007A1F68 /* UserCoreData+CoreDataClass.swift */,
 				185BF2C825E39A0E007A1F68 /* UserCoreData+CoreDataProperties.swift */,
 				185BF2C925E39A0E007A1F68 /* MoneyCoreData+CoreDataClass.swift */,
-				69A2120725EA1575005EC4B0 /* MoneyCoreData+CoreDataProperties.swift */,
+				69A2124425EAB9E9005EC4B0 /* MoneyCoreData+CoreDataProperties.swift */,
+				69A2124525EAB9E9005EC4B0 /* BenefitsCoreData+CoreDataClass.swift */,
+				69A2124625EAB9E9005EC4B0 /* BenefitsCoreData+CoreDataProperties.swift */,
 				18451CAC25E4F86B007EC440 /* ItemCoreData+CoreDataClass.swift */,
 				18D3D8B725E8F20A009F212F /* ItemCoreData+CoreDataProperties.swift */,
 			);
@@ -216,15 +222,17 @@
 			files = (
 				698E433E25E105190029C10A /* UserViewController.swift in Sources */,
 				698E435325E24A290029C10A /* BenefitsViewController.swift in Sources */,
+				69A2124725EAB9E9005EC4B0 /* MoneyCoreData+CoreDataProperties.swift in Sources */,
 				1814EDAB25E7A07900ED19AB /* BenefitsViewModel.swift in Sources */,
 				18451CAE25E4F86B007EC440 /* ItemCoreData+CoreDataClass.swift in Sources */,
 				698E433A25E105190029C10A /* AppDelegate.swift in Sources */,
 				698E433C25E105190029C10A /* SceneDelegate.swift in Sources */,
 				69A211F325E7FD7F005EC4B0 /* DataManager.swift in Sources */,
+				69A2124925EAB9E9005EC4B0 /* BenefitsCoreData+CoreDataProperties.swift in Sources */,
 				18D3D8B825E8F20A009F212F /* ItemCoreData+CoreDataProperties.swift in Sources */,
 				185BF2CD25E39A0E007A1F68 /* MoneyCoreData+CoreDataClass.swift in Sources */,
+				69A2124825EAB9E9005EC4B0 /* BenefitsCoreData+CoreDataClass.swift in Sources */,
 				185BF2CC25E39A0E007A1F68 /* UserCoreData+CoreDataProperties.swift in Sources */,
-				69A2120925EA1575005EC4B0 /* MoneyCoreData+CoreDataProperties.swift in Sources */,
 				698E435025E24A160029C10A /* ItemViewController.swift in Sources */,
 				18EBF73025E3675100FC988E /* UserViewModel.swift in Sources */,
 				1856AD8B25E3926900266CC9 /* CoreDataModel.xcdatamodeld in Sources */,
