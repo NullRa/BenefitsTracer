@@ -96,25 +96,6 @@ class Respository {
         }
     }
 
-    func updateMoneyCoreData(userName:String,benefits:Int) {
-        let fetchRequest: NSFetchRequest<UserCoreData> = UserCoreData.fetchRequest()
-        let predicate = NSPredicate(format: "name = '\(userName)'")
-        fetchRequest.predicate = predicate
-        do {
-            let allUserCoreData = try viewContext.fetch(fetchRequest)
-            for userCoreData in allUserCoreData {
-                if userCoreData.own != nil {
-                    for moneyCoreData in userCoreData.own as! Set<MoneyCoreData> {
-                        moneyCoreData.benefits = Int32(benefits)
-                    }
-                    app.saveContext()
-                }
-            }
-        } catch {
-            print(error)
-        }
-    }
-    
     func queryMoneyCoreData(userName:String) -> [(Float,Date?,Int?)]{
         var moneyDatas = [(Float,Date?,Int?)]()
         
@@ -126,7 +107,7 @@ class Respository {
             for userCoreData in allUserCoreData {
                 if userCoreData.own != nil {
                     for moneyCoreData in userCoreData.own as! Set<MoneyCoreData> {
-                        moneyDatas.append((moneyCoreData.price,moneyCoreData.date,Int(moneyCoreData.benefits)))
+                        moneyDatas.append((moneyCoreData.price,moneyCoreData.date,0))
                     }
                 }
             }

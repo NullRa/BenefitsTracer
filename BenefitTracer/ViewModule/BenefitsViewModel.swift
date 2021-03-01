@@ -18,7 +18,7 @@ class BenefitsViewModel {
     func getListCount() -> Int {
         return dataManager.itemDataList.count
     }
-    
+
     func getListItem(itemIndex: Int) -> ItemData {
         return dataManager.getListItem(itemIndex:itemIndex)
     }
@@ -28,13 +28,12 @@ class BenefitsViewModel {
     }
     
     func getTotalPriceString() -> String{
-        let origianlMoney = dataManager.getTotalMoneyByItemData()
+        let originalMoney = dataManager.getTotalMoneyByItemData()
         var benefitsMoney = 0
         dataManager.itemDataList.forEach { (itemData) in
             benefitsMoney = benefitsMoney + itemData.getMoneyWithBenefits()
         }
-        let benefitsPresent = (benefitsMoney - origianlMoney)*100/origianlMoney
+        let benefitsPresent = (benefitsMoney - originalMoney)*100/originalMoney
         return "Total Money: \(benefitsMoney) (\(benefitsPresent))"
     }
-    
 }

@@ -10,9 +10,9 @@ import Foundation
 struct MoneyData {
     var moneyPrice: Float
     var date: Date?
-    var benefits: Int?
+    var benefits: [Float]
 }
-//FIXME
+
 struct UserData {
     var isOpen:Bool = false
     var money:[MoneyData] = []
@@ -64,7 +64,7 @@ class DataManager {
             let userMoneyDatas = respository.queryMoneyCoreData(userName: userName)
             var moneyDatas = [MoneyData]()
             userMoneyDatas.forEach { (moneyString, addMoneyDate, benefits) in
-                moneyDatas.append(MoneyData(moneyPrice: moneyString, date: addMoneyDate, benefits: benefits))
+                moneyDatas.append(MoneyData(moneyPrice: moneyString, date: addMoneyDate, benefits: []))
             }
             userDataList.append(UserData(isOpen: false, money: moneyDatas, userName: userName))
         }
@@ -83,7 +83,7 @@ class DataManager {
 
     func addMoney(userIndex:Int,money:Float){
         let date = Date()
-        userDataList[userIndex].money.append(MoneyData(moneyPrice: money, date: date, benefits: 0))
+        userDataList[userIndex].money.append(MoneyData(moneyPrice: money, date: date, benefits: []))
         let username = userDataList[userIndex].userName
         let moneyPrice = money
         respository.insertMoneyCoreData(userName: username, money: moneyPrice, date: date)
