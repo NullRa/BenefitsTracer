@@ -57,6 +57,7 @@ struct ItemData {
         }
     }
     func getMoneyWithBenefits() -> Float{
+        
         return (money + money*benefits)
     }
     func getBenefitsMoney() -> Float{
@@ -224,8 +225,10 @@ class DataManager {
         }
         itemDataList[0].money = itemDataList[0].getMoneyWithBenefits() - extraPrice
         respository.updateItemCoreData(name: itemDataList[0].name, newMoney: itemDataList[0].money, benefits: 0)
-        itemDataList[itemID].money = itemDataList[itemID].getMoneyWithBenefits() + extraPrice
-        respository.updateItemCoreData(name: itemDataList[itemID].name, newMoney: itemDataList[itemID].money, benefits: 0)
+        let benefitsMoney = itemDataList[itemID].getBenefitsMoney()
+        itemDataList[itemID].money = itemDataList[itemID].money + extraPrice
+        itemDataList[itemID].benefits = benefitsMoney/itemDataList[itemID].money
+        respository.updateItemCoreData(name: itemDataList[itemID].name, newMoney: itemDataList[itemID].money, benefits: itemDataList[itemID].benefits)
         return true
     }
     

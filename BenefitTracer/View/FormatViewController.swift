@@ -61,11 +61,11 @@ class FormatViewController: UIViewController {
         let alert = UIAlertController(title: "Count", message: "Enter Data", preferredStyle: .alert)
         alert.addTextField { (handTextField) in
             handTextField.placeholder = "Enter Hand."
-            handTextField.keyboardType = .numberPad
+            handTextField.keyboardType = .decimalPad
         }
         alert.addTextField { (priceTextField) in
             priceTextField.placeholder = "Enter Start Price"
-            priceTextField.keyboardType = .numberPad
+            priceTextField.keyboardType = .decimalPad
         }
         let okAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
             let handTextField = (alert.textFields?.first)! as UITextField
