@@ -2,7 +2,7 @@
 //  ItemCoreData+CoreDataProperties.swift
 //  BenefitTracer
 //
-//  Created by Apple on 2021/2/26.
+//  Created by Apple on 2021/3/2.
 //
 //
 
@@ -16,9 +16,9 @@ extension ItemCoreData {
         return NSFetchRequest<ItemCoreData>(entityName: "ItemCoreData")
     }
 
+    @NSManaged public var itemBenefits: Float
     @NSManaged public var itemName: String?
-    @NSManaged public var itemPrice: Int32
-    @NSManaged public var itemBenefits: Int32
+    @NSManaged public var itemPrice: Float
 
 }
 

@@ -15,7 +15,7 @@
 		185BF2CC25E39A0E007A1F68 /* UserCoreData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185BF2C825E39A0E007A1F68 /* UserCoreData+CoreDataProperties.swift */; };
 		185BF2CD25E39A0E007A1F68 /* MoneyCoreData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185BF2C925E39A0E007A1F68 /* MoneyCoreData+CoreDataClass.swift */; };
 		185BF2E425E3A0CE007A1F68 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185BF2E325E3A0CE007A1F68 /* Repository.swift */; };
-		18D3D8B825E8F20A009F212F /* ItemCoreData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D3D8B725E8F20A009F212F /* ItemCoreData+CoreDataProperties.swift */; };
+		18AA9B2425EDF10400E49CDA /* ItemCoreData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AA9B2325EDF10400E49CDA /* ItemCoreData+CoreDataProperties.swift */; };
 		18EBF73025E3675100FC988E /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EBF72F25E3675100FC988E /* UserViewModel.swift */; };
 		698E433A25E105190029C10A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698E433925E105190029C10A /* AppDelegate.swift */; };
 		698E433C25E105190029C10A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698E433B25E105190029C10A /* SceneDelegate.swift */; };
@@ -41,7 +41,7 @@
 		185BF2C825E39A0E007A1F68 /* UserCoreData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserCoreData+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		185BF2C925E39A0E007A1F68 /* MoneyCoreData+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MoneyCoreData+CoreDataClass.swift"; sourceTree = "<group>"; };
 		185BF2E325E3A0CE007A1F68 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
-		18D3D8B725E8F20A009F212F /* ItemCoreData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemCoreData+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		18AA9B2325EDF10400E49CDA /* ItemCoreData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemCoreData+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		18EBF72F25E3675100FC988E /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		698E433625E105190029C10A /* BenefitTracer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BenefitTracer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		698E433925E105190029C10A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -82,7 +82,7 @@
 				69A2124525EAB9E9005EC4B0 /* BenefitsCoreData+CoreDataClass.swift */,
 				69A2124625EAB9E9005EC4B0 /* BenefitsCoreData+CoreDataProperties.swift */,
 				18451CAC25E4F86B007EC440 /* ItemCoreData+CoreDataClass.swift */,
-				18D3D8B725E8F20A009F212F /* ItemCoreData+CoreDataProperties.swift */,
+				18AA9B2325EDF10400E49CDA /* ItemCoreData+CoreDataProperties.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -229,9 +229,9 @@
 				698E433C25E105190029C10A /* SceneDelegate.swift in Sources */,
 				69A211F325E7FD7F005EC4B0 /* DataManager.swift in Sources */,
 				69A2124925EAB9E9005EC4B0 /* BenefitsCoreData+CoreDataProperties.swift in Sources */,
-				18D3D8B825E8F20A009F212F /* ItemCoreData+CoreDataProperties.swift in Sources */,
 				185BF2CD25E39A0E007A1F68 /* MoneyCoreData+CoreDataClass.swift in Sources */,
 				69A2124825EAB9E9005EC4B0 /* BenefitsCoreData+CoreDataClass.swift in Sources */,
+				18AA9B2425EDF10400E49CDA /* ItemCoreData+CoreDataProperties.swift in Sources */,
 				185BF2CC25E39A0E007A1F68 /* UserCoreData+CoreDataProperties.swift in Sources */,
 				698E435025E24A160029C10A /* ItemViewController.swift in Sources */,
 				18EBF73025E3675100FC988E /* UserViewModel.swift in Sources */,
@@ -387,7 +387,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = KH3PA94KG7;
+				DEVELOPMENT_TEAM = 8NL3SBHB38;
 				INFOPLIST_FILE = BenefitTracer/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
