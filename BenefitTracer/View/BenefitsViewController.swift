@@ -16,6 +16,7 @@ class BenefitsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setTotalPriceLabel()
         realTimePriceTableView.reloadData()
     }
     
@@ -53,7 +54,7 @@ extension BenefitsViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: benefitsViewModel.cellId, for: indexPath)
         let item = benefitsViewModel.getListItem(itemIndex: indexPath.row)
         cell.textLabel?.text = item.name
-        cell.detailTextLabel?.text = "\(item.getMoneyWithBenefits()) (\(item.benefits))"
+        cell.detailTextLabel?.text = "\(item.getMoneyWithBenefits()) (\(item.benefits*100)%)"
         return cell
     }
     
@@ -66,7 +67,7 @@ extension BenefitsViewController: UITableViewDelegate, UITableViewDataSource {
             }
             let okAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
                 let textField = (alert.textFields?.first)! as UITextField
-                let newMoney = Int(textField.text!)!
+                let newMoney = Float(textField.text!)!
                 let oldMoney = self.benefitsViewModel.getListItem(itemIndex:indexPath.row).getMoneyWithBenefits()
                 let benefitsMoney = newMoney - oldMoney
                 self.benefitsViewModel.addBenefits(benefitsMoney: benefitsMoney, itemIndex: indexPath.row)
@@ -88,7 +89,7 @@ extension BenefitsViewController: UITableViewDelegate, UITableViewDataSource {
             }
             let okAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
                 let textField = (alert.textFields?.first)! as UITextField
-                let addBenefits = Int(textField.text!)!
+                let addBenefits = Float(textField.text!)!
                 self.benefitsViewModel.addBenefits(benefitsMoney: addBenefits, itemIndex: indexPath.row)
                 tableView.reloadData()
                 self.setTotalPriceLabel()

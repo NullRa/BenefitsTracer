@@ -13,6 +13,11 @@ class Respository {
     let app = UIApplication.shared.delegate as! AppDelegate
     var viewContext: NSManagedObjectContext! = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
+    func resetCoreData(){
+        deleteAllUserCoreData()
+        deleteAllItemCoreData()
+    }
+    
     func insertUserCoreData(name:String) {
         let newUser = NSEntityDescription.insertNewObject(forEntityName: "UserCoreData", into: viewContext) as! UserCoreData
         newUser.name = name
@@ -57,10 +62,22 @@ class Respository {
             print(error)
         }
     }
-    func resetCoreData(){
-        deleteAllUserCoreData()
-        deleteAllItemCoreData()
+    
+    func insertBenefitsCoreData(benefits:Float) {
+        do {
+            let allMoneyCoreData = try viewContext.fetch(MoneyCoreData.fetchRequest())
+            for moneyCoreData in allMoneyCoreData as! [MoneyCoreData] {
+                let benefitsData = NSEntityDescription.insertNewObject(forEntityName: "BenefitsCoreData", into: viewContext) as! BenefitsCoreData
+                benefitsData.benefits = benefits
+                moneyCoreData.addToOwn(benefitsData)
+                app.saveContext()
+            }
+            
+        } catch {
+            print(error)
+        }
     }
+    
     func insertMoneyCoreData(userName:String,money:Float,date:Date){
         do {
             let allUser = try viewContext.fetch(UserCoreData.fetchRequest())
@@ -85,6 +102,11 @@ class Respository {
                     let allMoney = try viewContext.fetch(MoneyCoreData.fetchRequest())
                     for moneyData in allMoney as! [MoneyCoreData] {
                         if moneyData.date == date {
+                            if let benefitsCoreDatas = moneyData.own as? Set<BenefitsCoreData> {
+                                benefitsCoreDatas.forEach { (benefitsCoreData) in
+                                    viewContext.delete(benefitsCoreData)
+                                }
+                            }
                             viewContext.delete(moneyData)
                             app.saveContext()
                         }
@@ -96,8 +118,8 @@ class Respository {
         }
     }
 
-    func queryMoneyCoreData(userName:String) -> [(Float,Date?,Int?)]{
-        var moneyDatas = [(Float,Date?,Int?)]()
+    func queryMoneyCoreData(userName:String) -> [(Float,Date?,[Float])]{
+        var moneyDatas = [(Float,Date?,[Float])]()
         
         let fetchRequest: NSFetchRequest<UserCoreData> = UserCoreData.fetchRequest()
         let predicate = NSPredicate(format: "name = '\(userName)'")
@@ -107,7 +129,13 @@ class Respository {
             for userCoreData in allUserCoreData {
                 if userCoreData.own != nil {
                     for moneyCoreData in userCoreData.own as! Set<MoneyCoreData> {
-                        moneyDatas.append((moneyCoreData.price,moneyCoreData.date,0))
+                        var benefitsArray:[Float] = []
+                        if moneyCoreData.own != nil {
+                            for benefitsCoreData in moneyCoreData.own as! Set<BenefitsCoreData> {
+                                benefitsArray.append(benefitsCoreData.benefits)
+                            }
+                        }
+                        moneyDatas.append((moneyCoreData.price,moneyCoreData.date,benefitsArray))
                     }
                 }
             }
@@ -119,6 +147,7 @@ class Respository {
     }
     
     func deleteAllMoneyCoreData(userName:String) {
+        deleteAllBenefitsCoreData()
         do{
             let allUser = try viewContext.fetch(UserCoreData.fetchRequest())
             for user in allUser as! [UserCoreData] {
@@ -135,21 +164,33 @@ class Respository {
         }
     }
     
-    func insertItemCoreData(name:String,price:Int){
+    func deleteAllBenefitsCoreData() {
+        do {
+            let allBenefits = try viewContext.fetch(BenefitsCoreData.fetchRequest())
+            for benefits in allBenefits as! [BenefitsCoreData] {
+                viewContext.delete(benefits)
+            }
+            app.saveContext()
+        } catch {
+            print(error)
+        }
+    }
+    
+    func insertItemCoreData(name:String,price:Float){
         let newCoreDataItem = NSEntityDescription.insertNewObject(forEntityName: "ItemCoreData", into: viewContext) as! ItemCoreData
         newCoreDataItem.itemName = name
-        newCoreDataItem.itemPrice = Int32(price)
+        newCoreDataItem.itemPrice = price
         newCoreDataItem.itemBenefits = 0
         app.saveContext()
     }
     
-    func updateItemCoreData(name:String,newMoney:Int,newName:String?=nil,benefits:Int) {
+    func updateItemCoreData(name:String,newMoney:Float,newName:String?=nil,benefits:Float) {
         do {
             let allItemCoreData = try viewContext.fetch(ItemCoreData.fetchRequest())
             for itemCoreData in allItemCoreData as! [ItemCoreData] {
                 if(itemCoreData.itemName! == name){
-                    itemCoreData.itemPrice = Int32(newMoney)
-                    itemCoreData.itemBenefits = Int32(benefits)
+                    itemCoreData.itemPrice = newMoney
+                    itemCoreData.itemBenefits = benefits
                     if newName != nil {
                         itemCoreData.itemName = newName
                     }
@@ -161,15 +202,15 @@ class Respository {
         }
     }
     
-    func queryItemCoreData() -> [(String,Int,Int)] {
-        var itemDatas = [(String,Int,Int)]()
+    func queryItemCoreData() -> [(String,Float,Float)] {
+        var itemDatas = [(String,Float,Float)]()
         do {
             let allItemCoreData = try viewContext.fetch(ItemCoreData.fetchRequest())
             for itemCoreData in allItemCoreData as! [ItemCoreData] {
                 let name = itemCoreData.itemName!
                 let price = itemCoreData.itemPrice
                 let benefits = itemCoreData.itemBenefits
-                itemDatas.append((name,Int(price),Int(benefits)))
+                itemDatas.append((name,price,benefits))
             }
             return itemDatas
         } catch {

@@ -11,17 +11,24 @@ struct MoneyData {
     var moneyPrice: Float
     var date: Date?
     var benefits: [Float]
+    var moneyPriceWithBenefits: Float{
+        var totalMoney:Float = moneyPrice
+        benefits.forEach { (benefit) in
+            totalMoney = totalMoney + moneyPrice * benefit
+        }
+        return totalMoney
+    }
 }
 
 struct UserData {
     var isOpen:Bool = false
     var money:[MoneyData] = []
     var userName:String
-    var totalMoney: Int{
-        var totalMoney = 0
+    var totalMoney: Float{
+        var totalMoney:Float = 0
         money.forEach {
             (moneyData) in
-            totalMoney = totalMoney + Int(moneyData.moneyPrice)
+            totalMoney = totalMoney + moneyData.moneyPriceWithBenefits
         }
         return totalMoney
     }
@@ -29,17 +36,20 @@ struct UserData {
 
 struct ItemData {
     var name:String
-    var money:Int
-    var benefits: Int = 0
+    var money:Float
+    var benefits: Float = 0
     var benefitsString:String {
         if benefits >= 0 {
-            return "+\(benefits)%"
+            return "+\(benefits*100)%"
         } else {
-            return "\(benefits)%"
+            return "\(benefits*100)%"
         }
     }
-    func getMoneyWithBenefits() -> Int{
-        return (money + money*benefits/100)
+    func getMoneyWithBenefits() -> Float{
+        return (money + money*benefits)
+    }
+    func getBenefitsMoney() -> Float{
+        return money*benefits
     }
 }
 
@@ -52,7 +62,9 @@ class DataManager {
     init() {
         setUserViewModelList()
         setItemViewModelList()
+//        resetCoreData()
     }
+    
     func resetCoreData(){
         respository.resetCoreData()
     }
@@ -64,7 +76,7 @@ class DataManager {
             let userMoneyDatas = respository.queryMoneyCoreData(userName: userName)
             var moneyDatas = [MoneyData]()
             userMoneyDatas.forEach { (moneyString, addMoneyDate, benefits) in
-                moneyDatas.append(MoneyData(moneyPrice: moneyString, date: addMoneyDate, benefits: []))
+                moneyDatas.append(MoneyData(moneyPrice: moneyString, date: addMoneyDate, benefits: benefits))
             }
             userDataList.append(UserData(isOpen: false, money: moneyDatas, userName: userName))
         }
@@ -87,7 +99,7 @@ class DataManager {
         let username = userDataList[userIndex].userName
         let moneyPrice = money
         respository.insertMoneyCoreData(userName: username, money: moneyPrice, date: date)
-        editUnHandleMoney(extraPrice: Int(money))
+        editUnHandleMoney(extraPrice: money)
     }
 
     func removeMoneyResult(userIndex:Int,moneyIndex:Int) -> Bool {
@@ -97,7 +109,7 @@ class DataManager {
         }
         let name = userDataList[userIndex].userName
         let money = userDataList[userIndex].money[moneyIndex].moneyPrice
-        if Int(money) > itemDataList[0].money {
+        if money > itemDataList[0].money {
             return false
         }
         userDataList[userIndex].money.remove(at: moneyIndex)
@@ -105,8 +117,8 @@ class DataManager {
         return true
     }
 
-    func getTotalMoneyByUserData() -> Int {
-        var totalMoney: Int = 0
+    func getTotalMoneyByUserData() -> Float {
+        var totalMoney: Float = 0
         userDataList.forEach { (userData) in
             totalMoney = totalMoney + userData.totalMoney
         }
@@ -126,15 +138,23 @@ class DataManager {
         }
     }
     
-    func getTotalMoneyByItemData() -> Int {
-        var totalMoney: Int = 0
+    func getTotalMoneyByItemData() -> Float {
+        var totalMoney: Float = 0
+        itemDataList.forEach { (itemData) in
+            totalMoney = totalMoney + itemData.getMoneyWithBenefits()
+        }
+        return totalMoney
+    }
+    
+    func getOriginalTotalMoneyByItemData() -> Float {
+        var totalMoney: Float = 0
         itemDataList.forEach { (itemData) in
             totalMoney = totalMoney + itemData.money
         }
         return totalMoney
     }
 
-    func addItemIsSuccessful(itemName:String, money:Int) -> Bool {
+    func addItemIsSuccessful(itemName:String, money:Float) -> Bool {
         if itemDataList.isEmpty {
             itemDataList.append(ItemData(name: itemName, money: money))
             respository.insertItemCoreData(name: itemName, price: money)
@@ -159,7 +179,7 @@ class DataManager {
         respository.deleteItemCoreData(name: deleteItem.name)
     }
     
-    func editItemIsSuccessful(itemID:Int,newName:String,newPrice:Int) -> Bool {
+    func editItemIsSuccessful(itemID:Int,newName:String,newPrice:Float) -> Bool {
         if itemID == 0 {
             //FIXME
             assertionFailure("ERROR ITEM0")
@@ -180,7 +200,7 @@ class DataManager {
         return true
     }
     
-    func addExtraMoneyIsSuccessful(itemID:Int,extraPrice:Int) -> Bool {
+    func addExtraMoneyIsSuccessful(itemID:Int,extraPrice:Float) -> Bool {
         if itemID == 0 {
             //FIXME
             assertionFailure("ERROR ITEM0")
@@ -195,7 +215,7 @@ class DataManager {
         return true
     }
     
-    func editUnHandleMoney(extraPrice:Int){
+    func editUnHandleMoney(extraPrice:Float){
         itemDataList[0].money = itemDataList[0].getMoneyWithBenefits() + extraPrice
         respository.updateItemCoreData(name: itemDataList[0].name, newMoney: itemDataList[0].money, benefits: 0)
     }
@@ -205,29 +225,38 @@ class DataManager {
     func getListItem(itemIndex: Int) -> ItemData {
         return itemDataList[itemIndex]
     }
-    
-    func addBenefits(benefitsMoney:Int, itemIndex:Int){
+     
+    func addBenefits(benefitsMoney:Float, itemIndex:Int){
         //FIXME被除數等於零
-        itemDataList[itemIndex].benefits = benefitsMoney * 100 / itemDataList[itemIndex].money
+        itemDataList[itemIndex].benefits = (benefitsMoney+itemDataList[itemIndex].getBenefitsMoney()) / itemDataList[itemIndex].money
         respository.updateItemCoreData(name: itemDataList[itemIndex].name, newMoney: itemDataList[itemIndex].money, benefits: itemDataList[itemIndex].benefits)
 
-        //FIXME算出user每一筆user.money的benefits並紀錄
-        //money [benefits]
-        
+        let benefitsPresent = getTotalBenefits()
+        updateUserDataListBenefits(benefitsPresent: benefitsPresent)
     }
 
-    //FIXME
-    func getTotalBenefits() -> Int{
-        var itemBenefitsMoney = 0
-        var userOriginalMoney = 0
-        var benefitsPresent = 0
+    func getTotalBenefits() -> Float{
+        var itemBenefitsMoney:Float = 0
         itemDataList.forEach { (itemData) in
             itemBenefitsMoney = itemBenefitsMoney + itemData.getMoneyWithBenefits()
         }
+
+        var originalUserBenefitsMoney:Float = 0
         userDataList.forEach { (userData) in
-            userOriginalMoney = userOriginalMoney + userData.totalMoney
+            originalUserBenefitsMoney = originalUserBenefitsMoney + userData.totalMoney
         }
-        benefitsPresent = (itemBenefitsMoney - userOriginalMoney)*100/userOriginalMoney
+
+        var benefitsPresent:Float = 0
+        benefitsPresent = (itemBenefitsMoney - originalUserBenefitsMoney)/originalUserBenefitsMoney
         return benefitsPresent
+    }
+
+    func updateUserDataListBenefits(benefitsPresent:Float){
+        for i in 0 ..< userDataList.count {
+            for j in 0 ..< userDataList[i].money.count {
+                userDataList[i].money[j].benefits.append(benefitsPresent)
+            }
+        }
+        respository.insertBenefitsCoreData(benefits: benefitsPresent)
     }
 }

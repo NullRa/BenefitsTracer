@@ -13,7 +13,7 @@ class UserViewController: UIViewController {
     
     @IBOutlet weak var userTableView: UITableView!
     @IBOutlet weak var addUserButton: UIButton!
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         userTableView.reloadData()
@@ -120,8 +120,8 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource{
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: userViewModel.moneyCellId, for: indexPath)
             let moneyData = userViewModel.getMoney(userIndex: indexPath.section, moneyIndex: indexPath.row-1)
-            cell.textLabel?.text = "Price: \(moneyData.moneyPrice)"
-
+            cell.textLabel?.text = "Price: \(moneyData.moneyPriceWithBenefits)"
+            
             if let date = moneyData.date {
                 let dateFormatter: DateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
@@ -139,7 +139,7 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource{
         let indexes = IndexSet(integer: indexPath.section)
         tableView.reloadSections(indexes, with: .automatic)
     }
-
+    
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .normal, title: "DELETE") { (action, view, completionHandler) in
             let section = indexPath.section
@@ -161,20 +161,20 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource{
             completionHandler(true)
         }
         deleteAction.backgroundColor = .darkGray
-
+        
         let addAction = UIContextualAction(style: .normal, title: "ADD Money") { (action, view, conpletionHandler) in
             self.addMoney(section: indexPath.section)
             conpletionHandler(true)
         }
         addAction.backgroundColor = .gray
-
+        
         var prevention: UISwipeActionsConfiguration!
         if indexPath.row == 0 {
             prevention = UISwipeActionsConfiguration(actions: [deleteAction,addAction])
         } else {
             prevention = UISwipeActionsConfiguration(actions: [deleteAction])
         }
-
+        
         prevention.performsFirstActionWithFullSwipe = false
         return prevention
     }

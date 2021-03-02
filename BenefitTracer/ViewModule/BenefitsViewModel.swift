@@ -8,32 +8,36 @@
 import Foundation
 class BenefitsViewModel {
     let cellId = "realTimePriceCell"
-
+    
     let dataManager = DataManager.shared
     
-    func addBenefits(benefitsMoney:Int, itemIndex:Int){
+    func addBenefits(benefitsMoney:Float, itemIndex:Int){
         dataManager.addBenefits(benefitsMoney: benefitsMoney, itemIndex: itemIndex)
     }
     
     func getListCount() -> Int {
         return dataManager.itemDataList.count
     }
-
+    
     func getListItem(itemIndex: Int) -> ItemData {
         return dataManager.getListItem(itemIndex:itemIndex)
     }
     
-    func getTotalMoney() -> Int {
+    func getTotalMoney() -> Float {
         return dataManager.getTotalMoneyByUserData()
     }
     
     func getTotalPriceString() -> String{
-        let originalMoney = dataManager.getTotalMoneyByItemData()
-        var benefitsMoney = 0
-        dataManager.itemDataList.forEach { (itemData) in
-            benefitsMoney = benefitsMoney + itemData.getMoneyWithBenefits()
+        let originalMoney = dataManager.getOriginalTotalMoneyByItemData()
+        let benefitsMoney = dataManager.getTotalMoneyByItemData()
+        
+        var benefitsPresent:Float {
+            if originalMoney == 0.0 {
+                return 0.0
+            } else {
+                return (benefitsMoney - originalMoney)*100/originalMoney
+            }
         }
-        let benefitsPresent = (benefitsMoney - originalMoney)*100/originalMoney
         return "Total Money: \(benefitsMoney) (\(benefitsPresent))"
     }
 }

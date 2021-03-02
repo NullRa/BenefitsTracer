@@ -52,7 +52,7 @@ class ItemViewController: UIViewController {
             let nameTextField = (alert.textFields?.first)! as UITextField
             let name = nameTextField.text!
             let priceTextField = alert.textFields![1] as UITextField
-            guard let price = Int(priceTextField.text!) else {
+            guard let price = Float(priceTextField.text!) else {
                 self.alertMessage(title: "Price Format Error!")
                 return
             }
@@ -118,7 +118,7 @@ extension ItemViewController: UITableViewDelegate, UITableViewDataSource {
                 let nameTextField = (alert.textFields?.first)! as UITextField
                 let name = nameTextField.text!
                 let priceTextField = alert.textFields![1] as UITextField
-                guard let price = Int(priceTextField.text!) else {
+                guard let price = Float(priceTextField.text!) else {
                     self.alertMessage(title: "Price Format Error!")
                     completionHandler(true)
                     return
@@ -157,7 +157,7 @@ extension ItemViewController: UITableViewDelegate, UITableViewDataSource {
             }
             let okAction = UIAlertAction(title: "Confirm", style: .default) { (_) in
                 let priceTextField = (alert.textFields?.first)! as UITextField
-                guard let price = Int(priceTextField.text!) else {
+                guard let price = Float(priceTextField.text!) else {
                     self.alertMessage(title: "Price Format Error!")
                     completionHandler(true)
                     return

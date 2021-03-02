@@ -39,11 +39,11 @@ class UserViewModel {
     func getMoney(userIndex:Int,moneyIndex:Int) -> MoneyData{
         return dataManager.userDataList[userIndex].money[moneyIndex]
     }
-
-    func getUserTotalMoney(userIndex:Int) -> Int {
+    
+    func getUserTotalMoney(userIndex:Int) -> Float {
         return dataManager.userDataList[userIndex].totalMoney
     }
-
+    
     func moneyIsNotEmpty(userIndex:Int) -> Bool {
         return dataManager.userDataList[userIndex].money.count > 0
     }
@@ -59,11 +59,11 @@ class UserViewModel {
     func removeUser(userIndex:Int) {
         dataManager.removeUser(userIndex:userIndex)
     }
-
-    func getTotalMoney() -> Int {
+    
+    func getTotalMoney() -> Float {
         return dataManager.getTotalMoneyByUserData()
     }
-
+    
     func selectEvent(userIndex:Int,moneyIndex:Int) {
         dataManager.userDataList[userIndex].isOpen.toggle()
     }
