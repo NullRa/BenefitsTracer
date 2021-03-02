@@ -120,7 +120,7 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource{
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: userViewModel.moneyCellId, for: indexPath)
             let moneyData = userViewModel.getMoney(userIndex: indexPath.section, moneyIndex: indexPath.row-1)
-            cell.textLabel?.text = "Price: \(moneyData.moneyPriceWithBenefits)"
+            cell.textLabel?.text = "Price: \(moneyData.moneyPriceWithBenefits) (\(moneyData.totalBenefits))%"
             
             if let date = moneyData.date {
                 let dateFormatter: DateFormatter = DateFormatter()

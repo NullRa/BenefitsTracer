@@ -18,6 +18,17 @@ struct MoneyData {
         }
         return totalMoney
     }
+    var totalBenefits:Float{
+        var totalBenefits:Float = 0
+        benefits.forEach { (benefit) in
+            if totalBenefits == 0 {
+                totalBenefits = 1+benefit
+            } else {
+                totalBenefits = totalBenefits * (1 + benefit)
+            }
+        }
+        return totalBenefits*100
+    }
 }
 
 struct UserData {
@@ -99,7 +110,7 @@ class DataManager {
         let username = userDataList[userIndex].userName
         let moneyPrice = money
         respository.insertMoneyCoreData(userName: username, money: moneyPrice, date: date)
-        editUnHandleMoney(extraPrice: money)
+        addUnHandleMoney(extraPrice: money)
     }
 
     func removeMoneyResult(userIndex:Int,moneyIndex:Int) -> Bool {
@@ -108,11 +119,14 @@ class DataManager {
             return false
         }
         let name = userDataList[userIndex].userName
-        let money = userDataList[userIndex].money[moneyIndex].moneyPrice
-        if money > itemDataList[0].money {
+        let money = userDataList[userIndex].money[moneyIndex].moneyPriceWithBenefits
+        if money > itemDataList[0].getMoneyWithBenefits() {
             return false
         }
         userDataList[userIndex].money.remove(at: moneyIndex)
+        itemDataList[0].money = itemDataList[0].getMoneyWithBenefits() - money
+        itemDataList[0].benefits = 0
+        respository.updateItemCoreData(name: itemDataList[0].name, newMoney: itemDataList[0].money, newName: nil, benefits: 0)
         respository.deleteMoneyCoreData(userName: name, date: moneyDate)
         return true
     }
@@ -215,9 +229,14 @@ class DataManager {
         return true
     }
     
-    func editUnHandleMoney(extraPrice:Float){
+    func addUnHandleMoney(extraPrice:Float){
         itemDataList[0].money = itemDataList[0].getMoneyWithBenefits() + extraPrice
         respository.updateItemCoreData(name: itemDataList[0].name, newMoney: itemDataList[0].money, benefits: 0)
+    }
+    
+    func editUnHandleMoney(extraPrice:Float){
+        itemDataList[0].benefits = (itemDataList[0].getMoneyWithBenefits() - itemDataList[0].money + extraPrice )/itemDataList[0].money
+        respository.updateItemCoreData(name: itemDataList[0].name, newMoney: itemDataList[0].money, benefits: itemDataList[0].benefits)
     }
     
     // MARK: - BenefitsView
