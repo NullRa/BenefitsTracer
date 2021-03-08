@@ -57,8 +57,10 @@ struct ItemData {
         }
     }
     func getMoneyWithBenefits() -> Float{
-        
-        return (money + money*benefits)
+        return money + benefits
+    }
+    func getBenefitsPresent() -> Float{
+        return (money+benefits)/money*100
     }
     func getBenefitsMoney() -> Float{
         return money*benefits
@@ -250,14 +252,15 @@ class DataManager {
      
     func addBenefits(benefitsMoney:Float, itemIndex:Int){
         //FIXME被除數等於零
-        itemDataList[itemIndex].benefits = (benefitsMoney+itemDataList[itemIndex].getBenefitsMoney()) / itemDataList[itemIndex].money
+        itemDataList[itemIndex].benefits = itemDataList[itemIndex].benefits + benefitsMoney
         respository.updateItemCoreData(name: itemDataList[itemIndex].name, newMoney: itemDataList[itemIndex].money, benefits: itemDataList[itemIndex].benefits)
 
-        let benefitsPresent = getTotalBenefits()
-        updateUserDataListBenefits(benefitsPresent: benefitsPresent)
+//        FIXME
+        let benefitsPresent = getTotalBenefitsMoney()
+        updateUserDataListBenefits(benefitsMoney: benefitsPresent)
     }
 
-    func getTotalBenefits() -> Float{
+    func getTotalBenefitsMoney() -> Float{
         var itemBenefitsMoney:Float = 0
         itemDataList.forEach { (itemData) in
             itemBenefitsMoney = itemBenefitsMoney + itemData.getMoneyWithBenefits()
@@ -268,17 +271,15 @@ class DataManager {
             originalUserBenefitsMoney = originalUserBenefitsMoney + userData.totalMoney
         }
 
-        var benefitsPresent:Float = 0
-        benefitsPresent = (itemBenefitsMoney - originalUserBenefitsMoney)/originalUserBenefitsMoney
-        return benefitsPresent
+        return itemBenefitsMoney - originalUserBenefitsMoney
     }
 
-    func updateUserDataListBenefits(benefitsPresent:Float){
+    func updateUserDataListBenefits(benefitsMoney:Float){
         for i in 0 ..< userDataList.count {
             for j in 0 ..< userDataList[i].money.count {
-                userDataList[i].money[j].benefits.append(benefitsPresent)
+                userDataList[i].money[j].benefits.append(benefitsMoney)
             }
         }
-        respository.insertBenefitsCoreData(benefits: benefitsPresent)
+        respository.insertBenefitsCoreData(benefits: benefitsMoney)
     }
 }

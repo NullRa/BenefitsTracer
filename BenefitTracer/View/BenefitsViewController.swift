@@ -54,7 +54,7 @@ extension BenefitsViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: benefitsViewModel.cellId, for: indexPath)
         let item = benefitsViewModel.getListItem(itemIndex: indexPath.row)
         cell.textLabel?.text = item.name
-        cell.detailTextLabel?.text = "\(item.getMoneyWithBenefits()) (\(item.benefits*100)%)"
+        cell.detailTextLabel?.text = "\(item.getMoneyWithBenefits()) (\(item.getBenefitsPresent())%)"
         return cell
     }
     
