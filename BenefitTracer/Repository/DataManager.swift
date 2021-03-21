@@ -14,20 +14,16 @@ struct MoneyData {
     var moneyPriceWithBenefits: Float{
         var totalMoney:Float = moneyPrice
         benefits.forEach { (benefit) in
-            totalMoney = totalMoney + moneyPrice * benefit
+            totalMoney = totalMoney + benefit
         }
         return totalMoney
     }
     var totalBenefits:Float{
         var totalBenefits:Float = 0
         benefits.forEach { (benefit) in
-            if totalBenefits == 0 {
-                totalBenefits = 1+benefit
-            } else {
-                totalBenefits = totalBenefits * (1 + benefit)
-            }
+            totalBenefits = totalBenefits + benefit
         }
-        return totalBenefits*100
+        return (totalBenefits + moneyPrice)/moneyPrice
     }
 }
 
@@ -255,31 +251,48 @@ class DataManager {
         itemDataList[itemIndex].benefits = itemDataList[itemIndex].benefits + benefitsMoney
         respository.updateItemCoreData(name: itemDataList[itemIndex].name, newMoney: itemDataList[itemIndex].money, benefits: itemDataList[itemIndex].benefits)
 
-//        FIXME
-        let benefitsPresent = getTotalBenefitsMoney()
-        updateUserDataListBenefits(benefitsMoney: benefitsPresent)
+        addBenefitsToUser(benefitsMoney: benefitsMoney)
     }
 
-    func getTotalBenefitsMoney() -> Float{
-        var itemBenefitsMoney:Float = 0
-        itemDataList.forEach { (itemData) in
-            itemBenefitsMoney = itemBenefitsMoney + itemData.getMoneyWithBenefits()
-        }
+    func addBenefitsToUser(benefitsMoney:Float){
 
-        var originalUserBenefitsMoney:Float = 0
+        //allUserMoney 所有使用者的錢
+        var allUserMoney: Float = 0
+        var leftBenefitsMoney: Float = benefitsMoney
         userDataList.forEach { (userData) in
-            originalUserBenefitsMoney = originalUserBenefitsMoney + userData.totalMoney
+            allUserMoney = allUserMoney + userData.totalMoney
         }
 
-        return itemBenefitsMoney - originalUserBenefitsMoney
-    }
-
-    func updateUserDataListBenefits(benefitsMoney:Float){
         for i in 0 ..< userDataList.count {
             for j in 0 ..< userDataList[i].money.count {
-                userDataList[i].money[j].benefits.append(benefitsMoney)
+                if benefitsMoney > 0 {
+                    //獲利
+                    let moneyNewBenefits = userDataList[i].money[j].moneyPriceWithBenefits / allUserMoney * benefitsMoney
+                    if leftBenefitsMoney - moneyNewBenefits > 0 {
+                        //剩餘獲利分配大於%數分配，配置後再相減
+                        userDataList[i].money[j].benefits.append(moneyNewBenefits)
+                        leftBenefitsMoney = leftBenefitsMoney - moneyNewBenefits
+                        respository.updateBenefitsCoreData(benefits: moneyNewBenefits, date: userDataList[i].money[j].date!)
+                    } else {
+                        //剩餘獲利分配小於%數分配，直接把剩餘獲利配進去(就是最後一筆啦)
+                        userDataList[i].money[j].benefits.append(leftBenefitsMoney)
+                        respository.updateBenefitsCoreData(benefits: leftBenefitsMoney, date: userDataList[i].money[j].date!)
+                    }
+                } else {
+                    //虧損
+                    let moneyNewBenefits = userDataList[i].money[j].moneyPriceWithBenefits / allUserMoney * benefitsMoney
+                    if leftBenefitsMoney - moneyNewBenefits < 0 {
+                        //-100 - (-50) < 0
+                        userDataList[i].money[j].benefits.append(moneyNewBenefits)
+                        leftBenefitsMoney = leftBenefitsMoney - moneyNewBenefits
+                        respository.updateBenefitsCoreData(benefits: moneyNewBenefits, date: userDataList[i].money[j].date!)
+                    } else {
+                        //-50 - (-51) > 0
+                        userDataList[i].money[j].benefits.append(leftBenefitsMoney)
+                        respository.updateBenefitsCoreData(benefits: leftBenefitsMoney, date: userDataList[i].money[j].date!)
+                    }
+                }
             }
         }
-        respository.insertBenefitsCoreData(benefits: benefitsMoney)
     }
 }

@@ -62,17 +62,19 @@ class Respository {
             print(error)
         }
     }
-    
-    func insertBenefitsCoreData(benefits:Float) {
+
+    func updateBenefitsCoreData(benefits:Float,date:Date){
         do {
             let allMoneyCoreData = try viewContext.fetch(MoneyCoreData.fetchRequest())
             for moneyCoreData in allMoneyCoreData as! [MoneyCoreData] {
-                let benefitsData = NSEntityDescription.insertNewObject(forEntityName: "BenefitsCoreData", into: viewContext) as! BenefitsCoreData
-                benefitsData.benefits = benefits
-                moneyCoreData.addToOwn(benefitsData)
-                app.saveContext()
+                if moneyCoreData.date == date {
+                    let benefitsData = NSEntityDescription.insertNewObject(forEntityName: "BenefitsCoreData", into: viewContext) as! BenefitsCoreData
+                    benefitsData.benefits = benefits
+                    moneyCoreData.addToOwn(benefitsData)
+                    app.saveContext()
+                    return
+                }
             }
-            
         } catch {
             print(error)
         }
