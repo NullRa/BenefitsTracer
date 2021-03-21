@@ -38,6 +38,7 @@ class BenefitsViewModel {
                 return (benefitsMoney - originalMoney)*100/originalMoney
             }
         }
-        return "Total Money: \(benefitsMoney) (\(benefitsPresent))"
+        let benefitsPresentString: String! = String(format: "%.2f", benefitsPresent)
+        return "Total Money: \(benefitsMoney) (\(benefitsPresentString!)%)"
     }
 }
