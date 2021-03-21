@@ -88,6 +88,12 @@ class DataManager {
             userMoneyDatas.forEach { (moneyString, addMoneyDate, benefits) in
                 moneyDatas.append(MoneyData(moneyPrice: moneyString, date: addMoneyDate, benefits: benefits))
             }
+            moneyDatas.sort { (dataA, dataB) -> Bool in
+                if let dateA = dataA.date, let dateB = dataB.date {
+                    return dateA < dateB
+                }
+                return false
+            }
             userDataList.append(UserData(isOpen: false, money: moneyDatas, userName: userName))
         }
     }
